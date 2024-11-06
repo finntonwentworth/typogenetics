@@ -3,7 +3,8 @@
 
 
 // new function? strand scanner: 
-// performs switch statement functionality seen in starting_base and pulls base pair elements
+// performs switch statement functionality seen in starting_base 
+// and pulls base pair elements
 
 
 
@@ -17,7 +18,7 @@
 //Begin determining starting base, i.e. folding structure 
 // eventually do ascii graphics but thats a far ways away
 
-void starting_base(char strand[1000]){  
+void starting_base(char strand[1000]){
 // counter and variables for the bases 
  int ii = 0;
  char firstbase, secondbase; 
@@ -39,7 +40,8 @@ char cardinal;
     firstbase = strand[ii];
     secondbase = strand[ii+1];
     //if there is an odd numbered of bases in strand 
-    if(secondbase == NULL){
+//    if(secondbase == NULL){
+    if(secondbase == '\0'){
       // print last base by itself rather than check instruction
       printf(" Last base is: %c \r \n", firstbase);  
       break;
@@ -141,3 +143,6 @@ char cardinal;
   folding_structure[999] = '\0';
   printf(" folding pattern is: %s \r \n", folding_structure);
   }// end of function
+   
+
+
