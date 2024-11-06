@@ -28,7 +28,6 @@ void starting_base(char strand[1000]){
  
 
 char folding_structure[1000]; 
-printf(" folding pattern is: %s \r \n", folding_structure);
 int kk = 0; 
 char cardinal; 
 
@@ -141,7 +140,8 @@ char cardinal;
 
   folding_structure[0] = 'r';
   folding_structure[999] = '\0';
-  printf(" folding pattern is: %s \r \n", folding_structure);
+  printf("\n");
+  printf(" Folding pattern is: %s \r \n", folding_structure);
   }// end of function
    
 
