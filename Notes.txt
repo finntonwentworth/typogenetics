@@ -1,0 +1,23 @@
+
+The user enters a string. 
+I check that it is valid 
+Once that is done, I determine the instructions and therefore the folding pattern of the string 
+To do this, I scan the elements of the user's string 2 bases at a time, and decode an instruction. 
+	I do not store this value, just print it. 
+		I should store this value so that I can quickly start performing operations
+			This could be an element of a returned struct by the function 
+				struct decoded_strand s {
+					char instructions[3*STRAND_SIZE];
+					char folding_pattern[STRAND_SIZE];
+				};
+	I store in a local array the folding direction (r,l,s) 
+
+I want the decoding function to return a struct whose elements are two arrays: 
+	The list of instructions
+	The folding pattern
+I can store these returned values into my user_strand struct 
+
+Then I can have a function which accepts the folding pattern to determine the starting position
+Once the starting position is determined, I begin executing instructions sequentially starting on that base  
+A function will read in 3 elements of the instruction array, determine the relevant instruction, then call the function
+	hmm this will need some thinking- don't do a huge conditional 
