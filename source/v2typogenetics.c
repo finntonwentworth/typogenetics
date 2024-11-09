@@ -44,6 +44,7 @@ int main(void) {
         printf(" Sorry, strands can only consist of A, G, T, or C! \n \r");
         printf(" Please Enter a new strand: \r \n");
         scanf("%s",userstrand.dnastrand);
+        userstrand.size = relevant_elements(userstrand.dnastrand); 
   }
 
   printf(" Your strand is: %s \n \r", userstrand.dnastrand);
@@ -52,11 +53,11 @@ int main(void) {
   printf("\n");
   
   // decode the user's strand into instructions and folding pattern
-  userdecode = determine_folding(userstrand.dnastrand, userstrand.size); 
+  userdecode = get_instructions_and_folding(userstrand.dnastrand, userstrand.size); 
   
   //print the instructions in plain text
   printf(" \tInstructions are:\n");
-  while(userdecode.instructiontext[i] != '\0'){
+  while(i <= 3*userstrand.size){
     if(i == 0){
         printf("\t\t\t%c%c%c ",userdecode.instructiontext[i],userdecode.instructiontext[i+1],userdecode.instructiontext[i+2]);
     } else {
@@ -67,13 +68,13 @@ int main(void) {
   printf("\n \r");
   //if there are an odd number of bases, print last element  
   if(userstrand.size % 2 != 0){
-      printf(" \t\t\twith last base %c \n\r",userstrand.dnastrand[i-4]); 
+      printf(" \t\t\twith last base %c \n\r",userstrand.dnastrand[userstrand.size-1]); 
   }
   // print the folding pattern 
   i = 0; 
   printf("\n \r");
   printf(" \tFolding Pattern is: \n");
-  while(userdecode.foldingpattern[i] != '\0'){
+  while(i <= userstrand.size ){
     if(i == 0){
         printf("\t\t\t%c",userdecode.foldingpattern[i]);
     } else {

@@ -69,7 +69,7 @@ int valid_strand(char strand[], int size) {
 // the instructions 
 // and the folding pattern 
 //
-struct decodedstrand determine_folding(char strand[], int size) {
+struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     struct decodedstrand decode; 
     int i = 0, k = 0, j = 0; 
     
@@ -239,17 +239,24 @@ struct decodedstrand determine_folding(char strand[], int size) {
     //Actually, the first element is r 
     decode.foldingpattern[0] = 'r';
     // and append terminating character to folding pattern
-    decode.foldingpattern[k] = '\0';
+    decode.foldingpattern[k-1] = '\0';
     // return the instructions and folding pattern
     return decode;
 }
 
-// FUNCTION PURPOSE 
-// determine the starting acting point of the enzyme on the strand and place the
-// a ^ where the start is 
+/* ------ FUNCTION ------*/ 
 /*
-char calculate_start(char strand[]) {
+ * Function takes in folding pattern and returns the element number of the starting base for the enzyme to begin acting on
+ *
+ * Accepts:  
+ * Decoded folding pattern, 
+ * Returns: 
+ * integer corresponding to element number of base to start acting on 
+*/
+int calculate_start(char foldingpattern[]) {
+    int starting_base, cardinal;
+    
+    return starting_base;
 }
 
-const char* determinefolding(char strand[1000]) {
-*/
+
