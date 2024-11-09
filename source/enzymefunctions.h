@@ -12,5 +12,6 @@ struct strand {
 int relevant_elements(char[]);
 int valid_strand(char[], int); 
 struct decodedstrand get_instructions_and_folding(char[], int);
+char calculate_starting_base(char[], int);
 
 

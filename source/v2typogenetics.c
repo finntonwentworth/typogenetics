@@ -48,6 +48,7 @@ int main(void) {
   }
 
   printf(" Your strand is: %s \n \r", userstrand.dnastrand);
+  printf(" Strand is %d bases long \n \r", userstrand.size); 
   printf("\n");
   printf(" Decoding Enzymes: \n \r");
   printf("\n");
@@ -74,7 +75,7 @@ int main(void) {
   i = 0; 
   printf("\n \r");
   printf(" \tFolding Pattern is: \n");
-  while(i <= userstrand.size ){
+  while(i < userdecode.foldingpatternsize ){
     if(i == 0){
         printf("\t\t\t%c",userdecode.foldingpattern[i]);
     } else {
@@ -83,4 +84,5 @@ int main(void) {
     i++; 
   }
   printf("\n");
+  char dummy = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
 }

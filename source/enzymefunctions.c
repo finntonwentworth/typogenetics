@@ -9,6 +9,7 @@ struct decodedstrand {
     int  instruction[MAX_STRAND_SIZE];
     char instructiontext[3*MAX_STRAND_SIZE];
     char foldingpattern[MAX_STRAND_SIZE];
+    int  foldingpatternsize; 
 };
 
 /* ------ FUNCTION ------*/ 
@@ -239,22 +240,50 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     //Actually, the first element is r 
     decode.foldingpattern[0] = 'r';
     // and append terminating character to folding pattern
-    decode.foldingpattern[k-1] = '\0';
+    //decode.foldingpattern[k] = '\0';
+    //size of folding pattern will be k-1 relevant elements 
+    decode.foldingpatternsize = k-1; 
     // return the instructions and folding pattern
     return decode;
 }
 
 /* ------ FUNCTION ------*/ 
 /*
- * Function takes in folding pattern and returns the element number of the starting base for the enzyme to begin acting on
+ * Function takes in folding pattern and returns preferred base for enzyme to bind to
  *
  * Accepts:  
  * Decoded folding pattern, 
  * Returns: 
- * integer corresponding to element number of base to start acting on 
+ * char base of binding preference 
 */
-int calculate_start(char foldingpattern[]) {
-    int starting_base, cardinal;
+char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
+    // first element is known to be 'r'
+    int i = 1;
+    // absolute orientation represented by angle theta, 
+    int theta = 0;
+    // for each relevant element in the folding pattern
+    // maybe compute size of folding pattern array too in decode
+    while(i < foldingpatternsize) {
+       if(foldingpattern[i] == 's'){
+        //maintain heading, i.e. do not change angle
+          theta = theta;
+       }else if(foldingpattern[i] == 'r'){
+        //perform a CW rotation of 90 degrees    
+          theta = theta - 90;  
+       }else if(foldingpattern[i] == 'l'){
+        //perform a CCW rotation of 90 degrees    
+          theta = theta + 90;  
+       } 
+       //this doesnt work yet, in the event of negative rotations 
+       if(theta >= 360){
+           theta = theta-360; 
+       }
+       i++; 
+
+       printf(" Heading: %d degrees\n",theta);
+    }
+     
+    char starting_base;  
     
     return starting_base;
 }
