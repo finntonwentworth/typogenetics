@@ -1,13 +1,16 @@
 #include "enzymefunctions.c"
 
+#define MAX_STRAND_SIZE     1000
 
-
-int validstrand(char[]); 
-const char *determinefoldingpattern(char[]);
-
-
-struct user_strand {
-  char dna_strand[STRAND_SIZE]; 
-  char folding_pattern[STRAND_SIZE]; 
-  char starting_offset[STRAND_SIZE];  
+struct strand {
+  char dnastrand[MAX_STRAND_SIZE]; 
+  int size; 
+  char startingoffset[MAX_STRAND_SIZE];  
 };
+
+
+int relevant_elements(char[]);
+int valid_strand(char[], int); 
+struct decodedstrand determine_folding(char[], int);
+
+

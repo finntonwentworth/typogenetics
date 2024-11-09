@@ -17,40 +17,69 @@ int main(void) {
   printf(" Each pair of bases will encode for an instruction in an 'enzyme,' which will in turn manipulate the strand that you entered. \n \r");
   printf(" 2. There are 16 enzyme instructions: \n \r");
   printf(" \n");
-  printf(" AA: pun (-) | AC: cut (s) | AG: del (s) | AT: swi (r)\n \r");
-  printf(" --------------------------------------------------- \n \r");
-  printf(" CA: mvr (s) | CC: mvl (s) | CG: cop (r) | CT: off (l)\n \r");
-  printf(" --------------------------------------------------- \n \r");
-  printf(" GA: ina (s) | GC: inc (r) | GG: ing (r) | GT: int (l) \n \r");
-  printf(" --------------------------------------------------- \n \r");
-  printf(" TA: rpy (r) | TC: rpu (l) | TG: lpy (l) | TT: lpu (l) \n \r");
+  printf(" 0.  AA: pun (-) | 1.  AC: cut (s) | 2.  AG: del (s) | 3.  AT: swi (r)\n \r");
+  printf(" --------------------------------------------------------------------- \n \r");
+  printf(" 4.  CA: mvr (s) | 5.  CC: mvl (s) | 6.  CG: cop (r) | 7.  CT: off (l)\n \r");
+  printf(" --------------------------------------------------------------------- \n \r");
+  printf(" 8.  GA: ina (s) | 9.  GC: inc (r) | 10. GG: ing (r) | 11. GT: int (l)\n \r");
+  printf(" --------------------------------------------------------------------- \n \r");
+  printf(" 12. TA: rpy (r) | 13. TC: rpu (l) | 14. TG: lpy (l) | 15. TT: lpu (l)\n \r");
   printf(" \n");
 
   printf(" 3. Each instruction 'folds' the enzyme in a specific way, with the direction straight(s), left(l), or right(r) \n \r");
   printf(" (AA is a 'punctutation mark' acting to split the enzyme into 2 or more separate enzymes) \n \r");
   printf(" 4. Each enzyme will begin acting on a specfic base in your strand based on the starting and ending bases orientation relevant to each other that encode the enzyme \n \r "); 
 
-  struct user_strand strand; 
+  struct strand userstrand; 
+  struct decodedstrand userdecode;
+  int i = 0; 
 
   printf("Enter a strand: \n");
-  scanf("%s",strand.dna_strand);
+  scanf("%s",userstrand.dnastrand);
+
+  // Calculate the number of user inputed bases
+  userstrand.size = relevant_elements(userstrand.dnastrand); 
   //Check that the user's strand is valid/ 'well formed'
-  while(validstrand(strand.dna_strand)!=1){
+  while(valid_strand(userstrand.dnastrand, userstrand.size)!=1){
         printf(" Sorry, strands can only consist of A, G, T, or C! \n \r");
         printf(" Please Enter a new strand: \r \n");
-        scanf("%s",strand.dna_strand);
+        scanf("%s",userstrand.dnastrand);
   }
 
-
-  printf(" Your strand is: %s \n \r", strand.dna_strand);
+  printf(" Your strand is: %s \n \r", userstrand.dnastrand);
   printf("\n");
   printf(" Decoding Enzymes: \n \r");
   printf("\n");
-  printf("Function returns %s", determinefoldingpattern(strand.dna_strand));
-  strcpy(strand.folding_pattern,determinefoldingpattern(strand.dna_strand));
-  // I would like to assign the folding pattern determined in this function to the 
-  // folding_pattern element of user_struct
-  //strcpy(starting_base(strand.dna_strand,strand.folding_pattern),strand.folding_pattern);
-  printf("test point 2\n");
-  printf("Folding structure is: %s \n \r",strand.folding_pattern);
+  
+  // decode the user's strand into instructions and folding pattern
+  userdecode = determine_folding(userstrand.dnastrand, userstrand.size); 
+  
+  //print the instructions in plain text
+  printf(" \tInstructions are:\n");
+  while(userdecode.instructiontext[i] != '\0'){
+    if(i == 0){
+        printf("\t\t\t%c%c%c ",userdecode.instructiontext[i],userdecode.instructiontext[i+1],userdecode.instructiontext[i+2]);
+    } else {
+        printf("%c%c%c ",userdecode.instructiontext[i],userdecode.instructiontext[i+1],userdecode.instructiontext[i+2]);
+    }
+    i = i+3; 
+  }
+  printf("\n \r");
+  //if there are an odd number of bases, print last element  
+  if(userstrand.size % 2 != 0){
+      printf(" \t\t\twith last base %c \n\r",userstrand.dnastrand[i-4]); 
+  }
+  // print the folding pattern 
+  i = 0; 
+  printf("\n \r");
+  printf(" \tFolding Pattern is: \n");
+  while(userdecode.foldingpattern[i] != '\0'){
+    if(i == 0){
+        printf("\t\t\t%c",userdecode.foldingpattern[i]);
+    } else {
+        printf("%c",userdecode.foldingpattern[i]);
+    }
+    i++; 
+  }
+  printf("\n");
 }
