@@ -71,9 +71,12 @@ int main(void) {
   if(userstrand.size % 2 != 0){
       printf(" \t\t\twith last base %c \n\r",userstrand.dnastrand[userstrand.size-1]); 
   }
-  // print the folding pattern 
+
+  //reset i for later use
   i = 0; 
   printf("\n \r");
+  
+  // print the folding pattern 
   printf(" \tFolding Pattern is: \n");
   while(i < userdecode.foldingpatternsize ){
     if(i == 0){
@@ -83,8 +86,44 @@ int main(void) {
     }
     i++; 
   }
-  printf("\n");
+
+  printf("\n \r");
+
   // will this ever be useful to store in the userdecode struct? 
-  char starting_base = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
-  printf("Starting base to bind to is: '%c'\n",starting_base);
+  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+  printf(" Starting base to bind to is: '%c'\n",startingbase);
+  
+  //reset i for later use
+  i = 1;
+  
+  int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
+  printf(" Matching elements are:\n"); 
+  //print the 0th element 
+  printf(" \t\t\tBase %d\n",*matchingelements+1); 
+  //print the rest of the matching elements
+  while(matchingelements[i] != '\0'){
+    printf(" \t\t\tBase %d\n",matchingelements[i]+1);
+    i++;
+  }
+  int startingbaseposition;
+  // if there is more than one option of bases:
+  if(i != 1){
+      // prompt the user to select one
+      printf("Please enter a base number to begin acting on: \n \r"); 
+      scanf("%d", &startingbaseposition);
+      //check that the entered value matches one of the elements of matchingelements
+      //and correct for index starting at 0 instead of 1
+      while(userstrand.dnastrand[(startingbaseposition-1)] != startingbase){
+         printf("Sorry, enter a valid base number! \n");
+         scanf("%d", &startingbaseposition);
+      }
+  } else {
+      // automatically select the only choice
+      startingbaseposition = matchingelements[0]+1;
+  }
+
+  printf("\n \r"); 
+  printf("Enzyme will start acting on base %c at position %d\n",startingbase,startingbaseposition);
+  printf(" \t\t\t\t\t%s\n",userstrand.dnastrand);        
+  //print a line underneath array with ^ pointing at the starting base - use struct member offset and prob write a function to compute placement of ^
 }

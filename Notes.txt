@@ -23,3 +23,6 @@ TO DO:
 
 implement random selection/ present choice of available bases for binding preference, 
  rather than the first option from left to right.
+ will be interesting to do a random selection function 
+Graphics for folding
+    perhaps the biggest challenge I think  

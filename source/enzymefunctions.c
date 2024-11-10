@@ -266,7 +266,7 @@ char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
     // absolute orientation represented by angle theta, 
     int theta = 0;
     // char to store returned starting base 
-    char starting_base;  
+    char startingbase;  
     // for each relevant element in the folding pattern
     while(i < foldingpatternsize) {
 
@@ -291,16 +291,45 @@ char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
     theta = theta % 360; 
     // why does it feel like there's a better way to do this 
     if(theta == 0) {
-        starting_base = 'A'; 
+        startingbase = 'A'; 
     }else if (theta == 90 || theta == -270){
-        starting_base = 'C'; 
-    }else if(theta == 180) {
-        starting_base = 'T'; 
+        startingbase = 'C'; 
+    }else if(theta == 180 || theta == -180) {
+        startingbase = 'T'; 
     }else if (theta == -90 || theta == 270){
-        starting_base = 'G'; 
+        startingbase = 'G'; 
     }
 
-    return starting_base;
+    return startingbase;
 }
 
 
+/* ------ FUNCTION ------*/ 
+/*
+ * Function presents choice of starting base to bind to (and allows random selection?)
+ *
+ * Accepts:  
+ * User dna strand,# of relevant elements, Starting base from folding pattern
+ * Returns: 
+ * Array containing the sequential element numbers of bases from user strand to begin executing enzyme instructions on 
+ * 
+*/
+
+int *matching_starting_base_elements(char strand[],int size, char startingbase){
+   int i = 0;
+   int j = 0; 
+   static int matchingbaseelements[MAX_STRAND_SIZE];
+   //int *startingbasepositions = matchingbaseelements;
+   //increment through relevant elements of userstrand
+   while(i <= size){
+     // if the userstrand element matches the calculated starting base  
+     if(strand[i] == startingbase){
+         //set an element of matchingbaseelements to the index of the matching base
+           matchingbaseelements[j] = i;
+           j++;
+       } 
+     i++;
+   } 
+   matchingbaseelements[j] = '\0'; 
+   return matchingbaseelements; 
+}
