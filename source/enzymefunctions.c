@@ -285,12 +285,10 @@ char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
            break;
        }
        i++; 
-       printf(" Heading: %d degrees\n",theta);
     }
     // after the while loop, theta will be some multiple of 90 degrees
     // shake off the extra roations 
     theta = theta % 360; 
-    printf("theta mod 360 is : %d\n",theta); 
     // why does it feel like there's a better way to do this 
     if(theta == 0) {
         starting_base = 'A'; 
