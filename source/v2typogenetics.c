@@ -84,5 +84,7 @@ int main(void) {
     i++; 
   }
   printf("\n");
-  char dummy = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+  // will this ever be useful to store in the userdecode struct? 
+  char starting_base = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+  printf("Starting base to bind to is: '%c'\n",starting_base);
 }

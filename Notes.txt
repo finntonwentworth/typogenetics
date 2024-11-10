@@ -21,8 +21,5 @@ A function will read in 3 elements of the instruction array, determine the relev
 
 TO DO: 
 
-change functions: 
-
-instead of going until null '\0'
-compute # of relevant elements (rolls off the tongue) and pass that in as an argument
-then I can use computed # of elements mod 2 to determine if there is a last element
+implement random selection/ present choice of available bases for binding preference, 
+ rather than the first option from left to right.

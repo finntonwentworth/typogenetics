@@ -255,36 +255,53 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
  * Decoded folding pattern, 
  * Returns: 
  * char base of binding preference 
+ * 
+ * TO DO: Make this function write graphics/ display the folding happening 
+ * or maybe that should be the role of another function
+ *
 */
 char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
     // first element is known to be 'r'
     int i = 1;
     // absolute orientation represented by angle theta, 
     int theta = 0;
+    // char to store returned starting base 
+    char starting_base;  
     // for each relevant element in the folding pattern
-    // maybe compute size of folding pattern array too in decode
     while(i < foldingpatternsize) {
-       if(foldingpattern[i] == 's'){
+
+      switch(foldingpattern[i]){
+        case 's':
         //maintain heading, i.e. do not change angle
-          theta = theta;
-       }else if(foldingpattern[i] == 'r'){
+           theta = theta;
+           break;
+        case 'r':
         //perform a CW rotation of 90 degrees    
-          theta = theta - 90;  
-       }else if(foldingpattern[i] == 'l'){
+           theta = theta - 90;  
+           break;
+        case 'l':
         //perform a CCW rotation of 90 degrees    
-          theta = theta + 90;  
-       } 
-       //this doesnt work yet, in the event of negative rotations 
-       if(theta >= 360){
-           theta = theta-360; 
+           theta = theta + 90;  
+           break;
        }
        i++; 
-
        printf(" Heading: %d degrees\n",theta);
     }
-     
-    char starting_base;  
-    
+    // after the while loop, theta will be some multiple of 90 degrees
+    // shake off the extra roations 
+    theta = theta % 360; 
+    printf("theta mod 360 is : %d\n",theta); 
+    // why does it feel like there's a better way to do this 
+    if(theta == 0) {
+        starting_base = 'A'; 
+    }else if (theta == 90 || theta == -270){
+        starting_base = 'C'; 
+    }else if(theta == 180) {
+        starting_base = 'T'; 
+    }else if (theta == -90 || theta == 270){
+        starting_base = 'G'; 
+    }
+
     return starting_base;
 }
 
