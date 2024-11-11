@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <string.h>
 
@@ -87,7 +86,8 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
             decode.instructiontext[j+1] = 'u';
             decode.instructiontext[j+2] = 'n';
             decode.instruction[k] = 0; 
-            decode.foldingpattern[k] = ' ';
+            //insert dash into folding pattern to tell that this strand encodes for 2 (or more enzymes)
+            decode.foldingpattern[k] = '-';
             break;
           case 'C':
             decode.instructiontext[j]   = 'c';
@@ -237,10 +237,6 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
     
-    //test print output
-    printf("folding pattern size is = %d\n", decode.foldingpatternsize); 
-    // the number of remaining elements should be difference between the user strand size
-    // and the number of elements up to AA 
     // return the instructions and folding pattern
     return decode;
 }

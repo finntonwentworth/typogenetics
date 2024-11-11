@@ -79,6 +79,12 @@ int main(void) {
   // print the folding pattern 
   printf(" \tFolding Pattern is: \n");
   while(i < userdecode.foldingpatternsize ){
+/*
+    if(userdecode.foldingpattern[i] == '-'){
+        printf(" Punctuation (pun) detected. ");
+        break;
+    }
+*/
     if(i == 0){
         printf("\t\t\t%c",userdecode.foldingpattern[i]);
     } else {
@@ -89,8 +95,13 @@ int main(void) {
 
   printf("\n \r");
 
+  //debug printing 
+  printf("i = %d\n", i); 
+  printf("Folding pattern size = %d\n", userdecode.foldingpatternsize); 
+  
   // will this ever be useful to store in the userdecode struct? 
-  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+//  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+  char startingbase = calculate_starting_base(userdecode.foldingpattern,i); 
   printf(" Starting base to bind to is: '%c'\n",startingbase);
   
   //reset i for later use
@@ -117,7 +128,7 @@ int main(void) {
          printf("Sorry, enter a valid base number! \n");
          scanf("%d", &startingbaseposition);
       }
-  } else {
+  } else{
       // automatically select the only choice
       startingbaseposition = matchingelements[0]+1;
   }
