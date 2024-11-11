@@ -48,7 +48,7 @@ int main(void) {
   }
 
   printf(" Your strand is: %s \n \r", userstrand.dnastrand);
-  printf(" Strand is %d bases long \n \r", userstrand.size); 
+  printf(" Initial strand is %d bases long \n \r", userstrand.size); 
   printf("\n");
   printf(" Decoding Enzymes: \n \r");
   printf("\n");

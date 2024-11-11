@@ -66,22 +66,18 @@ int valid_strand(char strand[], int size) {
  * decodedstrand struct 
 */
 
-// This function will read through the user's strand and return two arrays as elements of a struct:
-// the instructions 
-// and the folding pattern 
-//
 struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     struct decodedstrand decode; 
     int i = 0, k = 0, j = 0; 
     
     char firstbase,secondbase; 
-    //while the strand element is not the terminating character
+    //while the index is less than or equal to the number of relevant elements in userstrand
     while(i <= size){
+        // set two placeholder char to the bases of index i and index i + 1
         firstbase  = strand[i]; 
         secondbase = strand[i+1]; 
         
 
-    // print base pair 
     // nested switch checks pair and determines corresponding instruction
     switch (firstbase) {
       case 'A':
@@ -235,14 +231,16 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     // move to the next instruction number and folding element 
     k++; 
 
-    
     } // end of 'while'
     //Actually, the first element is r 
     decode.foldingpattern[0] = 'r';
-    // and append terminating character to folding pattern
-    //decode.foldingpattern[k] = '\0';
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
+    
+    //test print output
+    printf("folding pattern size is = %d\n", decode.foldingpatternsize); 
+    // the number of remaining elements should be difference between the user strand size
+    // and the number of elements up to AA 
     // return the instructions and folding pattern
     return decode;
 }
