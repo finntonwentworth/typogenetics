@@ -9,7 +9,7 @@ struct decodedstrand {
     char instructiontext[3*MAX_STRAND_SIZE];
     char foldingpattern[MAX_STRAND_SIZE];
     int  foldingpatternsize; 
-    int  enzymecount = 1; 
+    int  enzymecount; 
 };
 
 /* ------ FUNCTION ------*/ 
@@ -67,9 +67,9 @@ int valid_strand(char strand[], int size) {
 */
 
 struct decodedstrand get_instructions_and_folding(char strand[], int size) {
-    struct decodedstrand decode; 
+    struct decodedstrand decode = {.enzymecount = 1}; 
     int i = 0, k = 0, j = 0; 
-    
+     
     char firstbase,secondbase; 
     //while the index is less than or equal to the number of relevant elements in userstrand
     while(i <= size){
@@ -318,7 +318,6 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
    int i = 0;
    int j = 0; 
    static int matchingbaseelements[MAX_STRAND_SIZE];
-   //int *startingbasepositions = matchingbaseelements;
    //increment through relevant elements of userstrand
    while(i <= size){
      // if the userstrand element matches the calculated starting base  
@@ -329,7 +328,8 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
        } 
      i++;
    } 
-   matchingbaseelements[j] = '\0'; 
+   //use -1 to mark terminating character since \0 didn't seem to work
+   matchingbaseelements[j] = -1; 
    return matchingbaseelements; 
 }
 

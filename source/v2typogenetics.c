@@ -34,8 +34,6 @@ int main(void) {
   // struct stores decoded information about the strand
   struct decodedstrand userdecode;
   int i = 0; 
-  // Variable tracks how many enzymes are in queue to execute
-  int enzymesleft  = 0; 
 
   printf("Enter a strand: \n");
   scanf("%s",userstrand.dnastrand);
@@ -79,8 +77,9 @@ int main(void) {
   i = 0; 
   printf("\n \r");
 
+  int maxenzymecount = userdecode.enzymecount;
   while(userdecode.enzymecount > 0) {
-    printf("Generating Enzyme %d folds and executing enzyme instructions:\n",userdecode.enzymecount);
+    printf("Generating Enzyme %d folds and executing enzyme instructions:\n",(maxenzymecount - (userdecode.enzymecount-1)));
 
     // Testing: 
     // seperate index variable for the folding pattern which will maintain it's
@@ -110,9 +109,11 @@ int main(void) {
     printf("\n \r");
 
     //debug printing 
+    /*
     printf("foldingindex = %d\n", foldingindex); 
     printf("Folding pattern size = %d\n", userdecode.foldingpatternsize); 
-    
+    */
+
     // will this ever be useful to store in the userdecode struct? 
     //  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
     char startingbase = calculate_starting_base(userdecode.foldingpattern,foldingindex); 
@@ -123,16 +124,19 @@ int main(void) {
     
     int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
     int startingbaseposition;
-
-    if(*matchingelements == 0) {
+    //if the first element is the 'null' character, then there are no matching elements
+    if(*matchingelements == -1) {
+        printf("matchingelements[0] == %d\n",*matchingelements);
         printf("There are no matching elements to bind to. Ending enzyme\n");
     }else {
 
         printf(" Matching elements are:\n"); 
         //print the 0th element 
+        //add one to index from 1 instead of 0
         printf(" \t\t\tBase %d\n",*matchingelements+1); 
         //print the rest of the matching elements
-        while(matchingelements[i] != '\0'){
+        while(matchingelements[i] != -1){
+            //add one to index from 1 instead of 0
             printf(" \t\t\tBase %d\n",matchingelements[i]+1);
             i++;
         }
