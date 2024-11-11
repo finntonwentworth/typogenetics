@@ -9,6 +9,7 @@ struct decodedstrand {
     char instructiontext[3*MAX_STRAND_SIZE];
     char foldingpattern[MAX_STRAND_SIZE];
     int  foldingpatternsize; 
+    int  enzymecount = 1; 
 };
 
 /* ------ FUNCTION ------*/ 
@@ -86,6 +87,8 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
             decode.instructiontext[j+1] = 'u';
             decode.instructiontext[j+2] = 'n';
             decode.instruction[k] = 0; 
+            // inform that there is more than one enzyme
+            decode.enzymecount++; 
             //insert dash into folding pattern to tell that this strand encodes for 2 (or more enzymes)
             decode.foldingpattern[k] = '-';
             break;
@@ -276,6 +279,8 @@ char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
         case 'l':
         //perform a CCW rotation of 90 degrees    
            theta = theta + 90;  
+           break;
+        default: 
            break;
        }
        i++; 

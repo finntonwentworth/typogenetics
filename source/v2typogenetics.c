@@ -29,10 +29,13 @@ int main(void) {
   printf(" 3. Each instruction 'folds' the enzyme in a specific way, with the direction straight(s), left(l), or right(r) \n \r");
   printf(" (AA is a 'punctutation mark' acting to split the enzyme into 2 or more separate enzymes) \n \r");
   printf(" 4. Each enzyme will begin acting on a specfic base in your strand based on the starting and ending bases orientation relevant to each other that encode the enzyme \n \r "); 
-
+  //struct stores user entered strand and it's size  
   struct strand userstrand; 
+  // struct stores decoded information about the strand
   struct decodedstrand userdecode;
   int i = 0; 
+  // Variable tracks how many enzymes are in queue to execute
+  int enzymesleft  = 0; 
 
   printf("Enter a strand: \n");
   scanf("%s",userstrand.dnastrand);
@@ -75,69 +78,90 @@ int main(void) {
   //reset i for later use
   i = 0; 
   printf("\n \r");
-  
-  // print the folding pattern 
-  printf(" \tFolding Pattern is: \n");
-  while(i < userdecode.foldingpatternsize ){
-/*
-    if(userdecode.foldingpattern[i] == '-'){
-        printf(" Punctuation (pun) detected. ");
-        break;
+
+  while(userdecode.enzymecount > 0) {
+    printf("Generating Enzyme %d folds and executing enzyme instructions:\n",userdecode.enzymecount);
+
+    // Testing: 
+    // seperate index variable for the folding pattern which will maintain it's
+    // value so that I can return to recalculate the next enzyme
+    int foldingindex = 0;  
+
+    // print the folding pattern 
+    printf(" \tFolding Pattern is: \n");
+    while(foldingindex < userdecode.foldingpatternsize ){
+        if(userdecode.foldingpattern[foldingindex] == '-' && foldingindex == 0){
+            printf("\t\t\t%c",userdecode.foldingpattern[foldingindex]);
+            foldingindex++; 
+            break;
+        } else if(userdecode.foldingpattern[foldingindex] == '-'){
+            printf("%c",userdecode.foldingpattern[foldingindex]);
+            foldingindex++; 
+            break;
+        }
+        if(foldingindex == 0){
+            printf("\t\t\t%c",userdecode.foldingpattern[foldingindex]);
+        } else {
+            printf("%c",userdecode.foldingpattern[foldingindex]);
+        }
+        foldingindex++; 
     }
-*/
-    if(i == 0){
-        printf("\t\t\t%c",userdecode.foldingpattern[i]);
-    } else {
-        printf("%c",userdecode.foldingpattern[i]);
+
+    printf("\n \r");
+
+    //debug printing 
+    printf("foldingindex = %d\n", foldingindex); 
+    printf("Folding pattern size = %d\n", userdecode.foldingpatternsize); 
+    
+    // will this ever be useful to store in the userdecode struct? 
+    //  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
+    char startingbase = calculate_starting_base(userdecode.foldingpattern,foldingindex); 
+    printf(" Starting base to bind to is: '%c'\n",startingbase);
+    
+    //reset i for later use
+    i = 1;
+    
+    int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
+    int startingbaseposition;
+
+    if(*matchingelements == 0) {
+        printf("There are no matching elements to bind to. Ending enzyme\n");
+    }else {
+
+        printf(" Matching elements are:\n"); 
+        //print the 0th element 
+        printf(" \t\t\tBase %d\n",*matchingelements+1); 
+        //print the rest of the matching elements
+        while(matchingelements[i] != '\0'){
+            printf(" \t\t\tBase %d\n",matchingelements[i]+1);
+            i++;
+        }
+        // if there is more than one option of bases:
+        if(i != 1){
+            // prompt the user to select one
+            printf("Please enter a base number to begin acting on: \n \r"); 
+            scanf("%d", &startingbaseposition);
+            //check that the entered value matches one of the elements of matchingelements
+            //and correct for index starting at 0 instead of 1
+            while(userstrand.dnastrand[(startingbaseposition-1)] != startingbase){
+                printf("Sorry, enter a valid base number! \n");
+                scanf("%d", &startingbaseposition);
+            }
+        } else{
+            // automatically select the only choice
+            startingbaseposition = matchingelements[0]+1;
+        }
+        printf("\n \r"); 
+        printf("Enzyme will start acting on base %c at position %d\n",startingbase,startingbaseposition);
+        printf("\n \r"); 
+        printf(" \t\t\t\t\t%s\n",userstrand.dnastrand);        
+        //print a line underneath array with ^ pointing at the starting base 
+        char *arrowmarker = current_enzyme_position(startingbaseposition);
+        printf(" \t\t\t\t\t%s\n",arrowmarker); 
     }
-    i++; 
-  }
 
-  printf("\n \r");
 
-  //debug printing 
-  printf("i = %d\n", i); 
-  printf("Folding pattern size = %d\n", userdecode.foldingpatternsize); 
-  
-  // will this ever be useful to store in the userdecode struct? 
-//  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
-  char startingbase = calculate_starting_base(userdecode.foldingpattern,i); 
-  printf(" Starting base to bind to is: '%c'\n",startingbase);
-  
-  //reset i for later use
-  i = 1;
-  
-  int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
-  printf(" Matching elements are:\n"); 
-  //print the 0th element 
-  printf(" \t\t\tBase %d\n",*matchingelements+1); 
-  //print the rest of the matching elements
-  while(matchingelements[i] != '\0'){
-    printf(" \t\t\tBase %d\n",matchingelements[i]+1);
-    i++;
-  }
-  int startingbaseposition;
-  // if there is more than one option of bases:
-  if(i != 1){
-      // prompt the user to select one
-      printf("Please enter a base number to begin acting on: \n \r"); 
-      scanf("%d", &startingbaseposition);
-      //check that the entered value matches one of the elements of matchingelements
-      //and correct for index starting at 0 instead of 1
-      while(userstrand.dnastrand[(startingbaseposition-1)] != startingbase){
-         printf("Sorry, enter a valid base number! \n");
-         scanf("%d", &startingbaseposition);
-      }
-  } else{
-      // automatically select the only choice
-      startingbaseposition = matchingelements[0]+1;
-  }
 
-  printf("\n \r"); 
-  printf("Enzyme will start acting on base %c at position %d\n",startingbase,startingbaseposition);
-  printf("\n \r"); 
-  printf(" \t\t\t\t\t%s\n",userstrand.dnastrand);        
-  //print a line underneath array with ^ pointing at the starting base 
-  char *arrowmarker = current_enzyme_position(startingbaseposition);
-  printf(" \t\t\t\t\t%s\n",arrowmarker); 
+    userdecode.enzymecount--;
+  }
 }
