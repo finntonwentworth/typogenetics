@@ -339,8 +339,7 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
  * Function places arrow marking current position under string 
  *
  * Accepts:  
- * wait I think this just needs an int to know where to put the arrow
- * User dna strand,# of relevant elements, int representing starting base position/ current acting position
+ * int representing starting base position/ current acting position
  * Returns: 
  * Array containing # of spaces and arrow to graphically mark position
  *
@@ -355,4 +354,19 @@ char *current_enzyme_position(int startingbaseposition){
    }
    arrowmarker[i] = '^'; 
    return arrowmarker; 
+}
+
+/* ------ FUNCTION ------*/ 
+/*
+ * Function serves to call any of the "15" enzyme functions provided an instruction number 
+ *
+ * Accepts:  
+ * int instruction number   
+ * Returns: 
+ * pointer to call function? i think that is how it works  
+ * 
+*/
+// i think this is supposed to accept a pointer to a function
+void call_instruction(int instructionnumber) {
+
 }
