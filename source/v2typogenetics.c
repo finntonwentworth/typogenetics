@@ -124,6 +124,9 @@ int main(void) {
 
   printf("\n \r"); 
   printf("Enzyme will start acting on base %c at position %d\n",startingbase,startingbaseposition);
+  printf("\n \r"); 
   printf(" \t\t\t\t\t%s\n",userstrand.dnastrand);        
-  //print a line underneath array with ^ pointing at the starting base - use struct member offset and prob write a function to compute placement of ^
+  //print a line underneath array with ^ pointing at the starting base 
+  char *arrowmarker = current_enzyme_position(startingbaseposition);
+  printf(" \t\t\t\t\t%s\n",arrowmarker); 
 }

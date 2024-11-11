@@ -333,3 +333,26 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
    matchingbaseelements[j] = '\0'; 
    return matchingbaseelements; 
 }
+
+/* ------ FUNCTION ------*/ 
+/*
+ * Function places arrow marking current position under string 
+ *
+ * Accepts:  
+ * wait I think this just needs an int to know where to put the arrow
+ * User dna strand,# of relevant elements, int representing starting base position/ current acting position
+ * Returns: 
+ * Array containing # of spaces and arrow to graphically mark position
+ *
+ * 
+*/
+char *current_enzyme_position(int startingbaseposition){
+   static char arrowmarker[MAX_STRAND_SIZE];  
+   int i = 0; 
+   while(i < startingbaseposition-1){
+       arrowmarker[i] = ' '; 
+       i++;
+   }
+   arrowmarker[i] = '^'; 
+   return arrowmarker; 
+}
