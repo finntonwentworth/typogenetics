@@ -58,7 +58,7 @@ int main(void) {
   userdecode = get_instructions_and_folding(userstrand.dnastrand, userstrand.size); 
   
   //print the instructions in plain text
-  printf(" \tInstructions are:\n");
+  printf(" \tTotal Strand Instructions are:\n");
   while(i <= 3*userstrand.size){
     if(i == 0){
         printf("\t\t\t%c%c%c ",userdecode.instructiontext[i],userdecode.instructiontext[i+1],userdecode.instructiontext[i+2]);
@@ -75,31 +75,92 @@ int main(void) {
 
   //reset i for later use
   i = 0; 
+
+  printf("\n \r");
+  
+  //print the full folding pattern for clarity
+  printf("Total strand folding pattern is: %s\n", userdecode.foldingpattern); 
   printf("\n \r");
 
   int maxenzymecount = userdecode.enzymecount;
+  if(maxenzymecount != 1){
+      printf("Strand has %d genes that code for %d enzymes\n", maxenzymecount,maxenzymecount); 
+  }
+  printf("\n \r");
+  // Testing: 
+  // seperate index variable for the folding pattern which will maintain it's
+  // value so that I can return to recalculate the next enzyme
+  int instructionindex = 0;
+  int foldingindex = 0;  
+  int loopindentflag = 1;  
+  // while there are still enzymes left to execute
   while(userdecode.enzymecount > 0) {
+    printf("\n \r");
+    //print from 1 to max instead of decrementing from max to 1  
     printf("Generating Enzyme %d folds and executing enzyme instructions:\n",(maxenzymecount - (userdecode.enzymecount-1)));
 
-    // Testing: 
-    // seperate index variable for the folding pattern which will maintain it's
-    // value so that I can return to recalculate the next enzyme
-    int foldingindex = 0;  
+
+    //print the instructions associated with the enzyme
+    printf(" \tEnzyme %d instructions are: \n",(maxenzymecount - (userdecode.enzymecount-1)));
+    while(instructionindex < 3*userdecode.foldingpatternsize) {
+        // if the instruction is pun and either it's the first instruction or the loop flag is set, 
+//       if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || loopindentflag == 1)){
+//       if the  first instruction =  pun and it's not enzyme 1 or its the first printed instruction in enzyme 1
+       if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1)){
+        //print tabs in front of instructions for formatting 
+          printf("\t\t\t ");
+          instructionindex = instructionindex+3; 
+          loopindentflag = 0; 
+          break;
+       //else if instruction is pun, just print spaces and increment past   
+       }else if(userdecode.instruction[instructionindex] == 0){
+          printf("    ");
+          instructionindex = instructionindex+3; 
+          break;
+        }
+/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
+/*                                        you're trying to figure how to print tabs only on the first instruction/foldingpattern 
+ *                                        each time through the enzyme loops 
+*/      
+       
+      
+       //if its the first instruction or the loop flag is set
+       //if(instructionindex == 0 || loopindentflag == 1){
+        if(instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1){
+          printf("\t\t\t%c%c%c ",userdecode.instructiontext[instructionindex],userdecode.instructiontext[instructionindex+1],userdecode.instructiontext[instructionindex+2]);
+
+          loopindentflag = 0; 
+        } else {
+          printf("%c%c%c ",userdecode.instructiontext[instructionindex],userdecode.instructiontext[instructionindex+1],userdecode.instructiontext[instructionindex+2]);
+        }
+        instructionindex = instructionindex+3; 
+    }
+
+/*---------------------------------------------------------------------------------------------------------------------------------*/
+    printf("\n \r");
+
 
     // print the folding pattern 
     printf(" \tFolding Pattern is: \n");
     while(foldingindex < userdecode.foldingpatternsize ){
-        if(userdecode.foldingpattern[foldingindex] == '-' && foldingindex == 0){
-            printf("\t\t\t%c",userdecode.foldingpattern[foldingindex]);
+        if(userdecode.foldingpattern[foldingindex] == '-' && (foldingindex == 0 || loopindentflag == 1)){
+            
+            //print space rather than  '-' for aesthetics
+            printf("\t\t\t ");
             foldingindex++; 
+            loopindentflag = 0; 
             break;
         } else if(userdecode.foldingpattern[foldingindex] == '-'){
-            printf("%c",userdecode.foldingpattern[foldingindex]);
+            //printf("%c",userdecode.foldingpattern[foldingindex]);
+            
+            //print space rather than  '-' for aesthetics
+            printf(" ");
             foldingindex++; 
             break;
         }
-        if(foldingindex == 0){
+        if(foldingindex == 0 || loopindentflag == 1){
             printf("\t\t\t%c",userdecode.foldingpattern[foldingindex]);
+            loopindentflag = 0; 
         } else {
             printf("%c",userdecode.foldingpattern[foldingindex]);
         }
@@ -108,11 +169,6 @@ int main(void) {
 
     printf("\n \r");
 
-    //debug printing 
-    /*
-    printf("foldingindex = %d\n", foldingindex); 
-    printf("Folding pattern size = %d\n", userdecode.foldingpatternsize); 
-    */
 
     // will this ever be useful to store in the userdecode struct? 
     //  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
@@ -126,7 +182,6 @@ int main(void) {
     int startingbaseposition;
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingelements == -1) {
-        printf("matchingelements[0] == %d\n",*matchingelements);
         printf("There are no matching elements to bind to. Ending enzyme\n");
     }else {
 
@@ -165,7 +220,7 @@ int main(void) {
     }
 
 
-
+    loopindentflag = 1;
     userdecode.enzymecount--;
-  }
+  }//END OF WHILE
 }

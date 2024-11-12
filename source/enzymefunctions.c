@@ -236,6 +236,7 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
 
     } // end of 'while'
     //Actually, the first element is r 
+    //this may be the trick for setting first fold to r always in case of punctuation
     decode.foldingpattern[0] = 'r';
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
