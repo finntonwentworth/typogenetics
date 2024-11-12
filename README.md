@@ -1,6 +1,6 @@
 
 
-##Instruction Completion checklist
+## Instruction Completion checklist
 
    In prog.|          |          |
    pun     |  cut     |  del     |  swi    

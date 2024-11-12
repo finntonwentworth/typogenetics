@@ -1,0 +1,78 @@
+
+The user enters a string. 
+I check that it is valid 
+Once that is done, I determine the instructions and therefore the folding pattern of the string 
+To do this, I scan the elements of the user's string 2 bases at a time, and decode an instruction. 
+I store the instructions and folding pattern in elements of a struct
+
+I want the decoding function to return a struct whose elements are two arrays: 
+	The list of instructions
+	The folding pattern
+I can store these returned values into my user_strand struct 
+
+Then I can have a function which accepts the folding pattern to determine the starting position
+Once the starting position is determined, I begin executing instructions sequentially starting on that base  
+A function will read in 3 elements of the instruction array, determine the relevant instruction, then call the function
+	hmm this will need some thinking- don't do a huge conditional 
+	I have instead provided an instruction number as an array - each instruction is codified by a number 
+		prevents the need of reading in array values 
+
+
+Pun functionality: 
+I can generate the foldingpattern list almost as normal, with pun inserting a - into the foldingpattern sequence
+Additionally, after each - the next character should be r, but I think i can do that later 
+What changes is the starting base selection
+the size of the foldingpatternsize will be the length of the sequence until a dash 
+OK, here's the flow 
+I create the folding pattern from strand XXXXXXXXAAXXXXXXXX such as rllr-rrss
+Since there's one punctuation mark: there will be 2 separate enzymes, enz1 and enz2 
+that means calculate starting base for 'rllr' (C) 
+execute the 4 instructions on strand XXXXXXXXAAXXXXXXXX starting at a C base 
+Then calculate starting base for enz2, regardless of the changes to initial strand 
+so for 'rrss' (G)
+then execute 4 instructions starting on G on changed strand 
+
+may need to set a counter for # of enzymes in while loop for final execution process
+as in start; calculate_start --> select_start --> execute_instructions; enzymes_left--; stop if enzymes left = 0
+
+
+TO DO: 
+
+Finish Punctuation
+- i think im on the right track 
+
+ISSUE:
+ - Glitch when there are no matching bases to bind to: 
+	- automatically selects element one 
+	- should reject instead and end immediately
+	-issue is in conditional in main
+
+Graphics for folding
+    perhaps the biggest challenge I think  
+
+Instruction Completion checklist
+
+   In prog.|          |          |
+   pun     |  cut     |  del     |  swi    
+   ----------------------------------------
+           |          |          |
+   mvr     |  mvl     |  cop     |  off    
+   ----------------------------------------
+           |          |          |
+   ina     |  inc     |  ing     |  int    
+   ----------------------------------------
+           |          |          |
+   rpy     |  rpu     |  lpy     |  lpu    
+
+
+
+
+-MAYBE:
+	- Random option for starting base selection
+
+
+EXPLORATIONS once finished:
+- see how changing starting positions can affect a strand's development 
+- see if you can automate reverse engineering a strand from a enzyme and the output/ potential strands from an enzyme
+
+
