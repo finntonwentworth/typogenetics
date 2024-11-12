@@ -34,18 +34,15 @@ then execute 4 instructions starting on G on changed strand
 
 may need to set a counter for # of enzymes in while loop for final execution process
 as in start; calculate_start --> select_start --> execute_instructions; enzymes_left--; stop if enzymes left = 0
-
+PUN Glitch: 
+        - not printing full enzyme instructions, reaching a 0 for some reason 
+                folding pattern prints fully however
 
 TO DO: 
 
 Finish Punctuation
 - i think im on the right track 
 
-ISSUE:
- - Glitch when there are no matching bases to bind to: 
-	- automatically selects element one 
-	- should reject instead and end immediately
-	-issue is in conditional in main
 
 Graphics for folding
     perhaps the biggest challenge I think  

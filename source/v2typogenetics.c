@@ -79,7 +79,8 @@ int main(void) {
   printf("\n \r");
   
   //print the full folding pattern for clarity
-  printf("Total strand folding pattern is: %s\n", userdecode.foldingpattern); 
+  // may be removed in the future since it's not technically correct
+  printf("Total Enzyme(s) folding pattern is: %s\n", userdecode.foldingpattern); 
   printf("\n \r");
 
   int maxenzymecount = userdecode.enzymecount;
@@ -107,6 +108,9 @@ int main(void) {
 //       if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || loopindentflag == 1)){
 //       if the  first instruction =  pun and it's not enzyme 1 or its the first printed instruction in enzyme 1
        if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1)){
+
+          printf("instruction number: %d\n", userdecode.instruction[instructionindex]); 
+
         //print tabs in front of instructions for formatting 
           printf("\t\t\t ");
           instructionindex = instructionindex+3; 
@@ -114,6 +118,9 @@ int main(void) {
           break;
        //else if instruction is pun, just print spaces and increment past   
        }else if(userdecode.instruction[instructionindex] == 0){
+
+          printf("instruction number: %d\n", userdecode.instruction[instructionindex]); 
+
           printf("    ");
           instructionindex = instructionindex+3; 
           break;
@@ -181,6 +188,7 @@ int main(void) {
     int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
     int startingbaseposition;
     //if the first element is the 'null' character, then there are no matching elements
+    //this may need to decrement enzymecount and break once I add instruction execution
     if(*matchingelements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
     }else {
