@@ -80,7 +80,8 @@ int main(void) {
   
   //print the full folding pattern for clarity
   // may be removed in the future since it's not technically correct
-  printf("Total Enzyme(s) folding pattern is: %s\n", userdecode.foldingpattern); 
+  printf("Total Enzyme(s) folding pattern:\n"); 
+  printf(" \t\t\t%s\n", userdecode.foldingpattern);
   printf("\n \r");
 
   int maxenzymecount = userdecode.enzymecount;
@@ -103,34 +104,30 @@ int main(void) {
 
     //print the instructions associated with the enzyme
     printf(" \tEnzyme %d instructions are: \n",(maxenzymecount - (userdecode.enzymecount-1)));
+
+/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
+/*                                        you're trying to figure how to print tabs only on the first instruction/foldingpattern 
+ *                                        each time through the enzyme loops 
+ *                                        and now also how to get the full instructions of enzymes to print
+*/      
     while(instructionindex < 3*userdecode.foldingpatternsize) {
         // if the instruction is pun and either it's the first instruction or the loop flag is set, 
 //       if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || loopindentflag == 1)){
 //       if the  first instruction =  pun and it's not enzyme 1 or its the first printed instruction in enzyme 1
-       if(userdecode.instruction[instructionindex] == 0  && (instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1)){
-
-          printf("instruction number: %d\n", userdecode.instruction[instructionindex]); 
-
+       if(userdecode.instruction[i] == 0  && (instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1)){
         //print tabs in front of instructions for formatting 
           printf("\t\t\t ");
+          i++; 
           instructionindex = instructionindex+3; 
           loopindentflag = 0; 
           break;
        //else if instruction is pun, just print spaces and increment past   
-       }else if(userdecode.instruction[instructionindex] == 0){
-
-          printf("instruction number: %d\n", userdecode.instruction[instructionindex]); 
-
+       }else if(userdecode.instruction[i] == 0){
           printf("    ");
+          i++; 
           instructionindex = instructionindex+3; 
           break;
         }
-/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
-/*                                        you're trying to figure how to print tabs only on the first instruction/foldingpattern 
- *                                        each time through the enzyme loops 
-*/      
-       
-      
        //if its the first instruction or the loop flag is set
        //if(instructionindex == 0 || loopindentflag == 1){
         if(instructionindex == 0 || (maxenzymecount - (userdecode.enzymecount-1)) != 1){
@@ -140,9 +137,9 @@ int main(void) {
         } else {
           printf("%c%c%c ",userdecode.instructiontext[instructionindex],userdecode.instructiontext[instructionindex+1],userdecode.instructiontext[instructionindex+2]);
         }
+        i++; 
         instructionindex = instructionindex+3; 
     }
-
 /*---------------------------------------------------------------------------------------------------------------------------------*/
     printf("\n \r");
 
