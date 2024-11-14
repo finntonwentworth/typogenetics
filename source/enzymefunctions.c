@@ -242,6 +242,12 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     decode.foldingpattern[0] = 'r';
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
+    //write 'r' to all folding directions after pun instructions 
+    for(int i = 0; i < decode.foldingpatternsize; i++) {
+        if(decode.instruction[i] == 0){
+            decode.foldingpattern[i+1] = 'r'; 
+        }
+    } 
     // return the instructions and folding pattern
     return decode;
 }
