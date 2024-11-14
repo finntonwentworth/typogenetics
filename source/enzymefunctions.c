@@ -7,6 +7,7 @@
 struct decodedstrand {
     int  instruction[MAX_STRAND_SIZE];
     char instructiontext[3*MAX_STRAND_SIZE];
+    int  instructiontextsize; 
     char foldingpattern[MAX_STRAND_SIZE];
     int  foldingpatternsize; 
     int  enzymecount; 
@@ -87,9 +88,9 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
             decode.instructiontext[j+1] = 'u';
             decode.instructiontext[j+2] = 'n';
             decode.instruction[k] = 0; 
-            // inform that there is more than one enzyme
+            // inform that there is more than one enzyme encoded by this strand
             decode.enzymecount++; 
-            //insert dash into folding pattern to tell that this strand encodes for 2 (or more enzymes)
+            //insert dash into folding pattern 
             decode.foldingpattern[k] = '-';
             break;
           case 'C':
@@ -235,12 +236,12 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     k++; 
 
     } // end of 'while'
+    decode.instructiontextsize = j - 3; 
     //Actually, the first element is r 
     //this may be the trick for setting first fold to r always in case of punctuation
     decode.foldingpattern[0] = 'r';
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
-    
     // return the instructions and folding pattern
     return decode;
 }
