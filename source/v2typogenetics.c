@@ -95,6 +95,7 @@ int main(void) {
   int instructionindex = 0;
   int instructionnumberindex = 0;
   int foldingindex = 0;  
+  int foldingindexsetpoint;
   int indentflag = 1;  
   // while there are still enzymes left to execute
   while(userdecode.enzymecount > 0) {
@@ -105,23 +106,11 @@ int main(void) {
 
     //print the instructions associated with the enzyme
     printf(" \tEnzyme %d instructions are: \n",(maxenzymecount - (userdecode.enzymecount-1)));
-/*
-      while(instructionindex <= userdecode.foldingpatternsize){  
-        printf("%d ", userdecode.instruction[instructionindex]);
-        instructionindex++; 
-      }
-      instructionindex=0;
-      printf("\n \r");
-*/
-/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
-/*                                        
- *                                        now how to get the full instructions of enzymes to print on enzymes 2+
-*/      
     while(instructionindex < userdecode.instructiontextsize) {
         // if the instruction is pun and either it's the first instruction or the loop flag is set, 
        if(userdecode.instruction[instructionnumberindex] == 0  && indentflag == 1){
         //print tabs in front of instructions for formatting 
-          printf("\t\t\t-");
+          printf("\t\t\tpun");
           instructionnumberindex++; 
           instructionindex = instructionindex+3; 
           indentflag = 0; 
@@ -143,7 +132,6 @@ int main(void) {
         instructionnumberindex++; 
         instructionindex = instructionindex+3; 
     }
-/*---------------------------------------------------------------------------------------------------------------------------------*/
     printf("\n \r");
     indentflag = 1;
 
@@ -175,14 +163,18 @@ int main(void) {
     //reset the indent flag 
     indentflag = 1;
 
-
-    // will this ever be useful to store in the userdecode struct? 
-    //  char startingbase = calculate_starting_base(userdecode.foldingpattern, userdecode.foldingpatternsize); 
-    char startingbase = calculate_starting_base(userdecode.foldingpattern,foldingindex); 
-    printf(" Starting base to bind to is: '%c'\n",startingbase);
-    
     //reset i for later use
     i = 1;
+
+/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
+    // DOES NOT WORK AS IS WITH PUN
+    char startingbase = calculate_starting_base(userdecode.foldingpattern,userdecode.foldingpatternsize,foldingindex); 
+/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
+    printf(" Starting base to bind to is: '%c'\n",startingbase);
+
+    if(startingbase == '-'){
+        printf("Single AA Amino Acid detected. No binding chosen\n"); 
+    }
     
     int *matchingelements = matching_starting_base_elements(userstrand.dnastrand, userstrand.size, startingbase);
     int startingbaseposition;
@@ -228,5 +220,6 @@ int main(void) {
 
 
     userdecode.enzymecount--;
+    
   }//END OF WHILE
 }

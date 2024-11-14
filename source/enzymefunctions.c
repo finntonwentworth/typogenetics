@@ -237,17 +237,19 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
 
     } // end of 'while'
     decode.instructiontextsize = j - 3; 
-    //Actually, the first element is r 
-    //this may be the trick for setting first fold to r always in case of punctuation
-    decode.foldingpattern[0] = 'r';
-    //size of folding pattern will be k-1 relevant elements 
-    decode.foldingpatternsize = k-1; 
+    
+    //Actually, the first element is r if the first instruction is not pun 
+    if(decode.foldingpattern[0] != '-'){
+        decode.foldingpattern[0] = 'r';
+    }
     //write 'r' to all folding directions after pun instructions 
     for(int i = 0; i < decode.foldingpatternsize; i++) {
         if(decode.instruction[i] == 0){
             decode.foldingpattern[i+1] = 'r'; 
         }
     } 
+    //size of folding pattern will be k-1 relevant elements 
+    decode.foldingpatternsize = k-1; 
     // return the instructions and folding pattern
     return decode;
 }
@@ -265,49 +267,58 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
  * or maybe that should be the role of another function
  *
 */
-char calculate_starting_base(char foldingpattern[], int foldingpatternsize) {
+//char calculate_starting_base(char foldingpattern[], int foldingpatternsize, int foldingindex) {
+char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint) {
     // first element is known to be 'r'
-    int i = 1;
+//    int i = 1;
     // absolute orientation represented by angle theta, 
     int theta = 0;
     // char to store returned starting base 
     char startingbase;  
+    // if the folding pattern consists of just pun 
+    /*
+    if(foldingpattern[foldingpatternsize] == '-'){
+        return '-';
+    }else {
+    */
+
     // for each relevant element in the folding pattern
-    while(i < foldingpatternsize) {
+        while(startpoint < endpoint) {
 
-      switch(foldingpattern[i]){
-        case 's':
-        //maintain heading, i.e. do not change angle
-           theta = theta;
-           break;
-        case 'r':
-        //perform a CW rotation of 90 degrees    
-           theta = theta - 90;  
-           break;
-        case 'l':
-        //perform a CCW rotation of 90 degrees    
-           theta = theta + 90;  
-           break;
-        default: 
-           break;
-       }
-       i++; 
-    }
-    // after the while loop, theta will be some multiple of 90 degrees
-    // shake off the extra roations 
-    theta = theta % 360; 
-    // why does it feel like there's a better way to do this 
-    if(theta == 0) {
-        startingbase = 'A'; 
-    }else if (theta == 90 || theta == -270){
-        startingbase = 'C'; 
-    }else if(theta == 180 || theta == -180) {
-        startingbase = 'T'; 
-    }else if (theta == -90 || theta == 270){
-        startingbase = 'G'; 
-    }
+          switch(foldingpattern[i]){
+            case 's':
+            //maintain heading, i.e. do not change angle
+               theta = theta;
+               break;
+            case 'r':
+            //perform a CW rotation of 90 degrees    
+               theta = theta - 90;  
+               break;
+            case 'l':
+            //perform a CCW rotation of 90 degrees    
+               theta = theta + 90;  
+               break;
+            default: 
+               break;
+           }
+           i++; 
+        }
+        // after the while loop, theta will be some multiple of 90 degrees
+        // shake off the extra roations 
+        theta = theta % 360; 
+        // why does it feel like there's a better way to do this 
+        if(theta == 0) {
+            startingbase = 'A'; 
+        }else if (theta == 90 || theta == -270){
+            startingbase = 'C'; 
+        }else if(theta == 180 || theta == -180) {
+            startingbase = 'T'; 
+        }else if (theta == -90 || theta == 270){
+            startingbase = 'G'; 
+        }
 
-    return startingbase;
+        return startingbase;
+   // }
 }
 
 

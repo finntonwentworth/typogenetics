@@ -59,6 +59,15 @@ Instruction Completion checklist
    rpy     |  rpu     |  lpy     |  lpu    
 
 
+Folding direction Chart: 
+
+        final facing    |    Binding preference
+------------------------|----------------------
+             0          |           A
+             90         |           C
+             180        |           T
+             270        |           G
+
 
 
 -MAYBE:
