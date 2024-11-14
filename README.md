@@ -1,17 +1,19 @@
 
 ## Instruction Completion checklist
 
-   DONE!   |          |          |
-   pun     |  cut     |  del     |  swi    
-   ----------------------------------------
-           |          |          |
-   mvr     |  mvl     |  cop     |  off    
-   ----------------------------------------
-           |          |          |
-   ina     |  inc     |  ing     |  int    
-   ----------------------------------------
-           |          |          |
-   rpy     |  rpu     |  lpy     |  lpu    
+
+<!-- language: lang-none -->
+    DONE!   |          |          |
+    pun     |  cut     |  del     |  swi    
+    ----------------------------------------
+            |          |          |
+    mvr     |  mvl     |  cop     |  off    
+    ----------------------------------------
+            |          |          |
+    ina     |  inc     |  ing     |  int    
+    ----------------------------------------
+            |          |          |
+    rpy     |  rpu     |  lpy     |  lpu    
 
 
 <figure class="image">
