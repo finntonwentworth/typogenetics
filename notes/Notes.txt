@@ -39,20 +39,14 @@ as in start; calculate_start --> select_start --> execute_instructions; enzymes_
 TO DO: 
 
 Finish Punctuation
-- i think im on the right track 
 
-ISSUE:
- - Glitch when there are no matching bases to bind to: 
-	- automatically selects element one 
-	- should reject instead and end immediately
-	-issue is in conditional in main
 
 Graphics for folding
     perhaps the biggest challenge I think  
 
 Instruction Completion checklist
 
-   In prog.|          |          |
+   DONE    |          |          |
    pun     |  cut     |  del     |  swi    
    ----------------------------------------
            |          |          |
