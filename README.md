@@ -1,8 +1,7 @@
 
-
 ## Instruction Completion checklist
 
-   In prog.|          |          |
+   DONE!   |          |          |
    pun     |  cut     |  del     |  swi    
    ----------------------------------------
            |          |          |
@@ -13,3 +12,16 @@
    ----------------------------------------
            |          |          |
    rpy     |  rpu     |  lpy     |  lpu    
+
+
+<figure class="image">
+
+<div style="text-align: center">
+
+<img src="notes/TypoProgramFlow.drawio.png">
+
+</div>
+
+</figure>
+
+<p align="center">Preliminary Program Flowchart</p>
