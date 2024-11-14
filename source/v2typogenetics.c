@@ -222,7 +222,7 @@ int main(void) {
         printf("\n \r"); 
         printf(" \t\t\t\t\t%s\n",userstrand.dnastrand);        
         //print a line underneath array with ^ pointing at the starting base 
-        char *arrowmarker = current_enzyme_position(startingbaseposition);
+        char *arrowmarker = current_enzyme_position(userstrand.size, startingbaseposition);
         printf(" \t\t\t\t\t%s\n",arrowmarker); 
     }
 

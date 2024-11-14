@@ -352,14 +352,13 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
  *
  * 
 */
-char *current_enzyme_position(int startingbaseposition){
+char *current_enzyme_position(int userstrandsize, int startingbaseposition){
    static char arrowmarker[MAX_STRAND_SIZE];  
-   int i = 0; 
-   while(i < startingbaseposition-1){
+   //clear the array - put spaces in each spot under the array 
+   for(int i = 0; i<=userstrandsize; i++){
        arrowmarker[i] = ' '; 
-       i++;
    }
-   arrowmarker[i] = '^'; 
+   arrowmarker[startingbaseposition-1] = '^'; 
    return arrowmarker; 
 }
 
