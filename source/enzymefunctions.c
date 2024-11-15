@@ -238,18 +238,24 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     } // end of 'while'
     decode.instructiontextsize = j - 3; 
     
+    //size of folding pattern will be k-1 relevant elements 
+    decode.foldingpatternsize = k-1; 
+    
     //Actually, the first element is r if the first instruction is not pun 
     if(decode.foldingpattern[0] != '-'){
         decode.foldingpattern[0] = 'r';
     }
-    //write 'r' to all folding directions after pun instructions 
+
+    //write 'r' to the next non pun folding direction after pun instructions 
     for(int i = 0; i < decode.foldingpatternsize; i++) {
-        if(decode.instruction[i] == 0){
+        if(decode.foldingpattern[i] == '-'){ 
+            //if the previous element is not pun or you're not on the last element of the array
+           if(decode.foldingpattern[i-1] != '-' &&  (i != decode.foldingpatternsize-1)){
             decode.foldingpattern[i+1] = 'r'; 
+           }
         }
     } 
-    //size of folding pattern will be k-1 relevant elements 
-    decode.foldingpatternsize = k-1; 
+
     // return the instructions and folding pattern
     return decode;
 }
@@ -269,23 +275,23 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
 */
 //char calculate_starting_base(char foldingpattern[], int foldingpatternsize, int foldingindex) {
 char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint) {
-    // first element is known to be 'r'
-//    int i = 1;
     // absolute orientation represented by angle theta, 
     int theta = 0;
     // char to store returned starting base 
     char startingbase;  
+    
     // if the folding pattern consists of just pun 
-    /*
-    if(foldingpattern[foldingpatternsize] == '-'){
+    if(foldingpattern[startpoint] == '-'){
         return '-';
     }else {
-    */
+        
+    // first element is known to be 'r' (if it's not '-')
+        startpoint++;
 
     // for each relevant element in the folding pattern
         while(startpoint < endpoint) {
 
-          switch(foldingpattern[i]){
+          switch(foldingpattern[startpoint]){
             case 's':
             //maintain heading, i.e. do not change angle
                theta = theta;
@@ -301,7 +307,7 @@ char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint
             default: 
                break;
            }
-           i++; 
+           startpoint++; 
         }
         // after the while loop, theta will be some multiple of 90 degrees
         // shake off the extra roations 
@@ -318,7 +324,7 @@ char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint
         }
 
         return startingbase;
-   // }
+    }
 }
 
 
@@ -347,7 +353,7 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
        } 
      i++;
    } 
-   //use -1 to mark terminating character since \0 didn't seem to work
+   //use -1 to mark terminating character 
    matchingbaseelements[j] = -1; 
    return matchingbaseelements; 
 }

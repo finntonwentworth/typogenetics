@@ -33,7 +33,7 @@ int main(void) {
   struct strand userstrand; 
   // struct stores decoded information about the strand
   struct decodedstrand userdecode;
-  int i = 0; 
+  int i, startingbaseindex  = 0; 
 
   printf("Enter a strand: \n");
   scanf("%s",userstrand.dnastrand);
@@ -160,18 +160,18 @@ int main(void) {
     }
 
     printf("\n \r");
-    //reset the indent flag 
-    indentflag = 1;
 
     //reset i for later use
     i = 1;
 
-/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
-    // DOES NOT WORK AS IS WITH PUN
-    char startingbase = calculate_starting_base(userdecode.foldingpattern,userdecode.foldingpatternsize,foldingindex); 
-/*---------------------------------------------YOU ARE HERE V------------------------------------------------------------------------------------*/
+    // calculate the starting base based on the folding pattern of the enzyme 
+    char startingbase = calculate_starting_base(userdecode.foldingpattern,startingbaseindex,foldingindex); 
+    //set the next starting point to the
+    startingbaseindex = foldingindex;
+    
+    //print the calcuated starting base to bind to 
     printf(" Starting base to bind to is: '%c'\n",startingbase);
-
+    //if calculate_starting_base returned '-', then inform the user
     if(startingbase == '-'){
         printf("Single AA Amino Acid detected. No binding chosen\n"); 
     }
@@ -219,6 +219,8 @@ int main(void) {
     }
 
 
+    //reset the indent flag 
+    indentflag = 1;
     userdecode.enzymecount--;
     
   }//END OF WHILE
