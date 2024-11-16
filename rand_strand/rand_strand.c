@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
-
+#include <time.h>
 
 /*---FUNCTION---*/
 /*
@@ -24,11 +23,13 @@ int main(int argC, char* argV[]){
    int  baseNumber; 
    char outputStrand[size];
 
-    if(argC == 1 || argC > 2){
-        printf("Invalid input\n");
-        return -1; 
-    }else{
-        for(int i = 0; i<size; i++){
+   srand(time(0)); 
+
+   if(argC <= 1){ 
+       printf("Invalid input\n");
+       return -1; 
+   }else{
+       for(int i = 0; i<size; i++){
             baseNumber = rand() % 4; 
             switch(baseNumber){
                 case 0:
