@@ -83,9 +83,27 @@ int main(void) {
   printf("Total Enzyme(s) folding pattern:\n"); 
   printf(" \t\t\t%s\n", userdecode.foldingpattern);
   printf("\n \r");
-
+   
+  //this variable is just so that I can print from lowest to highest in the while but still decrement
   int maxenzymecount = userdecode.enzymecount;
-  if(maxenzymecount != 1){
+
+  //if all elements of foldingpattern are '-' then exit  
+  while(i < userdecode.enzymecount){
+    //if an element is not '-' then break out of this loop 
+      if(userdecode.foldingpattern[i] != '-'){
+          break; 
+      }
+      i++;
+      if(i == userdecode.enzymecount-1){
+          printf("Strand consists only of A. Enzyme has no behavior. Ending.\n");
+          return -1;
+      }
+  }
+
+  //reset i for later use
+  i = 0; 
+
+  if(maxenzymecount > 1){
       printf("Strand has %d genes that code for %d enzymes\n", maxenzymecount,maxenzymecount); 
   }
   printf("\n \r");
@@ -95,7 +113,6 @@ int main(void) {
   int instructionindex = 0;
   int instructionnumberindex = 0;
   int foldingindex = 0;  
-  int foldingindexsetpoint;
   int indentflag = 1;  
   // while there are still enzymes left to execute
   while(userdecode.enzymecount > 0) {
@@ -166,9 +183,10 @@ int main(void) {
 
     // calculate the starting base based on the folding pattern of the enzyme 
     char startingbase = calculate_starting_base(userdecode.foldingpattern,startingbaseindex,foldingindex); 
+
+
     //set the next starting point to the
     startingbaseindex = foldingindex;
-    
     //print the calcuated starting base to bind to 
     printf(" Starting base to bind to is: '%c'\n",startingbase);
     //if calculate_starting_base returned '-', then inform the user

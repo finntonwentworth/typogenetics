@@ -241,21 +241,24 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     //size of folding pattern will be k-1 relevant elements 
     decode.foldingpatternsize = k-1; 
     
+
     //Actually, the first element is r if the first instruction is not pun 
     if(decode.foldingpattern[0] != '-'){
         decode.foldingpattern[0] = 'r';
     }
 
-    //write 'r' to the next non pun folding direction after pun instructions 
-    for(int i = 0; i < decode.foldingpatternsize; i++) {
-        if(decode.foldingpattern[i] == '-'){ 
-            //if the previous element is not pun or you're not on the last element of the array
-           if(decode.foldingpattern[i-1] != '-' &&  (i != decode.foldingpatternsize-1)){
-            decode.foldingpattern[i+1] = 'r'; 
-           }
+    //if the last element is '-', then subtract off the extra enzyme count we added on 
+    if(decode.foldingpattern[decode.foldingpatternsize-1] == '-'){
+        decode.enzymecount--; 
+    }
+
+  //write 'r' to the next non pun folding direction after pun instructions 
+  //as long as it is not the last element of the the folding pattern
+    for(int i = 0; i <= decode.foldingpatternsize; i++) {
+        if(decode.foldingpattern[i] != '-' && decode.foldingpattern[i-1] == '-' && i != decode.foldingpatternsize){
+            decode.foldingpattern[i] = 'r';
         }
     } 
-
     // return the instructions and folding pattern
     return decode;
 }
