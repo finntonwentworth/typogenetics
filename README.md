@@ -12,7 +12,7 @@ Typogenetics is a simplified model of genetics that demonstrates information sto
 - **Complementary Base:** The pyrimidine that maps to its purine and vise versa
     - A <=> T
     - G <=> C
-- **Duplet:** A adjacent pairs of bases in a single strand. There are 16 possible duplets.
+- **Duplet:** An adjacent pairs of bases in a single strand. There are 16 possible duplets.
 - **Unit:** A single position occupied by a base.
 - **Strand:** A sequence of bases
     - Ex: AAAA, ATTACCA, CATCATCAT
@@ -24,6 +24,12 @@ They are said to be "bound" to the unit they are currently operating on.
 
 ### Amino Acids / Instructions
 
+Amino acids are derived from duplets in a sequence. If a sequence has a spare base at the end with no pair, it does nothing.
+
+This table shows their mapping. The left side is the first base, the top is the second base. The table also says if the amino acid causes the enzyme's tertiary structure to "fold", denotes by the subscript l, r, or s.
+
+[Note from jacob. In regards to the l, r, s. The table has some symmetry. Maybe theres some sort of clever math thing we can do to figure out which direction it should go.]
+
 |     |  A              |  C              |  G              |  T              |
 |---  | ---             | ---             | ---             | ---             |
 |**A**| pun             | cut<sub>s</sub> | del<sub>s</sub> | swi<sub>r</sub> |
@@ -34,21 +40,28 @@ They are said to be "bound" to the unit they are currently operating on.
 
 | Abbreviation | Description | Implementation State |
 | ---          | ---         | ---                  |
-| cut          | Cut Strand(s) | DONE! |
-| del          | Delete a base from strand | |
-| swi          | Switch enzyme to other strand | |
-| mvr          | Move one unit to the right | |
-| mvl          | Move one unit to the left | |
-| cop          | Turn on copy mode | |
-| off          | Turn off copy mode | |
-| ina          | Insert A to the right of this unit | |
-| inc          | Insert C to the right of this unit | |
-| ing          | Insert G to the right of this unit | |
-| int          | Insert T to the right of this unit | |
-| rpy          | Search of the nearest pyrimidine to the right | |
-| rpu          | Search for the nearest purine to the right | |
-| lpy          | Search for the nearest pyrimidine to the left | |
-| lpu          | Search for the nearest purine to the left   | |
+| [cut](#cut)  | Cut Strand(s) | DONE! |
+| [del](#del)  | Delete a base from strand | |
+| [swi](#swi)  | Switch enzyme to other strand | |
+| [mvr](#mvr)  | Move one unit to the right | |
+| [mvl](#mvl)  | Move one unit to the left | |
+| [cop](#cop)  | Turn on copy mode | |
+| [off](#off)  | Turn off copy mode | |
+| [ina](#ina)  | Insert A to the right of this unit | |
+| [inc](#inc)  | Insert C to the right of this unit | |
+| [ing](#ing)  | Insert G to the right of this unit | |
+| [int](#int)  | Insert T to the right of this unit | |
+| [rpy](#rpy)  | Search of the nearest pyrimidine to the right | |
+| [rpu](#rpu)  | Search for the nearest purine to the right | |
+| [lpy](#lpy)  | Search for the nearest pyrimidine to the left | |
+| [lpu](#lpu)  | Search for the nearest purine to the left   | |
+
+#### Cut
+
+Cuts the strand at the unit the enzyme is currently bound to.
+The cut is placed to the right of the bound unit.
+Cut applies to both the "active" strand and the "complementary" strand that
+is being generated from the copy mode.
 
 ### Binding Preference
 
