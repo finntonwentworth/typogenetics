@@ -12,20 +12,6 @@
  * with equal distribution for each element 
  *
  */
- char *rand_strand(int);
-
-
-int main(int argC, char* argV[]){
-
-    //convert second argument into size of output
-    //since first argument is rand_strand 
-    int size = atoi(argV[1]);
-    
-    char outputStrand[size]; 
-    strcpy(outputStrand, rand_strand(size));  
-    printf("%s\n", outputStrand);
-}
-
 char *rand_strand(int size) {
     static char randStrand[MAX_STRAND_SIZE];
 
