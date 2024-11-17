@@ -22,6 +22,9 @@
  * -S 
  *      randomly pick starting base for each enzyme 
  *
+ * -f (--first-matching) 
+ *      enzymes will select the first matching element to their base binding preference. 
+ *
  * (an idea, but won't work if the output is multiple strands/ needs a way to pick one)
  * -i <int> 
  *      <int> # of interations
@@ -30,7 +33,7 @@
 
 int main(int argC, char **argV) {
 
-  int opt,randSelectFlag; 
+  int opt,randSelectFlag,firstSelectFlag; 
   int i, startingbaseindex  = 0; 
   char *userInput;   
   //struct stores user entered strand and it's size  
@@ -38,11 +41,10 @@ int main(int argC, char **argV) {
   // struct stores decoded information about the strand
   struct decodedstrand userdecode;
 
-  while((opt = getopt(argC, argV, "s:r:S")) != -1){
+  while((opt = getopt(argC, argV, "s:r:S:")) != -1){
       switch(opt){
           case 's':
             // if -s was passed char array set userstrand.dnastrand to it's value 
-            //&userstrand.dnastrand = optarg;
             userInput = optarg;
             strcpy(userstrand.dnastrand, userInput); 
             break;
@@ -51,10 +53,18 @@ int main(int argC, char **argV) {
             strcpy(userstrand.dnastrand, userInput); 
             break;
           case 'S':
-            randSelectFlag = 1;
+            userInput = optarg;
+            if(strcmp(userInput, "f") == 0){
+                firstSelectFlag = 1; 
+            }else if(strcmp(userInput, "r") == 0){
+                randSelectFlag = 1;
+            }else{
+                fprintf(stderr, "Invalid argument passed to -S\n");
+                return -1;
+            }
             break;
           case '?': 
-            if(optopt == 's' || optopt == 'r'){
+            if(optopt == 's' || optopt == 'r' || optopt == 'S'){
               fprintf(stderr,"Option -%c requires an argument. \n",optopt);
               return -1;
               }
@@ -62,14 +72,19 @@ int main(int argC, char **argV) {
         }
   }
 
-
+  printf("TEST PRINT: firstSelectFlag = %d\n", firstSelectFlag);
+  printf("TEST PRINT: randSelectFlag = %d\n", randSelectFlag);
 
   // Calculate the number of user inputed bases
   userstrand.size = relevant_elements(userstrand.dnastrand); 
+  if(userstrand.size == 0){
+      fprintf(stderr, "Entered Empty Strand. Exiting\n"); 
+      return -2; 
+  }
   //Check that the user's strand is valid/ 'well formed'
   if(valid_strand(userstrand.dnastrand, userstrand.size)!=1){
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
-        return -1;
+        return -2;
   }
 
   printf(" Your strand is: %s \n \r", userstrand.dnastrand);
@@ -266,4 +281,9 @@ int main(int argC, char **argV) {
     userdecode.enzymecount--;
     
   }//END OF WHILE
+   printf("All enzymes executed.\n");
+   printf("Final Strand(s):\n");
+   printf(" \t%s\n", userstrand.dnastrand);
+   printf("Exiting Typogenetics\n");
+   return 0; 
 }
