@@ -10,11 +10,11 @@ The program follows a basic flow:
 
 The user provides an arbitrarily long input string, known as a strand,  consisting only of the four bases. Each pair of bases will 'encode' for an instruction, which can modify the original input strand.
 The list of instructions encoded for form a structure known as an enzyme. This enzyme will then start on a specific element of the user string, and begin executing the instructions in the order that 
-they were encoded for. This continues until one of the stop conditions is met: either all instructions have been executed, or the enzyme 'falls' off the end of the strand. The program will then output 
+they were encoded for. This continues until one of the stop conditions is met: either all instructions have been executed, or the enzyme 'falls' off one end of the strand. The program will then output 
 the final modified strand or strands that were produced by the effects of the instructions performed. These strands can then be inputted back into the program to begin the cycle again. 
 
 No true goal or end condition exists for the development of strands. Experiment to see certain patterns emerge from the different strand structures. 
-One goal set out by Hofstadter in the spirit of GEB is to create a self replicating strand, that is one that reproduces itself after any number of cycles through the encoding and execution process,
+One goal set out by Hofstadter in the spirit of GEB is to create a self replicating strand, that is to say,  one that reproduces itself after any number of cycles through the encoding and execution process,
 alongside any other output strands. 
 
 ## Definitions
@@ -88,7 +88,7 @@ The cut is placed to the right of the bound unit.
 Cut applies to both the "active" strand and the "complementary" strand that
 is being generated from the copy mode.
 
-### Binding Preference
+## Binding Preference
 
 Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
 
@@ -103,11 +103,13 @@ Binding preference is determined by the relative orientation of the first and la
 A number of ambiguities present in the original program are given defined behavior in this rendition of the system, listed below. 
 
 **Binding Preference of Single Amino Acid Enzymes**
+
 Since the binding preference of an enzyme is determined by the orientation of its first and last element, enzymes which consist of only a single instruction don't have a clearly defined 
 rule for determining their starting base binding preference. We have elected to follow the fairly intuitive convention of having this class of enzymes start on 'A', counting their only element
 as both the first and last fold. With both directions facing right, it follows that the enzyme would bind to base 'A' to begin with. 
 
 **Starting Base Position Preference of Enzymes**
+
 Hofstadter also fails to define which element the enzyme prefers to bind to when given a selection of options. Examples in the book show the first matching element most commonly selected, but 
 this is not an explicitly defined rule. As such, the user is given a selection of bases to choose from when there are multiple matching bases in the strand. The user may also pass 2 parameters to
 the program, --Select-random (-s) and --first-matching (-f) which will have enzymes either randomly choose a starting base to begin on each time, or the first matching element of their starting base 
