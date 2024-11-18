@@ -29,7 +29,6 @@ int main(void) {
     // Encode the bases
     int i = 0;
     while (i < sizeof(strand) && strand[i] != '\0') {
-        printf("\nLoop: %i\n\tOld: %c\n", i, strand[i]);
         switch (strand[i]) {
             case 'A':
                 strand[i] = bases[0];
@@ -47,22 +46,11 @@ int main(void) {
                 printf("Unrecognized base at position %d\n\r", i);
                 break;
         }
-        printf("\tNew: ");
-        printCharAsBits(strand[i]);
         i++;
     }
 
-    printf("\nEncoded:\n");
+    printf("\n\nEncoded:\n");
     printCharArrAsBits(strand);
-
-    unsigned char duplet1 = strand[0] | strand[1];
-    unsigned char duplet2 = strand[2] | strand[3];
-
-    printf("\nDuplet 1:\n\t- %u\n\t- ", duplet1);
-    printCharAsBits(duplet1);
-    printf("\nDuplet 2: \n\t- %u\n\t", duplet2);
-    printCharAsBits(duplet2);
-    printf("\n");
 
     unsigned char aminoAcids[sizeof(strand) / 2 ];
 
@@ -70,7 +58,7 @@ int main(void) {
         aminoAcids[i] = strand[i*2] | strand[(i*2)+1];
     }
 
-    printf("Instructions:\n");
+    printf("\nInstructions:\n");
     printCharArrAsBits(aminoAcids);
 }
 
