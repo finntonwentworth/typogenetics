@@ -84,6 +84,13 @@ int main(int argC, char **argV) {
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
         return -2;
   }
+  printf(" User Options Selected: \n");
+  if(firstSelectFlag == 1){
+      printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
+  }else if(randSelectFlag == 1){
+      printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
+  }
+  printf("\n");
 
   printf(" Your strand is: %s \n \r", userstrand.dnastrand);
   printf(" Initial strand is %d bases long \n \r", userstrand.size); 
