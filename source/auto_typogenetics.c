@@ -72,8 +72,6 @@ int main(int argC, char **argV) {
         }
   }
 
-  printf("TEST PRINT: firstSelectFlag = %d\n", firstSelectFlag);
-  printf("TEST PRINT: randSelectFlag = %d\n", randSelectFlag);
 
   // Calculate the number of user inputed bases
   userstrand.size = relevant_elements(userstrand.dnastrand); 
