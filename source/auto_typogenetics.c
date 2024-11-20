@@ -3,15 +3,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <unistd.h>
+#include <time.h>
 #include "enzymefunctions.h"
 
-#include <unistd.h>
 
 /* PARAMETERS LIST
  *
  * MANDATORY: 
  * -s (--strand)  <char strand[]> 
- *     Use inputted strand[] as input or generate random strand with <int> # of bases
+ *     Use inputted strand[] as input 
  *
  * OR 
  *
@@ -41,8 +42,28 @@ int main(int argC, char **argV) {
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
-  while((opt = getopt(argC, argV, "s:r:S:")) != -1){
+  while((opt = getopt(argC, argV, "hs:r:S:")) != -1){
       switch(opt){
+          case 'h':
+              printf("* PARAMETERS LIST                                                                      \n");
+              printf("*                                                                                      \n");
+              printf("* MANDATORY:                                                                           \n"); 
+              printf("* -s (--strand)  <char strand[]>                                                       \n");
+              printf("*     Use inputted strand[] as input                                                   \n");
+              printf("*                                                                                      \n");
+              printf("* OR                                                                                   \n");
+              printf("*                                                                                      \n");
+              printf("* -r (--random)  <int>                                                                 \n");
+              printf("*      Generate a random strand with <int> bases (int - 1 elements)                    \n");
+              printf("*                                                                                      \n");
+              printf("* OPTIONAL                                                                             \n"); 
+              printf("* -S                                                                                   \n");
+              printf("*      randomly pick starting base for each enzyme                                     \n");
+              printf("*                                                                                      \n");
+              printf("* -f (--first-matching)                                                                \n");
+              printf("*      enzymes will select the first matching element to their base binding preference.\n");
+              printf("*\n");
+              return 1;  
           case 's':
             // if -s was passed char array set userStrand.dnaStrand to it's value 
             userInput = optarg;
@@ -58,6 +79,7 @@ int main(int argC, char **argV) {
                 firstSelectFlag = 1; 
             }else if(strcmp(userInput, "r") == 0){
                 randSelectFlag = 1;
+                srand(time(0));
             }else{
                 fprintf(stderr, "Invalid argument passed to -S\n");
                 return -1;
@@ -84,6 +106,7 @@ int main(int argC, char **argV) {
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
         return -2;
   }
+  printf("\n");
   printf(" User Options Selected: \n");
   if(firstSelectFlag == 1){
       printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
@@ -138,7 +161,7 @@ int main(int argC, char **argV) {
           break; 
       }
       i++;
-      if(i == userDecode.enzymeCount-1){
+      if(i == userDecode.enzymeCount-1 && i != 1){
           printf("Strand consists only of A. Enzyme has no behavior. Ending.\n");
           return -1;
       }
@@ -256,19 +279,31 @@ int main(int argC, char **argV) {
             printf(" \t\t\tBase %d\n",matchingElements[i]+1);
             i++;
         }
-        // if there is more than one option of bases:
-        if(i != 1){
-            // prompt the user to select one
-            printf("Please enter a base number to begin acting on: \n \r"); 
-            scanf("%d", &startingBasePosition);
-            //check that the entered value matches one of the elements of matchingElements
-            //and correct for index starting at 0 instead of 1
-            while(userStrand.dnaStrand[(startingBasePosition-1)] != startingBase){
-                printf("Sorry, enter a valid base number! \n");
+        // if there is more than one option of bases and the first select flag is not enabled:
+        if(i != 1 && firstSelectFlag !=1){
+          //if random select was enabled
+            if(randSelectFlag == 1){
+               //randomly select an option 
+               printf("TEST PRINT - i = %d\n", i);
+               printf("Randomly selecting an available base\n"); 
+               startingBasePosition = matchingElements[(rand() % i)]+1; 
+            }else{
+                // prompt the user to select one
+                printf("Please enter a base number to begin acting on: \n \r"); 
                 scanf("%d", &startingBasePosition);
+                //check that the entered value matches one of the elements of matchingElements
+                //and correct for index starting at 0 instead of 1
+                while(userStrand.dnaStrand[(startingBasePosition-1)] != startingBase){
+                    printf("Sorry, enter a valid base number! \n");
+                    scanf("%d", &startingBasePosition);
+                }
             }
         } else{
-            // automatically select the only choice
+          //if first select was enabled
+            if(firstSelectFlag == 1){
+                printf("Selecting the first matching element\n"); 
+            }
+            // automatically select the only/first choice
             startingBasePosition = matchingElements[0]+1;
         }
         printf("\n \r"); 
