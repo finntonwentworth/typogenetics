@@ -1,16 +1,14 @@
-#include <stdio.h>
-#include <string.h>
 
 
 #define MAX_STRAND_SIZE     1000
 
-struct decodedstrand {
+struct decodedStrand {
     int  instruction[MAX_STRAND_SIZE];
-    char instructiontext[3*MAX_STRAND_SIZE];
-    int  instructiontextsize; 
-    char foldingpattern[MAX_STRAND_SIZE];
-    int  foldingpatternsize; 
-    int  enzymecount; 
+    char instructionText[3*MAX_STRAND_SIZE];
+    int  instructionTextSize; 
+    char foldingPattern[MAX_STRAND_SIZE];
+    int  foldingPatternSize; 
+    int  enzymeCount; 
 };
 
 /* ------ FUNCTION ------*/ 
@@ -64,11 +62,11 @@ int valid_strand(char strand[], int size) {
  *
  * Accepts: User String, Length of user string's relevant elements  
  * Returns: 
- * decodedstrand struct 
+ * decodedStrand struct 
 */
 
-struct decodedstrand get_instructions_and_folding(char strand[], int size) {
-    struct decodedstrand decode = {.enzymecount = 1}; 
+struct decodedStrand get_instructions_and_folding(char strand[], int size) {
+    struct decodedStrand decode = {.enzymeCount = 1}; 
     int i = 0, k = 0, j = 0; 
      
     char firstbase,secondbase; 
@@ -84,146 +82,146 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
       case 'A':
         switch(secondbase){
           case 'A':
-            decode.instructiontext[j]   = 'p';
-            decode.instructiontext[j+1] = 'u';
-            decode.instructiontext[j+2] = 'n';
+            decode.instructionText[j]   = 'p';
+            decode.instructionText[j+1] = 'u';
+            decode.instructionText[j+2] = 'n';
             decode.instruction[k] = 0; 
             // inform that there is more than one enzyme encoded by this strand
-            decode.enzymecount++; 
+            decode.enzymeCount++; 
             //insert dash into folding pattern 
-            decode.foldingpattern[k] = '-';
+            decode.foldingPattern[k] = '-';
             break;
           case 'C':
-            decode.instructiontext[j]   = 'c';
-            decode.instructiontext[j+1] = 'u';
-            decode.instructiontext[j+2] = 't';
+            decode.instructionText[j]   = 'c';
+            decode.instructionText[j+1] = 'u';
+            decode.instructionText[j+2] = 't';
             decode.instruction[k] = 1; 
-            decode.foldingpattern[k] = 's'; 
+            decode.foldingPattern[k] = 's'; 
             break;
           case 'G':
-            decode.instructiontext[j]   = 'd';
-            decode.instructiontext[j+1] = 'e';
-            decode.instructiontext[j+2] = 'l';
+            decode.instructionText[j]   = 'd';
+            decode.instructionText[j+1] = 'e';
+            decode.instructionText[j+2] = 'l';
             decode.instruction[k] = 2; 
-            decode.foldingpattern[k] = 's'; 
+            decode.foldingPattern[k] = 's'; 
             break;
           case 'T':
-            decode.instructiontext[j]   = 's';
-            decode.instructiontext[j+1] = 'w';
-            decode.instructiontext[j+2] = 'i';
+            decode.instructionText[j]   = 's';
+            decode.instructionText[j+1] = 'w';
+            decode.instructionText[j+2] = 'i';
             decode.instruction[k] = 3; 
-            decode.foldingpattern[k] = 'r'; 
+            decode.foldingPattern[k] = 'r'; 
             break;
         //if the default case is reached, 
         //then secondbase must be the null character
-        //so set the last element foldingpattern to the null character
+        //so set the last element foldingPattern to the null character
           default:
-            decode.foldingpattern[k] = '\0';
+            decode.foldingPattern[k] = '\0';
             break;
         }
         break;
       case 'C':
         switch(secondbase){
           case 'A':
-            decode.instructiontext[j]   = 'm';
-            decode.instructiontext[j+1] = 'v';
-            decode.instructiontext[j+2] = 'r';
+            decode.instructionText[j]   = 'm';
+            decode.instructionText[j+1] = 'v';
+            decode.instructionText[j+2] = 'r';
             decode.instruction[k] = 4; 
-            decode.foldingpattern[k] = 's'; 
+            decode.foldingPattern[k] = 's'; 
             break;
           case 'C':
-            decode.instructiontext[j]   = 'm';
-            decode.instructiontext[j+1] = 'v';
-            decode.instructiontext[j+2] = 'l';
+            decode.instructionText[j]   = 'm';
+            decode.instructionText[j+1] = 'v';
+            decode.instructionText[j+2] = 'l';
             decode.instruction[k] = 5; 
-            decode.foldingpattern[k] = 's'; 
+            decode.foldingPattern[k] = 's'; 
             break;
           case 'G':
-            decode.instructiontext[j]   = 'c';
-            decode.instructiontext[j+1] = 'o';
-            decode.instructiontext[j+2] = 'p';
+            decode.instructionText[j]   = 'c';
+            decode.instructionText[j+1] = 'o';
+            decode.instructionText[j+2] = 'p';
             decode.instruction[k] = 6; 
-            decode.foldingpattern[k] = 'r'; 
+            decode.foldingPattern[k] = 'r'; 
             break;
           case 'T':
-            decode.instructiontext[j]   = 'o';
-            decode.instructiontext[j+1] = 'f';
-            decode.instructiontext[j+2] = 'f';
+            decode.instructionText[j]   = 'o';
+            decode.instructionText[j+1] = 'f';
+            decode.instructionText[j+2] = 'f';
             decode.instruction[k] = 7; 
-            decode.foldingpattern[k] = 'l'; 
+            decode.foldingPattern[k] = 'l'; 
             break;
           default:
-            decode.foldingpattern[k] = '\0';
+            decode.foldingPattern[k] = '\0';
             break;
         }
       break;
       case 'G':
         switch(secondbase){
           case 'A':
-            decode.instructiontext[j]   = 'i';
-            decode.instructiontext[j+1] = 'n';
-            decode.instructiontext[j+2] = 'a';
+            decode.instructionText[j]   = 'i';
+            decode.instructionText[j+1] = 'n';
+            decode.instructionText[j+2] = 'a';
             decode.instruction[k] = 8; 
-            decode.foldingpattern[k] = 's'; 
+            decode.foldingPattern[k] = 's'; 
             break;
           case 'C':
-            decode.instructiontext[j]   = 'i';
-            decode.instructiontext[j+1] = 'n';
-            decode.instructiontext[j+2] = 'c';
+            decode.instructionText[j]   = 'i';
+            decode.instructionText[j+1] = 'n';
+            decode.instructionText[j+2] = 'c';
             decode.instruction[k] = 9; 
-            decode.foldingpattern[k] = 'r'; 
+            decode.foldingPattern[k] = 'r'; 
             break;
           case 'G':
-            decode.instructiontext[j]   = 'i';
-            decode.instructiontext[j+1] = 'n';
-            decode.instructiontext[j+2] = 'g';
+            decode.instructionText[j]   = 'i';
+            decode.instructionText[j+1] = 'n';
+            decode.instructionText[j+2] = 'g';
             decode.instruction[k] = 10; 
-            decode.foldingpattern[k] = 'r'; 
+            decode.foldingPattern[k] = 'r'; 
             break;
           case 'T':
-            decode.instructiontext[j]   = 'i';
-            decode.instructiontext[j+1] = 'n';
-            decode.instructiontext[j+2] = 't';
+            decode.instructionText[j]   = 'i';
+            decode.instructionText[j+1] = 'n';
+            decode.instructionText[j+2] = 't';
             decode.instruction[k] = 11; 
-            decode.foldingpattern[k] = 'l'; 
+            decode.foldingPattern[k] = 'l'; 
             break;
           default:
-            decode.foldingpattern[k] = '\0';
+            decode.foldingPattern[k] = '\0';
             break;
         }
       break;
       case 'T':
         switch(secondbase){
           case 'A':
-            decode.instructiontext[j]   = 'r';
-            decode.instructiontext[j+1] = 'p';
-            decode.instructiontext[j+2] = 'y';
+            decode.instructionText[j]   = 'r';
+            decode.instructionText[j+1] = 'p';
+            decode.instructionText[j+2] = 'y';
             decode.instruction[k] = 12; 
-            decode.foldingpattern[k] = 'r'; 
+            decode.foldingPattern[k] = 'r'; 
             break;
           case 'C':
-            decode.instructiontext[j]   = 'r';
-            decode.instructiontext[j+1] = 'p';
-            decode.instructiontext[j+2] = 'u';
+            decode.instructionText[j]   = 'r';
+            decode.instructionText[j+1] = 'p';
+            decode.instructionText[j+2] = 'u';
             decode.instruction[k] = 13;
-            decode.foldingpattern[k] = 'l'; 
+            decode.foldingPattern[k] = 'l'; 
             break;
           case 'G':
-            decode.instructiontext[j]   = 'l';
-            decode.instructiontext[j+1] = 'p';
-            decode.instructiontext[j+2] = 'y';
+            decode.instructionText[j]   = 'l';
+            decode.instructionText[j+1] = 'p';
+            decode.instructionText[j+2] = 'y';
             decode.instruction[k] = 14;
-            decode.foldingpattern[k] = 'l'; 
+            decode.foldingPattern[k] = 'l'; 
             break;
           case 'T':
-            decode.instructiontext[j]   = 'l';
-            decode.instructiontext[j+1] = 'p';
-            decode.instructiontext[j+2] = 'u';
+            decode.instructionText[j]   = 'l';
+            decode.instructionText[j+1] = 'p';
+            decode.instructionText[j+2] = 'u';
             decode.instruction[k] = 15;
-            decode.foldingpattern[k] = 'l'; 
+            decode.foldingPattern[k] = 'l'; 
             break;
           default:
-            decode.foldingpattern[k] = '\0';
+            decode.foldingPattern[k] = '\0';
             break;
         }
         break;
@@ -236,27 +234,27 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
     k++; 
 
     } // end of 'while'
-    decode.instructiontextsize = j - 3; 
+    decode.instructionTextSize = j - 3; 
     
     //size of folding pattern will be k-1 relevant elements 
-    decode.foldingpatternsize = k-1; 
+    decode.foldingPatternSize = k-1; 
     
 
     //Actually, the first element is r if the first instruction is not pun 
-    if(decode.foldingpattern[0] != '-'){
-        decode.foldingpattern[0] = 'r';
+    if(decode.foldingPattern[0] != '-'){
+        decode.foldingPattern[0] = 'r';
     }
 
     //if the last element is '-', then subtract off the extra enzyme count we added on 
-    if(decode.foldingpattern[decode.foldingpatternsize-1] == '-'){
-        decode.enzymecount--; 
+    if(decode.foldingPattern[decode.foldingPatternSize-1] == '-'){
+        decode.enzymeCount--; 
     }
 
   //write 'r' to the next non pun folding direction after pun instructions 
   //as long as it is not the last element of the the folding pattern
-    for(int i = 0; i <= decode.foldingpatternsize; i++) {
-        if(decode.foldingpattern[i] != '-' && decode.foldingpattern[i-1] == '-' && i != decode.foldingpatternsize){
-            decode.foldingpattern[i] = 'r';
+    for(int i = 0; i <= decode.foldingPatternSize; i++) {
+        if(decode.foldingPattern[i] != '-' && decode.foldingPattern[i-1] == '-' && i != decode.foldingPatternSize){
+            decode.foldingPattern[i] = 'r';
         }
     } 
     // return the instructions and folding pattern
@@ -276,15 +274,14 @@ struct decodedstrand get_instructions_and_folding(char strand[], int size) {
  * or maybe that should be the role of another function
  *
 */
-//char calculate_starting_base(char foldingpattern[], int foldingpatternsize, int foldingindex) {
-char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint) {
+char calculate_starting_base(char foldingPattern[], int startpoint, int endpoint) {
     // absolute orientation represented by angle theta, 
     int theta = 0;
     // char to store returned starting base 
     char startingbase;  
     
     // if the folding pattern consists of just pun 
-    if(foldingpattern[startpoint] == '-'){
+    if(foldingPattern[startpoint] == '-'){
         return '-';
     }else {
         
@@ -294,10 +291,9 @@ char calculate_starting_base(char foldingpattern[], int startpoint, int endpoint
     // for each relevant element in the folding pattern
         while(startpoint < endpoint) {
 
-          switch(foldingpattern[startpoint]){
+          switch(foldingPattern[startpoint]){
             case 's':
             //maintain heading, i.e. do not change angle
-               theta = theta;
                break;
             case 'r':
             //perform a CW rotation of 90 degrees    
