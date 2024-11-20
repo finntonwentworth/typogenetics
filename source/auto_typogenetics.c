@@ -36,6 +36,7 @@ int main(int argC, char **argV) {
 
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
+  int outputStrandCount = 1; 
   char *userInput;   
   //struct stores user entered strand and it's size  
   struct strand userStrand; 
@@ -114,6 +115,9 @@ int main(int argC, char **argV) {
       printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
   }
   printf("\n");
+
+  // Copy the initial strand into the 0th element of the output strand 2-D array
+  strcpy(userStrand.outputStrand[0], userStrand.dnaStrand); 
 
   printf(" Your strand is: %s \n \r", userStrand.dnaStrand);
   printf(" Initial strand is %d bases long \n \r", userStrand.size); 
@@ -322,8 +326,12 @@ int main(int argC, char **argV) {
     
   }//END OF WHILE
    printf("All enzymes executed.\n");
+   printf("Initial Strand:\n");
+   printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
-   printf(" \t%s\n", userStrand.dnaStrand);
+   for(int i = 1; i <= outputStrandCount; i++){
+       printf(" \t%s\n", userStrand.outputStrand[i]);
+   }
    printf("Exiting Typogenetics\n");
    return 0; 
 }

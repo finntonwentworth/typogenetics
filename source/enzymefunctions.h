@@ -6,6 +6,7 @@
 struct strand {
   char dnaStrand[MAX_STRAND_SIZE]; 
   int  size; 
+  char outputStrand[MAX_STRAND_SIZE][MAX_STRAND_SIZE]; 
 };
 
 /*--- Enzyme Function ---*/
