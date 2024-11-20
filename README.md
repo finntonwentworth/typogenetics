@@ -70,7 +70,9 @@ This table shows their mapping. The left side is the first base, the top is the 
 | [lpy](#lpy)  | Search for the nearest pyrimidine to the left | |
 | [lpu](#lpu)  | Search for the nearest purine to the left   | |
 
-#### Pun
+#### pun
+
+Not an Amino acid/instruction, but deserves special clarification. 
 
 Punctuates the strand, allowing one strand to encode for two or more separate enzymes. 
 When determining the enzymes encoded for by a strand, the prescence of the pun instruction 
@@ -81,14 +83,92 @@ as a 'gene', so one strand may contain one or more genes that encode for the sam
 Pun has no folding direction, and therefore does not contribute to the folding pattern of the enzyme, 
 as well as no additional effects on the enzyme past encoding. 
  
-#### Cut
+#### cut
 
 Cuts the strand at the unit the enzyme is currently bound to.
 The cut is placed to the right of the bound unit.
 Cut applies to both the "active" strand and the "complementary" strand that
 is being generated from the copy mode.
 
+#### del 
+
+Deletes the base that the enzyme is attached to, and then the enzyme moves to the right. 
+Only pertains to the active strand, *not* the complementary strand. 
+
+#### swi
+
+Switches the enzyme from the "active" strand to the "complementary" strand. Since the complementary strand
+is represented upside-down above the active strand (see [cop](#cop)), switching strands seems to reverse the order 
+of the bases in the now active strand. If a switch occurs and there are no bases in the complementary strand above 
+where the enzyme is acting, the enzyme falls off and ends acting.  
+
+#### mvr
+
+Moves the enzyme one base to the right. If the enzyme moves off the end of the strand or into a gap with no bases, then it finishes executing
+even if it had more instructions left to execute. 
+
+#### mvl
+
+Moves the enzyme one base to the left. If the enzyme moves off the front of the strand or into a gap with no bases, then it finishes executing
+even if it had more instructions left to execute, same as in mvr. 
+
+#### cop
+
+Places the complement of the current base into the complementary strand, and enters "copy mode." Each base has its corresponding
+complement, known as the complementary base pairin (see [Definitions](#Definitions)). Copy mode remains in effect until an off 
+instruction is reached (or the end of the strand/enzyme). While in copy mode, any base that is "touched" by the enzyme will 
+have its complementary base placed above it in the complementary strand. When bases are copied into the complementary 
+strand, they are placed *upside-down* above the element copied, so that the strands are mirrored to each other. Copy mode applies 
+after a move, so that the movement off of a strand or into a gap between bases still preserves the behavior of the strand ending normally.  
+While in copy mode, additional cop instructions do nothing. 
+
+#### off
+
+Turns off copy mode. If copy mode is not enabled, then this does nothing. 
+
+#### ina
+
+Inserts an 'A' base into the position to the right of the enzyme, and if copy mode is on, then the base's complement (T) is placed above into
+the complementary strand. 
+
+#### inc
+
+Inserts an 'C' base into the position to the right of the enzyme, and if copy mode is on, then the base's complement (G) is placed above into
+the complementary strand. 
+
+#### int
+
+Inserts an 'T' base into the position to the right of the enzyme, and if copy mode is on, then the base's complement (A) is placed above into
+the complementary strand. 
+
+#### ing
+
+Inserts an 'G' base into the position to the right of the enzyme, and if copy mode is on, then the base's complement (C) is placed above into
+the complementary strand. 
+
+#### rpy
+
+Moves to the nearest pyrine to the right of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next pyrine 
+will be copied into the complementary strand. If there are no pyrines to the right of the current base, this does nothing.
+
+#### rpu
+
+Moves to the nearest purine to the right of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next purine 
+will be copied into the complementary strand. If there are no purines to the right of the current base, this does nothing.
+
+#### lpy
+
+Moves to the nearest pyrine to the left of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next pyrine 
+will be copied into the complementary strand. If there are no pyrines to the left of the current base, this does nothing.
+
+#### lpu
+
+Moves to the nearest purine to the left of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next purine 
+will be copied into the complementary strand. If there are no purines to the left of the current base, this does nothing.
+
+
 ## Binding Preference
+
 
 Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
 
@@ -98,6 +178,7 @@ Binding preference is determined by the relative orientation of the first and la
 | &rarr; | &uarr; | C |
 | &rarr; | &darr; | G |
 | &rarr; | &larr; | T |
+
 
 ### Authors' Note: 
 A number of ambiguities present in the original program are given defined behavior in this rendition of the system, listed below. 
