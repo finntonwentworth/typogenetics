@@ -378,17 +378,3 @@ char *current_enzyme_position(int userstrandsize, int startingbaseposition){
    return arrowmarker; 
 }
 
-/* ------ FUNCTION ------*/ 
-/*
- * Function serves to call any of the "15" enzyme functions provided an instruction number 
- *
- * Accepts:  
- * int instruction number   
- * Returns: 
- * pointer to call function? i think that is how it works  
- * 
-*/
-// i think this is supposed to accept a pointer to a function
-void call_instruction(int instructionnumber) {
-
-}

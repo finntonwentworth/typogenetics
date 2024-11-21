@@ -288,7 +288,6 @@ int main(int argC, char **argV) {
           //if random select was enabled
             if(randSelectFlag == 1){
                //randomly select an option 
-               printf("TEST PRINT - i = %d\n", i);
                printf("Randomly selecting an available base\n"); 
                startingBasePosition = matchingElements[(rand() % i)]+1; 
             }else{
