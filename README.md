@@ -88,12 +88,12 @@ as well as no additional effects on the enzyme past encoding.
 Cuts the strand at the unit the enzyme is currently bound to.
 The cut is placed to the right of the bound unit.
 Cut applies to both the "active" strand and the "complementary" strand that
-is being generated from the copy mode.
+is being generated from the copy mode, regardless of if copy mode is enabled or not. 
 
 #### del 
 
 Deletes the base that the enzyme is attached to, and then the enzyme moves to the right. 
-Only pertains to the active strand, *not* the complementary strand. 
+Only pertains to the active strand, *not* the complementary strand, regardless of if copy mode is on or not. 
 
 #### swi
 
@@ -148,22 +148,22 @@ the complementary strand.
 
 #### rpy
 
-Moves to the nearest pyrine to the right of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next pyrine 
+Moves to the nearest pyrine (See [Definitions](#Definitions)) to the right of this unit. With copy mode enabled, each base touched while sliding to the next pyrine 
 will be copied into the complementary strand. If there are no pyrines to the right of the current base, this does nothing.
 
 #### rpu
 
-Moves to the nearest purine to the right of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next purine 
+Moves to the nearest purine (See [Definitions](#Definitions)) to the right of this unit. With copy mode enabled, each base touched while sliding to the next purine 
 will be copied into the complementary strand. If there are no purines to the right of the current base, this does nothing.
 
 #### lpy
 
-Moves to the nearest pyrine to the left of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next pyrine 
+Moves to the nearest pyrine (See [Definitions](#Definitions)) to the left of this unit. With copy mode enabled, each base touched while sliding to the next pyrine 
 will be copied into the complementary strand. If there are no pyrines to the left of the current base, this does nothing.
 
 #### lpu
 
-Moves to the nearest purine to the left of this unit. (See [Definitions](#Definitions)). With copy mode enable, each base touched while sliding to the next purine 
+Moves to the nearest purine (See [Definitions](#Definitions)) to the left of this unit. With copy mode enabled, each base touched while sliding to the next purine 
 will be copied into the complementary strand. If there are no purines to the left of the current base, this does nothing.
 
 
@@ -196,6 +196,16 @@ this is not an explicitly defined rule. As such, the user is given a selection o
 the program, --Select-random (-s) and --first-matching (-f) which will have enzymes either randomly choose a starting base to begin on each time, or the first matching element of their starting base 
 preference. 
 
+**Strands with Multiple Genes**
+
+With no demonstrations of punctuated strands, it is unclear if enzymes produced from a gene act only on the gene they were encoded by, or on the whole strand containing the genes. Since AA/pun 'punctuates'
+a strand and does not separate it into multiple strands, it seems intuitive that an enzyme would bind to any preferred element along the entire strand, not just elements in that enzyme's gene. The next enzyme or 
+enzymes would act on the strand following the modifications performed by the previous enzyme, maintaining their binding preference determined from their specific encoding. Once all enzymes that were encoded for by 
+the original strand have acted, then the strand is outputted. 
+
+**Behavior of lpy, lpu, rpy, and rpu**
+
+ 
 <figure class="image">
 
 <div style="text-align: center">
