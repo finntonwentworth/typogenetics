@@ -1,20 +1,49 @@
 
+#define MAX_STRAND_SIZE         1000
+
+struct strand {
+  char dnaStrand[MAX_STRAND_SIZE]; 
+  int  size; 
+  char outputStrand[MAX_STRAND_SIZE][MAX_STRAND_SIZE]; 
+};
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs cut amino acid functionality 
+ * Cuts the strand to the right of the current acting position
+ * 
+ *
+ * Accepts:  
+ * current enzyme position,
+ * current form of dna strand 
+ * Returns: 
+ * struct strand 
+ * so that it can write to the output strand 
+ * 
+*/
+
+struct strand cut_acid(int currentEnzymePosition, struct strand userStrand){
+        
+
+    return userStrand; 
+}
+
 /* ------ FUNCTION ------*/ 
 /*
  * Function serves to call any of the "15" enzyme functions provided an instruction number 
+ * Calls function 
  *
  * Accepts:  
  * int instruction number   
+ * This will need to accept the strand string as well i think 
  * Returns: 
- * pointer to call function? i think that is how it works  
+ * nothing
+ * and return the strand struct to easily returned the changed string
  * 
 */
-// i think this is supposed to return a pointer to a function
-void call_instruction(int instructionnumber) {
+struct strand call_instruction(int instructionnumber, struct strand userStrand) {
     switch (instructionnumber){
-        case 0:
-            break;
         case 1:
+            cut_acid();
             break;
         case 2:
             break;
@@ -48,3 +77,4 @@ void call_instruction(int instructionnumber) {
             break;
     }
 }
+

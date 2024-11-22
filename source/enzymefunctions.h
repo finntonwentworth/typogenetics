@@ -2,13 +2,6 @@
 #include "rand_strand_function.c"
 #include "amino_acids.c"
 
-#define MAX_STRAND_SIZE     1000
-
-struct strand {
-  char dnaStrand[MAX_STRAND_SIZE]; 
-  int  size; 
-  char outputStrand[MAX_STRAND_SIZE][MAX_STRAND_SIZE]; 
-};
 
 /*--- Enzyme Function ---*/
 int relevant_elements(char[]);
@@ -22,4 +15,19 @@ char *current_enzyme_position(int, int);
 char *rand_strand(int);
 
 /*--- Amino Acids---*/
-void call_instruction(int);
+struct strand cut_acid(int, struct strand); 
+void del_acid(void); 
+void swi_acid(void); 
+void mvr_acid(void);
+void mvl_acid(void);
+void cop_acid(void);
+void off_acid(void);
+void ina_acid(void);
+void inc_acid(void);
+void ing_acid(void);
+void int_acid(void);
+void rpy_acid(void);
+void rpu_acid(void);
+void lpu_acid(void);
+void lpy_acid(void);
+struct strand call_instructions(int, struct strand); 
