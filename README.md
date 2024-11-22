@@ -119,7 +119,7 @@ complement, known as the complementary base pairing (see [Definitions](#Definiti
 instruction is reached (or the end of the strand/enzyme). While in copy mode, any base that is "touched" by the enzyme will 
 have its complementary base placed above it in the complementary strand. When bases are copied into the complementary 
 strand, they are placed *upside-down* above the element copied, so that the strands are mirrored to each other. Copy mode applies 
-after a move, so that the movement off of a strand or into a gap between bases still preserves the behavior of the strand ending normally.  
+*after* a move, so that the movement off of a strand or into a gap between bases still preserves the behavior of the strand ending normally.  
 While in copy mode, additional cop instructions do nothing. 
 
 #### off
