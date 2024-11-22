@@ -115,7 +115,7 @@ even if it had more instructions left to execute, same as in mvr.
 #### cop
 
 Places the complement of the current base into the complementary strand, and enters "copy mode." Each base has its corresponding
-complement, known as the complementary base pairin (see [Definitions](#Definitions)). Copy mode remains in effect until an off 
+complement, known as the complementary base pairing (see [Definitions](#Definitions)). Copy mode remains in effect until an [off](#off) 
 instruction is reached (or the end of the strand/enzyme). While in copy mode, any base that is "touched" by the enzyme will 
 have its complementary base placed above it in the complementary strand. When bases are copied into the complementary 
 strand, they are placed *upside-down* above the element copied, so that the strands are mirrored to each other. Copy mode applies 
