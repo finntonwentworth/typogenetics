@@ -37,7 +37,7 @@ They are said to be "bound" to the unit they are currently operating on.
 
 ### Amino Acids / Instructions
 
-Amino acids are derived from duplets in a sequence. Single bases do not encode for any instruction, and if a sequence has a spare base at the end with no pair i.e. the strand contains an odd number of bases, the last base  does not contribute an instruction or fold.
+Amino acids are derived from duplets in a sequence. Single bases do not encode for any instruction, and if a sequence has a spare base at the end with no pair i.e. the strand contains an odd number of bases, the last base does not contribute an instruction or fold.
 
 This table shows their mapping. The left side is the first base, the top is the second base. The table also says if the amino acid causes the enzyme's tertiary structure to "fold", denotes by the subscript l, r, or s.
 
