@@ -74,12 +74,12 @@ This table shows their mapping. The left side is the first base, the top is the 
 
 Not an Amino acid/instruction, but deserves special clarification. 
 
-Punctuates the strand, allowing one strand to encode for two or more separate enzymes. 
+Punctuates the strand, allowing one strand to encode for multiple enzymes. 
 When determining the enzymes encoded for by a strand, the prescence of the pun instruction 
 ends the enzyme early, and an additional enzyme is determined from the remaining strand, decoding 
 until the end of the strand or another pun is reached. These enzymes will act sequentially on
 the strand, one at a time. The portion of a strand that encodes for a specific enzyme is known
-as a 'gene', so one strand may contain one or more genes that encode for the same number of enzymes. 
+as a 'gene', so one strand may contain multiple (or no) genes that encode for the same number of enzymes. 
 Pun has no folding direction, and therefore does not contribute to the folding pattern of the enzyme, 
 as well as no additional effects on the enzyme past encoding. 
  
