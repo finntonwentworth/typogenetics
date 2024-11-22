@@ -185,7 +185,7 @@ A number of ambiguities present in the original program are given defined behavi
 
 **Binding Preference of Single Amino Acid Enzymes**
 
-Since the binding preference of an enzyme is determined by the orientation of its first and last element, enzymes which consist of only a single instruction don't have a clearly defined 
+Since the binding preference of an enzyme is determined by the relative orientation of its first and last amino acids, enzymes which consist of only a single amino acid don't have a clearly defined 
 rule for determining their starting base binding preference. We have elected to follow the fairly intuitive convention of having this class of enzymes start on 'A', counting their only element
 as both the first and last fold. With both directions facing right, it follows that the enzyme would bind to base 'A' to begin with. 
 
