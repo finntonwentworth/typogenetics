@@ -2,6 +2,22 @@
 #include <string.h>
 #include <stdio.h>
 
+// |     |  A  |  C  |  G  |  T  |
+// |---  | --- | --- | --- | --- |
+// |**A**| pun | cut | del | swi |
+// |**C**| mvr | mvl | cop | off |
+// |**G**| ina | inc | ing | int |
+// |**T**| rpy | rpu | lpy | lpu |
+
+// |        |  A   |  C   |  G   |  T   |
+// |        | 1000 | 0100 | 0010 | 0001 |
+// |---     | ---  | ---  | ---  | ---  |
+// | A 1000 | 1000 | 1100 | 1010 | 1001 |
+// | C 0100 | 1100 | 0100 | 0110 | 0101 |
+// | G 0010 | 1010 | 0110 | 0010 | 0011 |
+// | T 0001 | 1001 | 0101 | 0011 | 0001 |
+
+
                              //A           C           G           T
 const unsigned char bases[] = {0b00000001, 0b00000010, 0b00000100, 0b00001000};
 
@@ -61,4 +77,3 @@ int main(void) {
     printf("\nInstructions:\n");
     printCharArrAsBits(aminoAcids);
 }
-
