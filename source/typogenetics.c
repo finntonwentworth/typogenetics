@@ -5,8 +5,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
-#include "enzymefunctions.h"
+#include "typogenetics.h"
 
+#include <wchar.h>
+#include <locale.h>
+
+
+#define A_UPSIDEDOWN    0x2c6f
+#define T_UPSIDEDOWN    0xa7b1
+#define G_UPSIDEDOWN    0x1d77
+#define C_UPSIDEDOWN    0x2183
 
 /* PARAMETERS LIST
  *
@@ -34,11 +42,14 @@
 
 int main(int argC, char **argV) {
 
+  setlocale(LC_CTYPE, "");
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
   char *userInput;   
+  wchar_t upsideDownChar;
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
-  struct strand userStrand = {.outputStrandCount = 1};  
+  struct strand userStrand = {.outputStrandCount = 1,
+                              .complementaryStrand = {"AGTC"}};  
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -319,10 +330,35 @@ int main(int argC, char **argV) {
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
         //Begin acting on strand with instructions: 
-        for(int i=0; i < userDecode.foldingPatternSize; i++) {
+        for(int i = 0; i < userDecode.foldingPatternSize; i++) {
             userStrand = call_instruction(userDecode.instruction[i], userStrand); 
             printf(" Executing: %c%c%c\n", userDecode.instructionText[3*i],userDecode.instructionText[3*i+1], userDecode.instructionText[3*i+2]); 
             printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
+            
+/*-------------------------------------------*/           
+            printf(" \t\t\t\t\t");
+            for(int i = 0; i >= userStrand.size;  i--) {
+               switch (userStrand.complementaryStrand[i]) {
+                   case 'A':
+                       upsideDownChar = A_UPSIDEDOWN;
+                       break;
+                   case 'C':
+                       upsideDownChar = C_UPSIDEDOWN;
+                       break;
+                   case 'T':
+                       upsideDownChar = T_UPSIDEDOWN;
+                       break;
+                   case 'G':
+                       upsideDownChar = G_UPSIDEDOWN;
+                       break;
+                   default:
+                       upsideDownChar = ' ';
+                       break;
+               }
+               wprintf("%lc",upsideDownChar);
+            }
+            printf("\n");
+/*-------------------------------------------*/           
             printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
             //print a line underneath array with ^ pointing at the starting base 
             char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);

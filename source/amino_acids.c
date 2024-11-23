@@ -21,6 +21,7 @@
 struct strand {
   char mainStrand[MAX_STRAND_SIZE]; 
   char complementaryStrand[MAX_STRAND_SIZE];
+  int  boundStrandFlag; //0 = mainStrand ; 1 = complementaryStrand
   int  size; 
   int  currentBoundPosition; 
   int  outputStrandCount;

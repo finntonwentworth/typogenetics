@@ -1,4 +1,4 @@
-#include "enzymefunctions.c"
+#include "utility_functions.c"
 #include "rand_strand_function.c"
 #include "amino_acids.c"
 
