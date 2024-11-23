@@ -148,24 +148,31 @@ the complementary strand.
 
 #### rpy
 
-Moves to the nearest pyrine (See [Definitions](#Definitions)) to the right of this unit. With copy mode enabled, each base touched while sliding to the next pyrine 
-will be copied into the complementary strand. If there are no pyrines to the right of the current base, this does nothing.
+Moves to the nearest pyrine (See [Definitions](#Definitions)) to the right of the currently bound unit.
+If there are no pyrines to the right of the current base, it will attempt to find one but fall off the
+strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
+touched while sliding to the next pyrine will be copied into the complementary strand.
 
 #### rpu
 
-Moves to the nearest purine (See [Definitions](#Definitions)) to the right of this unit. With copy mode enabled, each base touched while sliding to the next purine 
-will be copied into the complementary strand. If there are no purines to the right of the current base, this does nothing.
+Moves to the nearest purine (See [Definitions](#Definitions)) to the right of the currently bound unit.
+If there are no purines to the right of the current base, it will attempt to find one but fall off the
+strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
+touched while sliding to the next purine will be copied into the complementary strand. 
 
 #### lpy
 
-Moves to the nearest pyrine (See [Definitions](#Definitions)) to the left of this unit. With copy mode enabled, each base touched while sliding to the next pyrine 
-will be copied into the complementary strand. If there are no pyrines to the left of the current base, this does nothing.
+Moves to the nearest pyrine (See [Definitions](#Definitions)) to the left of the currently bound unit.
+If there are no pyrines to the left of the current base, it will attempt to find one but fall off the
+strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
+touched while sliding to the next pyrine will be copied into the complementary strand.
 
 #### lpu
 
-Moves to the nearest purine (See [Definitions](#Definitions)) to the left of this unit. With copy mode enabled, each base touched while sliding to the next purine 
-will be copied into the complementary strand. If there are no purines to the left of the current base, this does nothing.
-
+Moves to the nearest purine (See [Definitions](#Definitions)) to the left of of the currently bound unit.
+If there are no purines to the left of the current base, it will attempt to find one but fall off the
+strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
+touched while sliding to the next purine will be copied into the complementary strand.
 
 ## Binding Preference
 
