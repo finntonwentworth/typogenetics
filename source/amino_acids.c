@@ -3,8 +3,11 @@
 
 struct strand {
   char dnaStrand[MAX_STRAND_SIZE]; 
+  char complementaryStrand[MAX_STRAND_SIZE];
   int  size; 
-  char outputStrand[MAX_STRAND_SIZE][MAX_STRAND_SIZE]; 
+  int  currentBoundPosition; 
+  int  outputStrandCount;
+  char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
 };
 /* ------ FUNCTION ------*/ 
 /*
@@ -21,9 +24,22 @@ struct strand {
  * 
 */
 
-struct strand cut_acid(int currentEnzymePosition, struct strand userStrand){
-        
-
+//struct strand cut_acid(int currentBoundPosition, struct strand userStrand){
+struct strand cut_acid(struct strand userStrand){
+    int j = 0;
+    //from the currently bound position to the end of the strand 
+    //write that section of the strand to the output 
+    //and also figure out how complementary strands work 
+    for(int i = userStrand.currentBoundPosition; i < userStrand.size; i++){
+       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.dnaStrand[i];   
+       //set the element we just cut equal to zero
+       userStrand.dnaStrand[i] = ' '; 
+       j++;  
+    }        
+    // now the strand is the size of the number of elements up to the bound position
+    userStrand.size = userStrand.currentBoundPosition;
+    //increase the number of output strands by 1 since we cut off the end
+    userStrand.outputStrandCount ++; 
     return userStrand; 
 }
 
@@ -43,7 +59,7 @@ struct strand cut_acid(int currentEnzymePosition, struct strand userStrand){
 struct strand call_instruction(int instructionnumber, struct strand userStrand) {
     switch (instructionnumber){
         case 1:
-            cut_acid();
+            userStrand = cut_acid(userStrand);
             break;
         case 2:
             break;
@@ -76,5 +92,6 @@ struct strand call_instruction(int instructionnumber, struct strand userStrand) 
         default:
             break;
     }
+    return userStrand; 
 }
 

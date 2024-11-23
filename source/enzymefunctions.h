@@ -15,7 +15,8 @@ char *current_enzyme_position(int, int);
 char *rand_strand(int);
 
 /*--- Amino Acids---*/
-struct strand cut_acid(int, struct strand); 
+//struct strand cut_acid(int, struct strand); 
+struct strand cut_acid(struct strand); 
 void del_acid(void); 
 void swi_acid(void); 
 void mvr_acid(void);

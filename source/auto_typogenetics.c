@@ -36,10 +36,9 @@ int main(int argC, char **argV) {
 
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
-  int outputStrandCount = 1; 
   char *userInput;   
   //struct stores user entered strand and it's size  
-  struct strand userStrand; 
+  struct strand userStrand = {.outputStrandCount = 1};  
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -266,9 +265,7 @@ int main(int argC, char **argV) {
     }
     
     int *matchingElements = matching_starting_base_elements(userStrand.dnaStrand, userStrand.size, startingBase);
-    int startingBasePosition;
     //if the first element is the 'null' character, then there are no matching elements
-    //this may need to decrement enzymecount and break once I add instruction execution
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
     }else {
@@ -289,16 +286,16 @@ int main(int argC, char **argV) {
             if(randSelectFlag == 1){
                //randomly select an option 
                printf("Randomly selecting an available base\n"); 
-               startingBasePosition = matchingElements[(rand() % i)]+1; 
+               userStrand.currentBoundPosition = matchingElements[(rand() % i)]+1; 
             }else{
                 // prompt the user to select one
                 printf("Please enter a base number to begin acting on: \n \r"); 
-                scanf("%d", &startingBasePosition);
+                scanf("%d", &userStrand.currentBoundPosition);
                 //check that the entered value matches one of the elements of matchingElements
                 //and correct for index starting at 0 instead of 1
-                while(userStrand.dnaStrand[(startingBasePosition-1)] != startingBase){
+                while(userStrand.dnaStrand[(userStrand.currentBoundPosition-1)] != startingBase){
                     printf("Sorry, enter a valid base number! \n");
-                    scanf("%d", &startingBasePosition);
+                    scanf("%d", &userStrand.currentBoundPosition);
                 }
             }
         } else{
@@ -307,15 +304,21 @@ int main(int argC, char **argV) {
                 printf("Selecting the first matching element\n"); 
             }
             // automatically select the only/first choice
-            startingBasePosition = matchingElements[0]+1;
+            userStrand.currentBoundPosition = matchingElements[0]+1;
         }
         printf("\n \r"); 
-        printf("Enzyme will start acting on base %c at position %d\n",startingBase,startingBasePosition);
+        printf("Enzyme will start acting on base %c at position %d\n",startingBase,userStrand.currentBoundPosition);
         printf("\n \r"); 
+        printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
         printf(" \t\t\t\t\t%s\n",userStrand.dnaStrand);        
         //print a line underneath array with ^ pointing at the starting base 
-        char *arrowMarker = current_enzyme_position(userStrand.size, startingBasePosition);
+        char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
+
+        //Begin acting on strand with instructions: 
+        for(int i=0; i < userDecode.foldingPatternSize; i++) {
+            userStrand = call_instruction(userDecode.instruction[i], userStrand); 
+        }
     }
 
 
@@ -328,7 +331,8 @@ int main(int argC, char **argV) {
    printf("Initial Strand:\n");
    printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
-   for(int i = 1; i <= outputStrandCount; i++){
+   strcpy(userStrand.outputStrand[1], userStrand.dnaStrand);
+   for(int i = 1; i <= userStrand.outputStrandCount; i++){
        printf(" \t%s\n", userStrand.outputStrand[i]);
    }
    printf("Exiting Typogenetics\n");
