@@ -11,7 +11,8 @@
 #include <locale.h>
 
 
-#define A_UPSIDEDOWN    0x2c6f
+//#define A_UPSIDEDOWN    0x2c6f
+#define A_UPSIDEDOWN    U+2C6F
 #define T_UPSIDEDOWN    0xa7b1
 #define G_UPSIDEDOWN    0x1d77
 #define C_UPSIDEDOWN    0x2183
@@ -46,6 +47,7 @@ int main(int argC, char **argV) {
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
   char *userInput;   
+  //wchar_t upsideDownChar;
   wchar_t upsideDownChar;
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   struct strand userStrand = {.outputStrandCount = 1,
@@ -191,13 +193,12 @@ int main(int argC, char **argV) {
       printf("Strand has %d genes that code for %d enzymes\n", maxEnzymeCount ,maxEnzymeCount); 
   }
   printf("\n \r");
-  // Testing: 
-  // seperate index variable for the folding pattern which will maintain it's
-  // value so that I can return to recalculate the next enzyme
-  int instructionIndex = 0;
-  int instructionNumberIndex = 0;
-  int foldingIndex = 0;  
-  int indentFlag = 1;  
+
+  int instructionIndex = 0;           //keep track of where I am in the instruction array 
+  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  int foldingIndex = 0;               //keep track of where I am in the folding pattern array
+  int indentFlag = 1;                 //flag to indent first character printed  
+
   // while there are still enzymes left to execute
   while(userDecode.enzymeCount > 0) {
     printf("\n \r");
@@ -355,7 +356,7 @@ int main(int argC, char **argV) {
                        upsideDownChar = ' ';
                        break;
                }
-               wprintf("%lc",upsideDownChar);
+               wprintf(L"%lc",upsideDownChar);
             }
             printf("\n");
 /*-------------------------------------------*/           
