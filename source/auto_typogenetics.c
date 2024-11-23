@@ -321,6 +321,13 @@ int main(int argC, char **argV) {
         //Begin acting on strand with instructions: 
         for(int i=0; i < userDecode.foldingPatternSize; i++) {
             userStrand = call_instruction(userDecode.instruction[i], userStrand); 
+            printf(" Executing: %c%c%c\n", userDecode.instructionText[3*i],userDecode.instructionText[3*i+1], userDecode.instructionText[3*i+2]); 
+            printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
+            printf(" \t\t\t\t\t%s\n",userStrand.activeStrand);        
+            //print a line underneath array with ^ pointing at the starting base 
+            char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
+            printf(" \t\t\t\t\t%s\n",arrowMarker); 
+
         }
     }
 
