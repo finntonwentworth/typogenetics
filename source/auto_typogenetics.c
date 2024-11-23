@@ -37,11 +37,12 @@ int main(int argC, char **argV) {
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
   char *userInput;   
-  //struct stores user entered strand and it's size  
+  //struct stores user entered strand and it's size, along with other relevant information as it is processed
   struct strand userStrand = {.outputStrandCount = 1};  
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
+  // parse user input for different config flags and initial input 
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1){
       switch(opt){
           case 'h':
@@ -65,13 +66,13 @@ int main(int argC, char **argV) {
               printf("*\n");
               return 1;  
           case 's':
-            // if -s was passed char array set userStrand.dnaStrand to it's value 
+            // if -s was passed char array set userStrand.activeStrand to it's value 
             userInput = optarg;
-            strcpy(userStrand.dnaStrand, userInput); 
+            strcpy(userStrand.activeStrand, userInput); 
             break;
           case 'r':
             userInput = rand_strand(atoi(optarg)); 
-            strcpy(userStrand.dnaStrand, userInput); 
+            strcpy(userStrand.activeStrand, userInput); 
             break;
           case 'S':
             userInput = optarg;
@@ -96,13 +97,13 @@ int main(int argC, char **argV) {
 
 
   // Calculate the number of user inputed bases
-  userStrand.size = relevant_elements(userStrand.dnaStrand); 
+  userStrand.size = relevant_elements(userStrand.activeStrand); 
   if(userStrand.size == 0){
       fprintf(stderr, "Entered Empty Strand. Exiting\n"); 
       return -2; 
   }
   //Check that the user's strand is valid/ 'well formed'
-  if(valid_strand(userStrand.dnaStrand, userStrand.size)!=1){
+  if(valid_strand(userStrand.activeStrand, userStrand.size)!=1){
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
         return -2;
   }
@@ -112,20 +113,22 @@ int main(int argC, char **argV) {
       printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
   }else if(randSelectFlag == 1){
       printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
+  }else{
+      printf(" \tNone.\n");
   }
   printf("\n");
 
   // Copy the initial strand into the 0th element of the output strand 2-D array
-  strcpy(userStrand.outputStrand[0], userStrand.dnaStrand); 
+  strcpy(userStrand.outputStrand[0], userStrand.activeStrand); 
 
-  printf(" Your strand is: %s \n \r", userStrand.dnaStrand);
+  printf(" Your strand is: %s \n \r", userStrand.activeStrand);
   printf(" Initial strand is %d bases long \n \r", userStrand.size); 
   printf("\n");
   printf(" Decoding Enzymes: \n \r");
   printf("\n");
   
   // decode the user's strand into instructions and folding pattern
-  userDecode = get_instructions_and_folding(userStrand.dnaStrand, userStrand.size); 
+  userDecode = get_instructions_and_folding(userStrand.activeStrand, userStrand.size); 
   
   //print the instructions in plain text
   printf(" \tTotal Strand Instructions are:\n");
@@ -140,7 +143,7 @@ int main(int argC, char **argV) {
   printf("\n \r");
   //if there are an odd number of bases, print last element  
   if(userStrand.size % 2 != 0){
-      printf(" \t\t\twith last base %c \n\r",userStrand.dnaStrand[userStrand.size-1]); 
+      printf(" \t\t\twith last base %c \n\r",userStrand.activeStrand[userStrand.size-1]); 
   }
 
   //reset i for later use
@@ -150,7 +153,7 @@ int main(int argC, char **argV) {
   
   //print the full folding pattern for clarity
   // may be removed in the future since it's not technically correct
-  printf("Total Enzyme(s) folding pattern:\n"); 
+  printf(" \tAll Enzymes folding pattern:\n"); 
   printf(" \t\t\t%s\n", userDecode.foldingPattern);
   printf("\n \r");
    
@@ -264,7 +267,7 @@ int main(int argC, char **argV) {
         printf("Single AA Amino Acid detected. No binding chosen\n"); 
     }
     
-    int *matchingElements = matching_starting_base_elements(userStrand.dnaStrand, userStrand.size, startingBase);
+    int *matchingElements = matching_starting_base_elements(userStrand.activeStrand, userStrand.size, startingBase);
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
@@ -293,7 +296,7 @@ int main(int argC, char **argV) {
                 scanf("%d", &userStrand.currentBoundPosition);
                 //check that the entered value matches one of the elements of matchingElements
                 //and correct for index starting at 0 instead of 1
-                while(userStrand.dnaStrand[(userStrand.currentBoundPosition-1)] != startingBase){
+                while(userStrand.activeStrand[(userStrand.currentBoundPosition-1)] != startingBase){
                     printf("Sorry, enter a valid base number! \n");
                     scanf("%d", &userStrand.currentBoundPosition);
                 }
@@ -310,7 +313,7 @@ int main(int argC, char **argV) {
         printf("Enzyme will start acting on base %c at position %d\n",startingBase,userStrand.currentBoundPosition);
         printf("\n \r"); 
         printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
-        printf(" \t\t\t\t\t%s\n",userStrand.dnaStrand);        
+        printf(" \t\t\t\t\t%s\n",userStrand.activeStrand);        
         //print a line underneath array with ^ pointing at the starting base 
         char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
@@ -331,7 +334,7 @@ int main(int argC, char **argV) {
    printf("Initial Strand:\n");
    printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
-   strcpy(userStrand.outputStrand[1], userStrand.dnaStrand);
+   strcpy(userStrand.outputStrand[1], userStrand.activeStrand);
    for(int i = 1; i <= userStrand.outputStrandCount; i++){
        printf(" \t%s\n", userStrand.outputStrand[i]);
    }
