@@ -6,12 +6,12 @@
  * Strands are represented as structs which hold useful metadata about the strand
  *
  * maybe needs marker for the currently upright strand? 
- * 1 = activeStrand 
+ * 1 = mainStrand 
  * 0 = complementaryStrand 
  *
  * or just strcpy swap them each time? 
  *
- * activeStrand: holds the currently acted upon strand 
+ * mainStrand: holds the currently acted upon strand 
  * complementaryStrand: array to hold copied elements 
  * size: # of relevant elements in the strand for loops 
  * currentBoundPosition: int representing what element the enzyme is bound to 
@@ -19,7 +19,7 @@
  * ouputStrand: 2-D array holding the input, active, and all remaining generated strands 
  */
 struct strand {
-  char activeStrand[MAX_STRAND_SIZE]; 
+  char mainStrand[MAX_STRAND_SIZE]; 
   char complementaryStrand[MAX_STRAND_SIZE];
   int  size; 
   int  currentBoundPosition; 
@@ -49,9 +49,9 @@ struct strand cut_acid(struct strand userStrand){
     //write that section of the strand to the output 
     //and also figure out how complementary strands work 
     for(int i = userStrand.currentBoundPosition; i < userStrand.size; i++){
-       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.activeStrand[i];   
+       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[i];   
        //set the element we just cut equal to zero
-       userStrand.activeStrand[i] = ' '; 
+       userStrand.mainStrand[i] = ' '; 
        j++;  
     }        
     // now the strand is the size of the number of elements up to the bound position
