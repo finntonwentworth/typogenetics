@@ -11,8 +11,7 @@
 #include <locale.h>
 
 
-//#define A_UPSIDEDOWN    0x2c6f
-#define A_UPSIDEDOWN    U+2C6F
+#define A_UPSIDEDOWN    0x2c6f
 #define T_UPSIDEDOWN    0xa7b1
 #define G_UPSIDEDOWN    0x1d77
 #define C_UPSIDEDOWN    0x2183
@@ -332,6 +331,10 @@ int main(int argC, char **argV) {
 
         //Begin acting on strand with instructions: 
         for(int i = 0; i < userDecode.foldingPatternSize; i++) {
+            //if the instruction is pun, don't print anything more for this enzyme, just break
+            if(userDecode.instruction[i] == 0) {
+                break;
+            }
             userStrand = call_instruction(userDecode.instruction[i], userStrand); 
             printf(" Executing: %c%c%c\n", userDecode.instructionText[3*i],userDecode.instructionText[3*i+1], userDecode.instructionText[3*i+2]); 
             printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
