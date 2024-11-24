@@ -21,7 +21,9 @@
 struct strand {
   char mainStrand[MAX_STRAND_SIZE]; 
   char complementaryStrand[MAX_STRAND_SIZE];
-  int  size; 
+  int  boundStrandFlag; //0 = mainStrand ; 1 = complementaryStrand
+  int  mainSize; 
+  int  complementarySize;
   int  currentBoundPosition; 
   int  outputStrandCount;
   char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
@@ -41,22 +43,29 @@ struct strand {
  * 
 */
 
-//struct strand cut_acid(int currentBoundPosition, struct strand userStrand){
 struct strand cut_acid(struct strand userStrand){
     int j = 0;
-    userStrand.outputStrandCount ++; 
+    //increase output count by 2, one for the main and one for complement
+    userStrand.outputStrandCount+=1; 
     //from the currently bound position to the end of the strand 
     //write that section of the strand to the output 
-    //and also figure out how complementary strands work 
-    for(int i = userStrand.currentBoundPosition; i < userStrand.size; i++){
+    for(int i = userStrand.currentBoundPosition; i < userStrand.mainSize; i++){
        userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[i];   
        //set the element we just cut equal to zero
        userStrand.mainStrand[i] = ' '; 
        j++;  
     }        
+
+    userStrand.outputStrandCount+=1; 
+    j = 0; 
+    for(int i = userStrand.complementarySize-1; i >= userStrand.currentBoundPosition; i--) {
+       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.complementaryStrand[i];
+       userStrand.complementaryStrand[i] = ' '; 
+       j++;  
+    }
     // now the strand is the size of the number of elements up to the bound position
-    userStrand.size = userStrand.currentBoundPosition;
-    //increase the number of output strands by 1 since we cut off the end
+    userStrand.mainSize = userStrand.currentBoundPosition;
+    userStrand.complementarySize = userStrand.currentBoundPosition;
     return userStrand; 
 }
 

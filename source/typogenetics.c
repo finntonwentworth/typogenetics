@@ -1,11 +1,13 @@
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <time.h>
-#include "enzymefunctions.h"
+#include <locale.h>
+#include "typogenetics.h"
+
+
 
 
 /* PARAMETERS LIST
@@ -34,11 +36,14 @@
 
 int main(int argC, char **argV) {
 
+  //set locale for unicode printing
+  setlocale(LC_ALL, "");
+
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
   char *userInput;   
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
-  struct strand userStrand = {.outputStrandCount = 1};  
+  struct strand userStrand = {.outputStrandCount = 2};
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -97,13 +102,13 @@ int main(int argC, char **argV) {
 
 
   // Calculate the number of user inputed bases
-  userStrand.size = relevant_elements(userStrand.mainStrand); 
-  if(userStrand.size == 0){
+  userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
+  if(userStrand.mainSize == 0){
       fprintf(stderr, "Entered Empty Strand. Exiting\n"); 
       return -2; 
   }
   //Check that the user's strand is valid/ 'well formed'
-  if(valid_strand(userStrand.mainStrand, userStrand.size)!=1){
+  if(valid_strand(userStrand.mainStrand, userStrand.mainSize)!=1){
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
         return -2;
   }
@@ -122,17 +127,17 @@ int main(int argC, char **argV) {
   strcpy(userStrand.outputStrand[0], userStrand.mainStrand); 
 
   printf(" Your strand is: %s \n \r", userStrand.mainStrand);
-  printf(" Initial strand is %d bases long \n \r", userStrand.size); 
+  printf(" Initial strand is %d bases long \n \r", userStrand.mainSize); 
   printf("\n");
   printf(" Decoding Enzymes: \n \r");
   printf("\n");
   
   // decode the user's strand into instructions and folding pattern
-  userDecode = get_instructions_and_folding(userStrand.mainStrand, userStrand.size); 
+  userDecode = get_instructions_and_folding(userStrand.mainStrand, userStrand.mainSize); 
   
   //print the instructions in plain text
   printf(" \tTotal Strand Instructions are:\n");
-  while(i <= 3*userStrand.size){
+  while(i <= 3*userStrand.mainSize){
     if(i == 0){
         printf("\t\t\t%c%c%c ",userDecode.instructionText[i],userDecode.instructionText[i+1],userDecode.instructionText[i+2]);
     } else {
@@ -142,8 +147,8 @@ int main(int argC, char **argV) {
   }
   printf("\n \r");
   //if there are an odd number of bases, print last element  
-  if(userStrand.size % 2 != 0){
-      printf(" \t\t\twith last base %c \n\r",userStrand.mainStrand[userStrand.size-1]); 
+  if(userStrand.mainSize % 2 != 0){
+      printf(" \t\t\twith last base %c \n\r",userStrand.mainStrand[userStrand.mainSize-1]); 
   }
 
   //reset i for later use
@@ -180,13 +185,12 @@ int main(int argC, char **argV) {
       printf("Strand has %d genes that code for %d enzymes\n", maxEnzymeCount ,maxEnzymeCount); 
   }
   printf("\n \r");
-  // Testing: 
-  // seperate index variable for the folding pattern which will maintain it's
-  // value so that I can return to recalculate the next enzyme
-  int instructionIndex = 0;
-  int instructionNumberIndex = 0;
-  int foldingIndex = 0;  
-  int indentFlag = 1;  
+
+  int instructionIndex = 0;           //keep track of where I am in the instruction array 
+  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  int foldingIndex = 0;               //keep track of where I am in the folding pattern array
+  int indentFlag = 1;                 //flag to indent first character printed  
+
   // while there are still enzymes left to execute
   while(userDecode.enzymeCount > 0) {
     printf("\n \r");
@@ -267,7 +271,7 @@ int main(int argC, char **argV) {
         printf("Single AA Amino Acid detected. No binding chosen\n"); 
     }
     
-    int *matchingElements = matching_starting_base_elements(userStrand.mainStrand, userStrand.size, startingBase);
+    int *matchingElements = matching_starting_base_elements(userStrand.mainStrand, userStrand.mainSize, startingBase);
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
@@ -312,20 +316,30 @@ int main(int argC, char **argV) {
         printf("\n \r"); 
         printf("Enzyme will start acting on base %c at position %d\n",startingBase,userStrand.currentBoundPosition);
         printf("\n \r"); 
-        printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
+        //the complementary will be blank for the first printing
+        printf(" \t\t\t\t\t");        
+        print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
+        printf("\n");
         printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
         //print a line underneath array with ^ pointing at the starting base 
-        char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
+        char *arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
         //Begin acting on strand with instructions: 
-        for(int i=0; i < userDecode.foldingPatternSize; i++) {
+        for(int i = 0; i < userDecode.foldingPatternSize; i++) {
+            //if the instruction is pun, don't print anything more for this enzyme, just break
+            if(userDecode.instruction[i] == 0) {
+                break;
+            }
+            //determine what instruction to exectute
             userStrand = call_instruction(userDecode.instruction[i], userStrand); 
             printf(" Executing: %c%c%c\n", userDecode.instructionText[3*i],userDecode.instructionText[3*i+1], userDecode.instructionText[3*i+2]); 
-            printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
+            printf(" \t\t\t\t\t");
+            print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
+            printf("\n");
             printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
             //print a line underneath array with ^ pointing at the starting base 
-            char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
+            char *arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
             printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
         }
@@ -342,6 +356,15 @@ int main(int argC, char **argV) {
    printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
+
+   int j = 0;
+   //reverse the order of the remaining complementary strand and place it into the output
+   for(int i = userStrand.complementarySize-1; i >= 0; i--) {
+      userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
+      j++;  
+   }
+
+   //print the output strands 
    for(int i = 1; i <= userStrand.outputStrandCount; i++){
        printf(" \t%s\n", userStrand.outputStrand[i]);
    }
