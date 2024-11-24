@@ -1,4 +1,3 @@
-
 #include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
@@ -43,7 +42,7 @@ int main(int argC, char **argV) {
   int i, startingBaseIndex  = 0; 
   char *userInput;   
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
-  struct strand userStrand = {.outputStrandCount = 1,
+  struct strand userStrand = {.outputStrandCount = 2,
                              //TESTING MEMBER VALUES
                               .complementaryStrand = {"AGTC"},
                               .complementarySize = 4};  
@@ -359,6 +358,12 @@ int main(int argC, char **argV) {
    printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
+   int j = 0;
+   //reverse the order of the remaining complementary strand 
+   for(int i = userStrand.complementarySize-1; i >= 0; i--) {
+      userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
+      j++;  
+   }
    for(int i = 1; i <= userStrand.outputStrandCount; i++){
        printf(" \t%s\n", userStrand.outputStrand[i]);
    }

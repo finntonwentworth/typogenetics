@@ -47,21 +47,20 @@ struct strand {
 struct strand cut_acid(struct strand userStrand){
     int j = 0;
     //increase output count by 2, one for the main and one for complement
-    userStrand.outputStrandCount+=2; 
+    userStrand.outputStrandCount+=1; 
     //from the currently bound position to the end of the strand 
     //write that section of the strand to the output 
     for(int i = userStrand.currentBoundPosition; i < userStrand.mainSize; i++){
-       userStrand.outputStrand[userStrand.outputStrandCount-1][j] = userStrand.mainStrand[i];   
+       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[i];   
        //set the element we just cut equal to zero
        userStrand.mainStrand[i] = ' '; 
        j++;  
     }        
+
+    userStrand.outputStrandCount+=1; 
     j = 0; 
-    for(int i = userStrand.complementarySize; i >= userStrand.currentBoundPosition; i--) {
-       userStrand.outputStrand[userStrand.outputStrandCount][j]  = userStrand.complementaryStrand[i];
-
-       printf("outputStrand[%d] = %s",userStrand.outputStrandCount,userStrand.outputStrand[userStrand.outputStrandCount]);
-
+    for(int i = userStrand.complementarySize-1; i >= userStrand.currentBoundPosition; i--) {
+       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.complementaryStrand[i];
        userStrand.complementaryStrand[i] = ' '; 
        j++;  
     }
