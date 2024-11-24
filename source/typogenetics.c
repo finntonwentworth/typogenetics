@@ -7,14 +7,8 @@
 #include <time.h>
 #include "typogenetics.h"
 
-#include <wchar.h>
 #include <locale.h>
 
-
-#define A_UPSIDEDOWN    0x2c6f
-#define T_UPSIDEDOWN    0xa7b1
-#define G_UPSIDEDOWN    0x1d77
-#define C_UPSIDEDOWN    0x2183
 
 /* PARAMETERS LIST
  *
@@ -42,12 +36,12 @@
 
 int main(int argC, char **argV) {
 
-  setlocale(LC_CTYPE, "");
+  //set locale for unicode printing
+  setlocale(LC_ALL, "");
+
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex  = 0; 
   char *userInput;   
-  //wchar_t upsideDownChar;
-  wchar_t upsideDownChar;
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   struct strand userStrand = {.outputStrandCount = 1,
                               .complementaryStrand = {"AGTC"}};  
@@ -323,6 +317,7 @@ int main(int argC, char **argV) {
         printf("\n \r"); 
         printf("Enzyme will start acting on base %c at position %d\n",startingBase,userStrand.currentBoundPosition);
         printf("\n \r"); 
+// call the converter and print here 
         printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
         printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
         //print a line underneath array with ^ pointing at the starting base 
@@ -341,25 +336,24 @@ int main(int argC, char **argV) {
             
 /*-------------------------------------------*/           
             printf(" \t\t\t\t\t");
-            for(int i = 0; i >= userStrand.size;  i--) {
+            for(int i = 0; i <= userStrand.size;  i++) {
                switch (userStrand.complementaryStrand[i]) {
                    case 'A':
-                       upsideDownChar = A_UPSIDEDOWN;
+                       printf("\u2c6f");
                        break;
                    case 'C':
-                       upsideDownChar = C_UPSIDEDOWN;
+                       printf("\ua7b1");
                        break;
                    case 'T':
-                       upsideDownChar = T_UPSIDEDOWN;
+                       printf("\u2141");
                        break;
                    case 'G':
-                       upsideDownChar = G_UPSIDEDOWN;
+                       printf("\u2183");
                        break;
                    default:
-                       upsideDownChar = ' ';
+                       printf(" ");
                        break;
                }
-               wprintf(L"%lc",upsideDownChar);
             }
             printf("\n");
 /*-------------------------------------------*/           
