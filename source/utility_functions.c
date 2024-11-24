@@ -1,6 +1,12 @@
-
+#include <stdio.h>
+#include <locale.h>
 
 #define MAX_STRAND_SIZE     1000
+
+#define UPSIDEDOWN_A    "\u2c6f"
+#define UPSIDEDOWN_T    "\ua7b1"
+#define UPSIDEDOWN_G    "\u2141"
+#define UPSIDEDOWN_C    "\u2183"
 
 struct decodedStrand {
     int  instruction[MAX_STRAND_SIZE];
@@ -377,4 +383,35 @@ char *current_enzyme_position(int userstrandsize, int startingbaseposition){
    arrowmarker[startingbaseposition-1] = '^'; 
    return arrowmarker; 
 }
+/* ------ FUNCTION ------*/ 
+/*
+ * Function prints the upsidedown version of the complementary strand
+ *
+ * Accepts:  
+ * int representing size of strand, char array of rightside up complementary strand elements
+ * Returns: 
+ * nothing 
+ * 
+*/
 
+void print_complementary_strand(int length, char complementaryStrand[]) {
+   for(int i = 0; i <= length; i++) {
+      switch (complementaryStrand[i]) {
+          case 'A':
+              printf(UPSIDEDOWN_A);
+              break;
+          case 'C':
+              printf(UPSIDEDOWN_C);
+              break;
+          case 'T':
+              printf(UPSIDEDOWN_T);
+              break;
+          case 'G':
+              printf(UPSIDEDOWN_G);
+              break;
+          default:
+              printf(" ");
+              break;
+      }
+   } 
+}

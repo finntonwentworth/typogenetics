@@ -7,7 +7,7 @@
 #include <time.h>
 #include "typogenetics.h"
 
-#include <locale.h>
+
 
 
 /* PARAMETERS LIST
@@ -332,31 +332,9 @@ int main(int argC, char **argV) {
             }
             userStrand = call_instruction(userDecode.instruction[i], userStrand); 
             printf(" Executing: %c%c%c\n", userDecode.instructionText[3*i],userDecode.instructionText[3*i+1], userDecode.instructionText[3*i+2]); 
-            printf(" \t\t\t\t\t%s\n",userStrand.complementaryStrand);        
-            
-/*-------------------------------------------*/           
             printf(" \t\t\t\t\t");
-            for(int i = 0; i <= userStrand.size;  i++) {
-               switch (userStrand.complementaryStrand[i]) {
-                   case 'A':
-                       printf("\u2c6f");
-                       break;
-                   case 'C':
-                       printf("\ua7b1");
-                       break;
-                   case 'T':
-                       printf("\u2141");
-                       break;
-                   case 'G':
-                       printf("\u2183");
-                       break;
-                   default:
-                       printf(" ");
-                       break;
-               }
-            }
+            print_complementary_strand(userStrand.size, userStrand.complementaryStrand); 
             printf("\n");
-/*-------------------------------------------*/           
             printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
             //print a line underneath array with ^ pointing at the starting base 
             char *arrowMarker = current_enzyme_position(userStrand.size, userStrand.currentBoundPosition);
