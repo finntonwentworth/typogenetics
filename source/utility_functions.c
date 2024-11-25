@@ -26,7 +26,7 @@ struct decodedStrand {
 */
 int relevant_elements(char strand[]) {
     int elementcounter = 0; 
-    while(strand[elementcounter] !='\0'){
+    while(strand[elementcounter] !='\0') {
         elementcounter++;
     };
     return elementcounter; 
@@ -42,11 +42,11 @@ int relevant_elements(char strand[]) {
 */
 int valid_strand(char strand[], int size) {
     int i = 0;
-    while(i<= size){
+    while(i<= size) {
        // If the string only contains A, G, T, C or the terminating character: 
-       if(strand[i] == 'A' || strand[i] == 'C' || strand[i] == 'G' || strand[i] == 'T' || strand[i] == '\0'){
+       if(strand[i] == 'A' || strand[i] == 'C' || strand[i] == 'G' || strand[i] == 'T' || strand[i] == '\0') {
          i++;
-         }else{
+         } else {
             return 0;
          } 
     }
@@ -76,7 +76,7 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
      
     char firstbase,secondbase; 
     //while the index is less than or equal to the number of relevant elements in userstrand
-    while(i <= size){
+    while(i <= size) {
         // set two placeholder char to the bases of index i and index i + 1
         firstbase  = strand[i]; 
         secondbase = strand[i+1]; 
@@ -85,7 +85,7 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
     // nested switch checks pair and determines corresponding instruction
     switch (firstbase) {
       case 'A':
-        switch(secondbase){
+        switch(secondbase) {
           case 'A':
             decode.instructionText[j]   = 'p';
             decode.instructionText[j+1] = 'u';
@@ -126,7 +126,7 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
         }
         break;
       case 'C':
-        switch(secondbase){
+        switch(secondbase) {
           case 'A':
             decode.instructionText[j]   = 'm';
             decode.instructionText[j+1] = 'v';
@@ -161,7 +161,7 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
         }
       break;
       case 'G':
-        switch(secondbase){
+        switch(secondbase) {
           case 'A':
             decode.instructionText[j]   = 'i';
             decode.instructionText[j+1] = 'n';
@@ -196,7 +196,7 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
         }
       break;
       case 'T':
-        switch(secondbase){
+        switch(secondbase) {
           case 'A':
             decode.instructionText[j]   = 'r';
             decode.instructionText[j+1] = 'p';
@@ -246,19 +246,19 @@ struct decodedStrand get_instructions_and_folding(char strand[], int size) {
     
 
     //Actually, the first element is r if the first instruction is not pun 
-    if(decode.foldingPattern[0] != '-'){
+    if(decode.foldingPattern[0] != '-') {
         decode.foldingPattern[0] = 'r';
     }
 
     //if the last element is '-', then subtract off the extra enzyme count we added on 
-    if(decode.foldingPattern[decode.foldingPatternSize-1] == '-'){
+    if(decode.foldingPattern[decode.foldingPatternSize-1] == '-') {
         decode.enzymeCount--; 
     }
 
   //write 'r' to the next non pun folding direction after pun instructions 
   //as long as it is not the last element of the the folding pattern
     for(int i = 0; i <= decode.foldingPatternSize; i++) {
-        if(decode.foldingPattern[i] != '-' && decode.foldingPattern[i-1] == '-' && i != decode.foldingPatternSize){
+        if(decode.foldingPattern[i] != '-' && decode.foldingPattern[i-1] == '-' && i != decode.foldingPatternSize) {
             decode.foldingPattern[i] = 'r';
         }
     } 
@@ -286,9 +286,9 @@ char calculate_starting_base(char foldingPattern[], int startpoint, int endpoint
     char startingbase;  
     
     // if the folding pattern consists of just pun 
-    if(foldingPattern[startpoint] == '-'){
+    if(foldingPattern[startpoint] == '-') {
         return '-';
-    }else {
+    } else {
         
     // first element is known to be 'r' (if it's not '-')
         startpoint++;
@@ -296,7 +296,7 @@ char calculate_starting_base(char foldingPattern[], int startpoint, int endpoint
     // for each relevant element in the folding pattern
         while(startpoint < endpoint) {
 
-          switch(foldingPattern[startpoint]){
+          switch(foldingPattern[startpoint]) {
             case 's':
             //maintain heading, i.e. do not change angle
                break;
@@ -319,12 +319,14 @@ char calculate_starting_base(char foldingPattern[], int startpoint, int endpoint
         // why does it feel like there's a better way to do this 
         if(theta == 0) {
             startingbase = 'A'; 
-        }else if (theta == 90 || theta == -270){
+        } else if(theta == 90 || theta == -270) {
             startingbase = 'C'; 
-        }else if(theta == 180 || theta == -180) {
+        } else if(theta == 180 || theta == -180) {
             startingbase = 'T'; 
-        }else if (theta == -90 || theta == 270){
+        } else if(theta == -90 || theta == 270) {
             startingbase = 'G'; 
+        } else {
+            startingbase = '\0'; 
         }
 
         return startingbase;
@@ -343,14 +345,14 @@ char calculate_starting_base(char foldingPattern[], int startpoint, int endpoint
  * 
 */
 
-int *matching_starting_base_elements(char strand[],int size, char startingbase){
+int *matching_starting_base_elements(char strand[],int size, char startingbase) {
    int i = 0;
    int j = 0; 
    static int matchingbaseelements[MAX_STRAND_SIZE];
    //increment through relevant elements of userstrand
-   while(i <= size){
+   while(i <= size) {
      // if the userstrand element matches the calculated starting base  
-     if(strand[i] == startingbase){
+     if(strand[i] == startingbase) {
          //set an element of matchingbaseelements to the index of the matching base
            matchingbaseelements[j] = i;
            j++;
@@ -373,10 +375,10 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase){
  *
  * 
 */
-char *current_enzyme_position(int userstrandsize, int startingbaseposition){
+char *current_enzyme_position(int userstrandsize, int startingbaseposition) {
    static char arrowmarker[MAX_STRAND_SIZE];  
    //clear the array - put spaces in each spot under the array 
-   for(int i = 0; i<=userstrandsize; i++){
+   for(int i = 0; i<=userstrandsize; i++) {
        arrowmarker[i] = ' '; 
    }
    arrowmarker[startingbaseposition-1] = '^'; 
