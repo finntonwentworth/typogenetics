@@ -50,7 +50,11 @@ int main(int argC, char **argV) {
   int indentFlag = 1;                 //flag to indent first character printed  
                                       //
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
-  struct strand userStrand = {.outputStrandCount = 2};
+  //Each strand will have 2 outputs at least - main and complement
+  //we start bound to the main strand, and the complement is generated potentially through instructions
+  struct strand userStrand = {.outputStrandCount = 2,
+                              .boundStrandFlag = 0
+                             };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -346,7 +350,7 @@ int main(int argC, char **argV) {
           printf("\n");
           printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
           //print a line underneath array with ^ pointing at the bound base 
-          char *arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
+          arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
           instructionExecutionIndex++;  
@@ -363,7 +367,39 @@ int main(int argC, char **argV) {
    printf("Initial Strand:\n");
    printf(" \t%s\n",userStrand.outputStrand[0]); 
    printf("Final Strand(s):\n");
+
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
+   /*----- GOAL: Separate strands with blank spaces in them into multiple outputs */
+   //
+   //
+   //
+   //
+   // YOU ARE HERE 
+   //
+   //
+   //
+   //
+   //TEST
+   strcpy(userStrand.outputStrand[1], "AATGCG GGAGTC TTT");
+   i = 0;
+   int m = 1; 
+   int n = 0;
+   while(i <= userStrand.mainSize) {
+   //if the Strand contains a space 
+       if(userStrand.outputStrand[m][n] == ' '){
+       //then move the rest of the strand to the next outputStrand row
+           for(int j = 0; j<=(userStrand.mainSize - i); j++){
+               userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[(i+1) + j];
+               //set the element that was just moved over to a blank space 
+               userStrand.mainStrand[(i+1)+j] = ' ';
+               userStrand.outputStrandCount++;
+               m = userStrand.outputStrandCount; 
+           }
+       }
+       i++;
+   }
+   /*----------------------------------------------------------------------------*/
+
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
    for(int i = userStrand.complementarySize-1; i >= 0; i--) {
@@ -373,9 +409,9 @@ int main(int argC, char **argV) {
 
    //print the output strands 
    for(int i = 1; i <= userStrand.outputStrandCount; i++){
-       if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf(" \t%s\n", userStrand.outputStrand[i]);
        // if the first element is not A,G,T, or C, then it's an empty strand
+       if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
+           printf("%d. \t%s\n",userStrand.outputStrandCount, userStrand.outputStrand[i]);
        } else {
            //so don't print
        }

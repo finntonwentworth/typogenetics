@@ -49,14 +49,13 @@ void cut_acid(struct strand *strandPointer)
     strandPointer->outputStrandCount +=1; 
     //from the currently bound position to the end of the strand 
     //write that section of the strand to the output 
-
     for(int i = strandPointer->currentBoundPosition; i < strandPointer->mainSize; i++){
        strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->mainStrand[i];
        //set the element we just cut equal to zero
        strandPointer->mainStrand[i] = ' '; 
        j++;  
     }        
-
+    // do this again but for the complementary strand
     strandPointer->outputStrandCount +=1; 
     j = 0; 
     for(int i = strandPointer->complementarySize; i >= strandPointer->currentBoundPosition; i--){
@@ -70,15 +69,36 @@ void cut_acid(struct strand *strandPointer)
 
 /* ------ FUNCTION ------*/ 
 /*
+ * Performs del amino acid functionality 
+ * Deletes base underneath currently bound position, leaving a gap, and moves to the base to the right
+ * 
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void del_acid(struct strand *strandPointer) {
+  //if currently bound to main strand, del that bound base 
+  if(strandPointer->boundStrandFlag == 0) {
+     strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = ' ';
+  // else del the bound base on the complementary strand
+  } else {
+     strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = ' ';
+  }
+  //move one base to the right
+  strandPointer->currentBoundPosition++;
+}
+/* ------ FUNCTION ------*/ 
+/*
  * Function serves to call any of the "15" enzyme functions provided an instruction number 
  * Calls function 
  *
  * Accepts:  
- * int instruction number   
- * This will need to accept the strand string as well i think 
+ * int instruction number, strand struct pointer
  * Returns: 
  * nothing
- * and return the strand struct to easily returned the changed string
  * 
 */
 void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
@@ -87,6 +107,7 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             cut_acid(userStrandPointer);
             break;
         case 2:
+            del_acid(userStrandPointer);
             break;
         case 3:
             break;

@@ -16,7 +16,7 @@ char *rand_strand(int);
 
 /*--- Amino Acids---*/
 void cut_acid(struct strand*); 
-void del_acid(void); 
+void del_acid(struct strand*); 
 void swi_acid(void); 
 void mvr_acid(void);
 void mvl_acid(void);
