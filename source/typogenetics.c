@@ -43,6 +43,7 @@ int main(int argC, char **argV) {
   int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   char *userInput;   
 
+
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
   int foldingIndex = 0;               //keep track of where I am in the folding pattern array
@@ -106,6 +107,7 @@ int main(int argC, char **argV) {
         }
   }
 
+  struct strand *strandPointer = &userStrand;
 
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
@@ -336,8 +338,8 @@ int main(int argC, char **argV) {
               instructionExecutionIndex++;  
               break;
           }
-          //determine what instruction to exectute
-          userStrand = call_instruction(userDecode.instruction[instructionExecutionIndex], userStrand); 
+          //determine what instruction to execute
+          call_instruction(userDecode.instruction[instructionExecutionIndex], strandPointer); 
           printf(" Executing: %c%c%c\n", userDecode.instructionText[3*instructionExecutionIndex],userDecode.instructionText[3*instructionExecutionIndex+1], userDecode.instructionText[3*instructionExecutionIndex+2]); 
           printf(" \t\t\t\t\t");
           print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
