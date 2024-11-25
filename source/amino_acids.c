@@ -1,5 +1,3 @@
-#include <stdio.h>
-
 #define MAX_STRAND_SIZE         1000
 
 /* ----- STRAND ----- */
@@ -43,15 +41,6 @@ struct strand {
  * struct strand 
  * so that it can write to the output strand 
  * 
-*/
-
-/*
-struct strand* cut_acid(struct strand *currentBoundPosition,
-                        struct strand *outputStrandCount, 
-                        struct strand *mainSize,
-                        struct strand *complementarySize,
-                        struct strand *mainStrand,
-                        struct strand *complementaryStrand)
 */
 void cut_acid(struct strand *strandPointer)
 {
