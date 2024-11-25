@@ -1,4 +1,3 @@
-
 #define MAX_STRAND_SIZE         1000
 
 /* ----- STRAND ----- */
@@ -28,6 +27,7 @@ struct strand {
   int  outputStrandCount;
   char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
 };
+
 /* ------ FUNCTION ------*/ 
 /*
  * Performs cut amino acid functionality 
@@ -42,31 +42,30 @@ struct strand {
  * so that it can write to the output strand 
  * 
 */
-
-struct strand cut_acid(struct strand userStrand){
+void cut_acid(struct strand *strandPointer)
+{
     int j = 0;
-    //increase output count by 2, one for the main and one for complement
-    userStrand.outputStrandCount+=1; 
+    //increase output count by 1, for mainStrand 
+    strandPointer->outputStrandCount +=1; 
     //from the currently bound position to the end of the strand 
     //write that section of the strand to the output 
-    for(int i = userStrand.currentBoundPosition; i < userStrand.mainSize; i++){
-       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[i];   
+
+    for(int i = strandPointer->currentBoundPosition; i < strandPointer->mainSize; i++){
+       strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->mainStrand[i];
        //set the element we just cut equal to zero
-       userStrand.mainStrand[i] = ' '; 
+       strandPointer->mainStrand[i] = ' '; 
        j++;  
     }        
 
-    userStrand.outputStrandCount+=1; 
+    strandPointer->outputStrandCount +=1; 
     j = 0; 
-    for(int i = userStrand.complementarySize-1; i >= userStrand.currentBoundPosition; i--) {
-       userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.complementaryStrand[i];
-       userStrand.complementaryStrand[i] = ' '; 
+    for(int i = strandPointer->complementarySize; i >= strandPointer->currentBoundPosition; i--){
+       strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->complementaryStrand[i];
+       strandPointer->complementaryStrand[i] = ' '; 
        j++;  
     }
     // now the strand is the size of the number of elements up to the bound position
-    userStrand.mainSize = userStrand.currentBoundPosition;
-    userStrand.complementarySize = userStrand.currentBoundPosition;
-    return userStrand; 
+    strandPointer->complementarySize = strandPointer->mainSize = strandPointer->currentBoundPosition;
 }
 
 /* ------ FUNCTION ------*/ 
@@ -82,10 +81,10 @@ struct strand cut_acid(struct strand userStrand){
  * and return the strand struct to easily returned the changed string
  * 
 */
-struct strand call_instruction(int instructionnumber, struct strand userStrand) {
+void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
     switch (instructionnumber){
         case 1:
-            userStrand = cut_acid(userStrand);
+            cut_acid(userStrandPointer);
             break;
         case 2:
             break;
@@ -118,6 +117,5 @@ struct strand call_instruction(int instructionnumber, struct strand userStrand) 
         default:
             break;
     }
-    return userStrand; 
 }
 

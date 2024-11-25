@@ -22,10 +22,10 @@
  *      Generate a random strand with <int> bases (int - 1 elements)
  *
  * OPTIONAL 
- * -S 
+ * -Sr (--Select-random)
  *      randomly pick starting base for each enzyme 
  *
- * -f (--first-matching) 
+ * -Sf (--Select-first) 
  *      enzymes will select the first matching element to their base binding preference. 
  *
  * (an idea, but won't work if the output is multiple strands/ needs a way to pick one)
@@ -42,6 +42,7 @@ int main(int argC, char **argV) {
   int opt,randSelectFlag,firstSelectFlag; 
   int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   char *userInput;   
+
 
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
@@ -69,10 +70,10 @@ int main(int argC, char **argV) {
               printf("*      Generate a random strand with <int> bases (int - 1 elements)                    \n");
               printf("*                                                                                      \n");
               printf("* OPTIONAL                                                                             \n"); 
-              printf("* -S                                                                                   \n");
+              printf("* -Sr  (--Select-random)                                                               \n");
               printf("*      randomly pick starting base for each enzyme                                     \n");
               printf("*                                                                                      \n");
-              printf("* -f (--first-matching)                                                                \n");
+              printf("* -Sf (--Select-first)                                                                 \n");
               printf("*      enzymes will select the first matching element to their base binding preference.\n");
               printf("*\n");
               return 1;  
@@ -106,6 +107,7 @@ int main(int argC, char **argV) {
         }
   }
 
+  struct strand *strandPointer = &userStrand;
 
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
@@ -336,8 +338,8 @@ int main(int argC, char **argV) {
               instructionExecutionIndex++;  
               break;
           }
-          //determine what instruction to exectute
-          userStrand = call_instruction(userDecode.instruction[instructionExecutionIndex], userStrand); 
+          //determine what instruction to execute
+          call_instruction(userDecode.instruction[instructionExecutionIndex], strandPointer); 
           printf(" Executing: %c%c%c\n", userDecode.instructionText[3*instructionExecutionIndex],userDecode.instructionText[3*instructionExecutionIndex+1], userDecode.instructionText[3*instructionExecutionIndex+2]); 
           printf(" \t\t\t\t\t");
           print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
