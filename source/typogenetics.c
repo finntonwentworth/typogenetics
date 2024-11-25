@@ -371,31 +371,37 @@ int main(int argC, char **argV) {
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
    /*----- GOAL: Separate strands with blank spaces in them into multiple outputs */
    //
+   // DONE : MOVE THIS TO A FUNCTION strand_splitter();
+   // and split complementary strands as well
    //
    //
    //
-   // YOU ARE HERE 
+   //
    //
    //
    //
    //
    //TEST
-   strcpy(userStrand.outputStrand[1], "AATGCG GGAGTC TTT");
+//   strcpy(userStrand.outputStrand[1], "AAAA GGGG TTTT");
    i = 0;
    int m = 1; 
-   int n = 0;
    while(i <= userStrand.mainSize) {
-   //if the Strand contains a space 
-       if(userStrand.outputStrand[m][n] == ' '){
-       //then move the rest of the strand to the next outputStrand row
-           for(int j = 0; j<=(userStrand.mainSize - i); j++){
-               userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.mainStrand[(i+1) + j];
-               //set the element that was just moved over to a blank space 
-               userStrand.mainStrand[(i+1)+j] = ' ';
-               userStrand.outputStrandCount++;
-               m = userStrand.outputStrandCount; 
+       //if the Strand contains a space 
+       if(userStrand.outputStrand[m][i] == ' ') {
+           //write to the next output slot
+           userStrand.outputStrandCount++;
+           //the elements after that space 
+           for(int j = 0; j <= userStrand.mainSize - (i+1); j++) {
+               userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.outputStrand[m][j+i+1];
+               //set the element we just copied over to a space 
+               userStrand.outputStrand[m][j+i+1] = ' '; 
            }
+           //set our space checker to the newly written strand
+           m = userStrand.outputStrandCount; 
+           //reset the index of space checking 
+           i = 0;
        }
+       //increment through the elements 
        i++;
    }
    /*----------------------------------------------------------------------------*/
@@ -411,7 +417,7 @@ int main(int argC, char **argV) {
    for(int i = 1; i <= userStrand.outputStrandCount; i++){
        // if the first element is not A,G,T, or C, then it's an empty strand
        if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf("%d. \t%s\n",userStrand.outputStrandCount, userStrand.outputStrand[i]);
+           printf(" \t%s\n", userStrand.outputStrand[i]);
        } else {
            //so don't print
        }

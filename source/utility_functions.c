@@ -416,3 +416,18 @@ void print_complementary_strand(int length, char complementaryStrand[]) {
       }
    } 
 }
+/* ------ FUNCTION ------*/ 
+/*
+ * Function splits strands with spaces into multiple outputs 
+ *
+ * Accepts:  
+ * strandPointer struct pointer
+ * Returns: 
+ * nothing 
+ * 
+*/
+
+void strand_splitter(struct strand *strandPointer) {
+
+}
+
