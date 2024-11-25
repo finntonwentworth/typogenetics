@@ -1,20 +1,7 @@
+#include "strand_def.h"
 #include <stdio.h>
 
-#define MAX_STRAND_SIZE     1000
 
-#define UPSIDEDOWN_A    "\u2c6f"
-#define UPSIDEDOWN_T    "\ua7b1"
-#define UPSIDEDOWN_G    "\u2141"
-#define UPSIDEDOWN_C    "\u2183"
-
-struct decodedStrand {
-    int  instruction[MAX_STRAND_SIZE];
-    char instructionText[3*MAX_STRAND_SIZE];
-    int  instructionTextSize; 
-    char foldingPattern[MAX_STRAND_SIZE];
-    int  foldingPatternSize; 
-    int  enzymeCount; 
-};
 
 /* ------ FUNCTION ------*/ 
 /*

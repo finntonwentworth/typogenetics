@@ -1,5 +1,5 @@
-#include "utility_functions.c"
 #include "rand_strand_function.c"
+#include "utility_functions.c"
 #include "amino_acids.c"
 
 
@@ -10,6 +10,7 @@ struct decodedStrand get_instructions_and_folding(char[], int);
 char calculate_starting_base(char[], int, int);
 int *matching_starting_base_elements(char[],int,char); 
 char *current_enzyme_position(int, int);
+void strand_splitter(struct strand*);
 
 /*--- Rand Strand ---*/
 char *rand_strand(int);
@@ -31,3 +32,4 @@ void rpu_acid(void);
 void lpu_acid(void);
 void lpy_acid(void);
 void call_instructions(int, struct strand*); 
+

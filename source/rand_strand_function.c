@@ -1,16 +1,17 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#define MAX_STRAND_SIZE       1000
+#include "strand_def.h"
 
 /*---FUNCTION---*/
 /*
  * User calls rand_strand 100 
  * to generate random strand of 100 bases 
  * with equal distribution for each element 
- *
+ * Accepts: 
+ * int size of random strand to be generated 
+ * Returns
+ * Char pointer to randomly generated strand
  */
 char *rand_strand(int size) {
     static char randStrand[MAX_STRAND_SIZE];

@@ -1,32 +1,4 @@
-#define MAX_STRAND_SIZE         1000
-
-/* ----- STRAND ----- */
-/*
- * Strands are represented as structs which hold useful metadata about the strand
- *
- * maybe needs marker for the currently upright strand? 
- * 1 = mainStrand 
- * 0 = complementaryStrand 
- *
- * or just strcpy swap them each time? 
- *
- * mainStrand: holds the currently acted upon strand 
- * complementaryStrand: array to hold copied elements 
- * size: # of relevant elements in the strand for loops 
- * currentBoundPosition: int representing what element the enzyme is bound to 
- * outputStrandCount: Counter for printing the end strands if they are subdivided/ copied 
- * ouputStrand: 2-D array holding the input, active, and all remaining generated strands 
- */
-struct strand {
-  char mainStrand[MAX_STRAND_SIZE]; 
-  char complementaryStrand[MAX_STRAND_SIZE];
-  int  boundStrandFlag; //0 = mainStrand ; 1 = complementaryStrand
-  int  mainSize; 
-  int  complementarySize;
-  int  currentBoundPosition; 
-  int  outputStrandCount;
-  char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
-};
+#include "strand_def.h"
 
 /* ------ FUNCTION ------*/ 
 /*
