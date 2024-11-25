@@ -22,10 +22,10 @@
  *      Generate a random strand with <int> bases (int - 1 elements)
  *
  * OPTIONAL 
- * -S 
+ * -Sr (--Select-random)
  *      randomly pick starting base for each enzyme 
  *
- * -f (--first-matching) 
+ * -Sf (--Select-first) 
  *      enzymes will select the first matching element to their base binding preference. 
  *
  * (an idea, but won't work if the output is multiple strands/ needs a way to pick one)
@@ -69,10 +69,10 @@ int main(int argC, char **argV) {
               printf("*      Generate a random strand with <int> bases (int - 1 elements)                    \n");
               printf("*                                                                                      \n");
               printf("* OPTIONAL                                                                             \n"); 
-              printf("* -S                                                                                   \n");
+              printf("* -Sr  (--Select-random)                                                               \n");
               printf("*      randomly pick starting base for each enzyme                                     \n");
               printf("*                                                                                      \n");
-              printf("* -f (--first-matching)                                                                \n");
+              printf("* -Sf (--Select-first)                                                                 \n");
               printf("*      enzymes will select the first matching element to their base binding preference.\n");
               printf("*\n");
               return 1;  
