@@ -1,7 +1,4 @@
-#include <stdint.h>
 #include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <time.h>
 #include <locale.h>
@@ -53,8 +50,12 @@ int main(int argC, char **argV) {
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
+/*
+                              .complementaryStrand = "AGTTC GGT",
+                              .complementarySize = 8,
+*/
                               .boundStrandFlag = 0
-                             };
+                              };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -366,61 +367,35 @@ int main(int argC, char **argV) {
    printf("All enzymes executed.\n");
    printf("Initial Strand:\n");
    printf(" \t%s\n",userStrand.outputStrand[0]); 
+   printf("TEST PRINT: Complementary Strand: %s\n",userStrand.complementaryStrand);
    printf("Final Strand(s):\n");
 
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
-   /*----- GOAL: Separate strands with blank spaces in them into multiple outputs */
-   //
-   // DONE : MOVE THIS TO A FUNCTION strand_splitter();
-   // and split complementary strands as well
-   //
-   //
-   //
-   //
-   //
-   //
-   //
-   //
    //TEST
-//   strcpy(userStrand.outputStrand[1], "AAAA GGGG TTTT");
-   i = 0;
-   int m = 1; 
-   while(i <= userStrand.mainSize) {
-       //if the Strand contains a space 
-       if(userStrand.outputStrand[m][i] == ' ') {
-           //write to the next output slot
-           userStrand.outputStrandCount++;
-           //the elements after that space 
-           for(int j = 0; j <= userStrand.mainSize - (i+1); j++) {
-               userStrand.outputStrand[userStrand.outputStrandCount][j] = userStrand.outputStrand[m][j+i+1];
-               //set the element we just copied over to a space 
-               userStrand.outputStrand[m][j+i+1] = ' '; 
-           }
-           //set our space checker to the newly written strand
-           m = userStrand.outputStrandCount; 
-           //reset the index of space checking 
-           i = 0;
-       }
-       //increment through the elements 
-       i++;
-   }
-   /*----------------------------------------------------------------------------*/
-
+   strcpy(userStrand.outputStrand[1], "AA GG TT CC");
+   
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
-   for(int i = userStrand.complementarySize-1; i >= 0; i--) {
+   for(int i = userStrand.complementarySize; i >= 0; i--) {
       userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
       j++;  
    }
-
+   printf("TEST PRINT: complementaryStrand size: %d\n",userStrand.complementarySize);
+   printf("TEST PRINT: output 2 Strand reversed: %s\n",userStrand.outputStrand[2]);
+   //cut any gaps in the strands into their own separate outputs 
+   printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
+   strand_splitter2(strandPointer);
+   printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
    //print the output strands 
-   for(int i = 1; i <= userStrand.outputStrandCount; i++){
+   printf(" \t%s\n",userStrand.outputStrand[1]); 
+   printf(" \t%s\n",userStrand.outputStrand[2]); 
+   for(int i = 3; i <= userStrand.outputStrandCount; i++){
        // if the first element is not A,G,T, or C, then it's an empty strand
        if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf(" \t%s\n", userStrand.outputStrand[i]);
-       } else {
+           printf("  \t%s\n",userStrand.outputStrand[i]);
+      } else {
            //so don't print
-       }
+     }
    }
    printf("Exiting Typogenetics\n");
    return 0; 

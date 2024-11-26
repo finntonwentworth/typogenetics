@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <string.h>
+#include <stdint.h>
 
 #define MAX_STRAND_SIZE         1000
 

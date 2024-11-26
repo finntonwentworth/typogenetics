@@ -35,8 +35,18 @@ void cut_acid(struct strand *strandPointer)
        strandPointer->complementaryStrand[i] = ' '; 
        j++;  
     }
+    // ?? DOES THIS MAKE SENSE ?? 
+    // if i don't arbitrarily set the size of the complementary base I think its fine, i.e. in real applications
     // now the strand is the size of the number of elements up to the bound position
-    strandPointer->complementarySize = strandPointer->mainSize = strandPointer->currentBoundPosition;
+    // come back to this line
+   //    strandPointer->mainSize =  strandPointer->complementarySize = strandPointer->currentBoundPosition;
+    if(strandPointer->currentBoundPosition <= strandPointer->mainSize) {
+        strandPointer->mainSize = strandPointer->currentBoundPosition;
+    }
+    if(strandPointer->currentBoundPosition <= strandPointer->complementarySize) {
+        strandPointer->complementarySize = strandPointer->currentBoundPosition;
+    }
+
 }
 
 /* ------ FUNCTION ------*/ 
