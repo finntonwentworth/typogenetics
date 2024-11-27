@@ -352,23 +352,39 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase) 
 
 /* ------ FUNCTION ------*/ 
 /*
- * Function places arrow marking current position under string 
+ * Function places arrow marking current position under/over string 
  *
  * Accepts:  
- * int representing starting base position/ current acting position
+ * strand pointer , int marking that we are printing above the string or below the string
+ * 0 = above strands
+ * 1 = below strands
  * Returns: 
- * Array containing # of spaces and arrow to graphically mark position
+ * pointer to  2-D Array containing # of spaces and arrow to graphically mark position
  *
- * 
+ * THIS SHOULD PROBABLY BE REVISED I WAS STRUGGLING WITH RETURNING A 2-D ARRAY  
 */
-char *current_enzyme_position(int userstrandsize, int startingbaseposition) {
-   static char arrowmarker[MAX_STRAND_SIZE];  
-   //clear the array - put spaces in each spot under the array 
-   for(int i = 0; i<=userstrandsize; i++) {
-       arrowmarker[i] = ' '; 
+char *current_enzyme_position(struct strand *strandPointer, int printingPosition) {
+   static char arr[MAX_STRAND_SIZE];  
+   //clear the array - put spaces in each spot in the array 
+   for(int i = 0; i<=strandPointer->mainSize; i++) {
+       arr[i] = ' '; 
    }
-   arrowmarker[startingbaseposition-1] = '^'; 
-   return arrowmarker; 
+   for(int i = 0; i<=strandPointer->complementarySize; i++) {
+       arr[i] = ' '; 
+   }
+   //if you're on the main strand and you're printing below the strand
+   if(strandPointer->boundStrandFlag == 0 && printingPosition == 1) {
+       //draw the upwards arrow
+       arr[strandPointer->currentBoundPosition-1] = '^'; 
+       return arr; 
+   } else if(strandPointer->boundStrandFlag && printingPosition == 0) {
+   //if the bound strand flag is set to the complementary draw a down arrow
+       arr[strandPointer->currentBoundPosition-1] = 'V'; 
+       return arr; 
+   } else {
+       return arr;
+   }
+
 }
 /* ------ FUNCTION ------*/ 
 /*

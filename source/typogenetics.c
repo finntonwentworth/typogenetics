@@ -50,7 +50,12 @@ int main(int argC, char **argV) {
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
-                              .boundStrandFlag = 0
+                              .boundStrandFlag = 0,
+                                 /*
+                              .boundStrandFlag = 1,
+                              .complementaryStrand = "AGGTG",
+                              .complementarySize = 5
+                                  */
                               };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
@@ -329,7 +334,7 @@ int main(int argC, char **argV) {
         printf("\n");
         printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
         //print a line underneath array with ^ pointing at the starting base 
-        char *arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
+        char *arrowMarker = current_enzyme_position(strandPointer,1);
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
         //Begin acting on strand with instructions: 
@@ -342,18 +347,31 @@ int main(int argC, char **argV) {
           //determine what instruction to execute
           call_instruction(userDecode.instruction[instructionExecutionIndex], strandPointer); 
           printf(" Executing: %c%c%c\n", userDecode.instructionText[3*instructionExecutionIndex],userDecode.instructionText[3*instructionExecutionIndex+1], userDecode.instructionText[3*instructionExecutionIndex+2]); 
+          arrowMarker = current_enzyme_position(strandPointer,0);
+          printf(" \t\t\t\t\t%s\n",arrowMarker); 
           printf(" \t\t\t\t\t");
           print_complementary_strand(userStrand.complementarySize, userStrand.complementaryStrand); 
           printf("\n");
           printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
           //print a line underneath array with ^ pointing at the bound base 
-          arrowMarker = current_enzyme_position(userStrand.mainSize, userStrand.currentBoundPosition);
+          arrowMarker = current_enzyme_position(strandPointer, 1);
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
-
+          //check if the enzyme has moved off of the strand or into a gap
+          if(userStrand.boundStrandFlag == 0) {
+              if(userStrand.mainStrand[userStrand.currentBoundPosition] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize) {
+                  printf("Enzyme has moved off of strand. Exiting.\n");
+                  break;
+              }
+          } else {
+              if(userStrand.complementaryStrand[userStrand.currentBoundPosition] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize) {
+                  printf("Enzyme has moved off of strand. Exiting.\n");
+                  break;
+              }
+          }
+                  
           instructionExecutionIndex++;  
-
       }
-        printf("Enzyme %d complete\n", (maxEnzymeCount - (userDecode.enzymeCount-1)));
+        printf("Enzyme %d complete.\n", (maxEnzymeCount - (userDecode.enzymeCount-1)));
   }
 
 
@@ -382,14 +400,14 @@ int main(int argC, char **argV) {
 
    //print the output strands 
    printf("Main Strand: \n");
-   printf("1. \t%s\n",userStrand.outputStrand[1]); 
+   printf(" 1. \t%s\n",userStrand.outputStrand[1]); 
    printf("Complementary Strand: \n");
-   printf("2. \t%s\n",userStrand.outputStrand[2]); 
+   printf(" 2. \t%s\n",userStrand.outputStrand[2]); 
    printf("Generated Strands: \n");
    for(int i = 3; i <= userStrand.outputStrandCount; i++){
        // if the first element is not A,G,T, or C, then it's an empty strand
        if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf("%d.  \t%s\n",i,userStrand.outputStrand[i]);
+           printf(" %d.  \t%s\n",i,userStrand.outputStrand[i]);
       } else {
            //so don't print
      }
