@@ -1,32 +1,4 @@
-#define MAX_STRAND_SIZE         1000
-
-/* ----- STRAND ----- */
-/*
- * Strands are represented as structs which hold useful metadata about the strand
- *
- * maybe needs marker for the currently upright strand? 
- * 1 = mainStrand 
- * 0 = complementaryStrand 
- *
- * or just strcpy swap them each time? 
- *
- * mainStrand: holds the currently acted upon strand 
- * complementaryStrand: array to hold copied elements 
- * size: # of relevant elements in the strand for loops 
- * currentBoundPosition: int representing what element the enzyme is bound to 
- * outputStrandCount: Counter for printing the end strands if they are subdivided/ copied 
- * ouputStrand: 2-D array holding the input, active, and all remaining generated strands 
- */
-struct strand {
-  char mainStrand[MAX_STRAND_SIZE]; 
-  char complementaryStrand[MAX_STRAND_SIZE];
-  int  boundStrandFlag; //0 = mainStrand ; 1 = complementaryStrand
-  int  mainSize; 
-  int  complementarySize;
-  int  currentBoundPosition; 
-  int  outputStrandCount;
-  char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
-};
+#include "strand_def.h"
 
 /* ------ FUNCTION ------*/ 
 /*
@@ -49,14 +21,13 @@ void cut_acid(struct strand *strandPointer)
     strandPointer->outputStrandCount +=1; 
     //from the currently bound position to the end of the strand 
     //write that section of the strand to the output 
-
     for(int i = strandPointer->currentBoundPosition; i < strandPointer->mainSize; i++){
        strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->mainStrand[i];
        //set the element we just cut equal to zero
        strandPointer->mainStrand[i] = ' '; 
        j++;  
     }        
-
+    // do this again but for the complementary strand
     strandPointer->outputStrandCount +=1; 
     j = 0; 
     for(int i = strandPointer->complementarySize; i >= strandPointer->currentBoundPosition; i--){
@@ -64,21 +35,52 @@ void cut_acid(struct strand *strandPointer)
        strandPointer->complementaryStrand[i] = ' '; 
        j++;  
     }
+    // ?? DOES THIS MAKE SENSE ?? 
+    // if i don't arbitrarily set the size of the complementary base I think its fine, i.e. in real applications
     // now the strand is the size of the number of elements up to the bound position
-    strandPointer->complementarySize = strandPointer->mainSize = strandPointer->currentBoundPosition;
+    // come back to this line
+   //    strandPointer->mainSize =  strandPointer->complementarySize = strandPointer->currentBoundPosition;
+    if(strandPointer->currentBoundPosition <= strandPointer->mainSize) {
+        strandPointer->mainSize = strandPointer->currentBoundPosition;
+    }
+    if(strandPointer->currentBoundPosition <= strandPointer->complementarySize) {
+        strandPointer->complementarySize = strandPointer->currentBoundPosition;
+    }
+
 }
 
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs del amino acid functionality 
+ * Deletes base underneath currently bound position, leaving a gap, and moves to the base to the right
+ * 
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void del_acid(struct strand *strandPointer) {
+  //if currently bound to main strand, del that bound base 
+  if(strandPointer->boundStrandFlag == 0) {
+     strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = ' ';
+  // else del the bound base on the complementary strand
+  } else {
+     strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = ' ';
+  }
+  //move one base to the right
+  strandPointer->currentBoundPosition++;
+}
 /* ------ FUNCTION ------*/ 
 /*
  * Function serves to call any of the "15" enzyme functions provided an instruction number 
  * Calls function 
  *
  * Accepts:  
- * int instruction number   
- * This will need to accept the strand string as well i think 
+ * int instruction number, strand struct pointer
  * Returns: 
  * nothing
- * and return the strand struct to easily returned the changed string
  * 
 */
 void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
@@ -87,6 +89,7 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             cut_acid(userStrandPointer);
             break;
         case 2:
+            del_acid(userStrandPointer);
             break;
         case 3:
             break;

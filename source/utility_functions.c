@@ -1,20 +1,6 @@
-#include <stdio.h>
+#include "strand_def.h"
 
-#define MAX_STRAND_SIZE     1000
 
-#define UPSIDEDOWN_A    "\u2c6f"
-#define UPSIDEDOWN_T    "\ua7b1"
-#define UPSIDEDOWN_G    "\u2141"
-#define UPSIDEDOWN_C    "\u2183"
-
-struct decodedStrand {
-    int  instruction[MAX_STRAND_SIZE];
-    char instructionText[3*MAX_STRAND_SIZE];
-    int  instructionTextSize; 
-    char foldingPattern[MAX_STRAND_SIZE];
-    int  foldingPatternSize; 
-    int  enzymeCount; 
-};
 
 /* ------ FUNCTION ------*/ 
 /*
@@ -366,23 +352,39 @@ int *matching_starting_base_elements(char strand[],int size, char startingbase) 
 
 /* ------ FUNCTION ------*/ 
 /*
- * Function places arrow marking current position under string 
+ * Function places arrow marking current position under/over string 
  *
  * Accepts:  
- * int representing starting base position/ current acting position
+ * strand pointer , int marking that we are printing above the string or below the string
+ * 0 = above strands
+ * 1 = below strands
  * Returns: 
- * Array containing # of spaces and arrow to graphically mark position
+ * pointer to  2-D Array containing # of spaces and arrow to graphically mark position
  *
- * 
+ * THIS SHOULD PROBABLY BE REVISED I WAS STRUGGLING WITH RETURNING A 2-D ARRAY  
 */
-char *current_enzyme_position(int userstrandsize, int startingbaseposition) {
-   static char arrowmarker[MAX_STRAND_SIZE];  
-   //clear the array - put spaces in each spot under the array 
-   for(int i = 0; i<=userstrandsize; i++) {
-       arrowmarker[i] = ' '; 
+char *current_enzyme_position(struct strand *strandPointer, int printingPosition) {
+   static char arr[MAX_STRAND_SIZE];  
+   //clear the array - put spaces in each spot in the array 
+   for(int i = 0; i<=strandPointer->mainSize; i++) {
+       arr[i] = ' '; 
    }
-   arrowmarker[startingbaseposition-1] = '^'; 
-   return arrowmarker; 
+   for(int i = 0; i<=strandPointer->complementarySize; i++) {
+       arr[i] = ' '; 
+   }
+   //if you're on the main strand and you're printing below the strand
+   if(strandPointer->boundStrandFlag == 0 && printingPosition == 1) {
+       //draw the upwards arrow
+       arr[strandPointer->currentBoundPosition-1] = '^'; 
+       return arr; 
+   } else if(strandPointer->boundStrandFlag && printingPosition == 0) {
+   //if the bound strand flag is set to the complementary draw a down arrow
+       arr[strandPointer->currentBoundPosition-1] = 'V'; 
+       return arr; 
+   } else {
+       return arr;
+   }
+
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -415,4 +417,55 @@ void print_complementary_strand(int length, char complementaryStrand[]) {
               break;
       }
    } 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Function splits strands with spaces into multiple outputs 
+ *
+ * overwrites output strand value in struct 
+ * Accepts:  
+ * strandPointer struct pointer
+ * Returns: 
+ * nothing 
+ * 
+*/
+
+//this has got to go through each output array looking for spaces in strands
+//if it finds one, it writes the rest of the strand to another output strand
+void strand_splitter(struct strand *strandPointer) {
+    //search for space delimiter in the main strand
+   int i = 1;
+   int j = 0;
+   int firstStrandFlag = 1;
+   char *token; 
+   while(i <= strandPointer->outputStrandCount) {
+       token = strtok(strandPointer->outputStrand[i], " ");
+       while(token != NULL) {
+           if(firstStrandFlag == 1) {
+               firstStrandFlag = 0;
+               token = strtok(NULL, " ");
+           } else {
+           
+               strcpy(strandPointer->outputStrand[1+strandPointer->outputStrandCount+j],token);
+               j++;
+               token = strtok(NULL, " ");
+          }
+       }
+        firstStrandFlag = 1;
+        i++;
+    }
+
+   //now that I've cleared out the spaced strands, remove any spaces from the first and second strand
+   token = strtok(strandPointer->outputStrand[1], " "); 
+   if(token != NULL){
+       strcpy(strandPointer->outputStrand[1],token);
+   }
+
+   token = strtok(strandPointer->outputStrand[2], " "); 
+   if(token != NULL){
+       strcpy(strandPointer->outputStrand[2],token);
+   }
+   
+   //add the number of strands we added to the ouput count
+   strandPointer->outputStrandCount = strandPointer->outputStrandCount + j + 1;
 }
