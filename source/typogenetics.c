@@ -50,10 +50,10 @@ int main(int argC, char **argV) {
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
-/*
+
                               .complementaryStrand = "AGTTC GGT",
                               .complementarySize = 8,
-*/
+
                               .boundStrandFlag = 0
                               };
   // struct stores decoded information about the strand
@@ -371,8 +371,6 @@ int main(int argC, char **argV) {
    printf("Final Strand(s):\n");
 
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
-   //TEST
-   strcpy(userStrand.outputStrand[1], "AA GG TT CC");
    
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
@@ -384,7 +382,7 @@ int main(int argC, char **argV) {
    printf("TEST PRINT: output 2 Strand reversed: %s\n",userStrand.outputStrand[2]);
    //cut any gaps in the strands into their own separate outputs 
    printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
-   strand_splitter2(strandPointer);
+   strand_splitter(strandPointer);
    printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
    //print the output strands 
    printf(" \t%s\n",userStrand.outputStrand[1]); 

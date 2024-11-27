@@ -414,90 +414,28 @@ void print_complementary_strand(int length, char complementaryStrand[]) {
  * 
 */
 
-void strand_splitter(struct strand *strandPointer) {
-
-   /*----- GOAL: Separate strands with blank spaces in them into multiple outputs */
-   //
-   // DONE : MOVE THIS TO A FUNCTION strand_splitter();
-   // and split complementary strands as well
-   //
-   // issue with double spaces !!!
-   //
-   //
-   //
-   int i = 0;
-   int j = 0;
-   int k = 0;
-   int m = 1;
-   int blankSpaceFlag = 0; 
-   //index through the array
-   while(i <= strandPointer->mainSize) {
-       //if the element is a space 
-       if(strandPointer->outputStrand[m][i] == ' ') {
-           //BLANK SPACE DETECTED!!
-           blankSpaceFlag = 1; 
-           //determine how many spaces 
-           while(strandPointer->outputStrand[m][i + k] == ' ') { 
-               k++;
-           }
-           //increment past it 
-           i = i + k;
-           //prepare to start writing to the next strand
-           strandPointer->outputStrandCount++;
-           //reset the index for output strands
-           j = k = 0; 
-       }
-       if(blankSpaceFlag == 1) {
-           strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->outputStrand[m][i];
-           strandPointer->outputStrand[m][i] = ' ';
-           j++;
-       }
-       i++;
-   }
-   //reset all of the indices and flag
-   i = j = k = 0; 
-   blankSpaceFlag = 0; 
-   //and do the same thing for the complementary strand
-   while(i <= strandPointer->complementarySize) {
-       //if the element is a space 
-       if(strandPointer->outputStrand[m][i] == ' ') {
-           //BLANK SPACE DETECTED!!
-           blankSpaceFlag = 1; 
-           //determine how many spaces 
-           while(strandPointer->outputStrand[m][i + k] == ' ') { 
-               k++;
-           }
-           //increment past it 
-           i = i + k;
-           //prepare to start writing to the next strand
-           strandPointer->outputStrandCount++;
-           //reset the index for output strands
-           j = k = 0; 
-       }
-       if(blankSpaceFlag == 1) {
-           strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->outputStrand[m][i];
-           strandPointer->outputStrand[m][i] = ' ';
-           j++;
-       }
-       i++;
-   }
-       
-}
 //this has got to go through each output array looking for spaces in strands
 //if it finds one, it writes the rest of the strand to another output strand
-void strand_splitter2(struct strand *strandPointer) {
-    int i = 1;
-    char *token;
-    //while there are still output strands to go through
-    while(i < strandPointer->outputStrandCount) {        
-        token = strtok(strandPointer->outputStrand[i], " ");
-        //while there are still spaces in the strand 
-        while(token != NULL) {
-            strandPointer->outputStrandCount++;
-            strcpy(strandPointer->outputStrand[strandPointer->outputStrandCount],token);
-            token = strtok(NULL," ");
-        }
+void strand_splitter(struct strand *strandPointer) {
+    //search for space delimiter in the main strand
+   int i = 1;
+   int j = 0;
+   int firstStrandFlag = 1;
+   char *token; 
+   while(i <= strandPointer->outputStrandCount) {
+       token = strtok(strandPointer->outputStrand[i], " ");
+       while(token != NULL) {
+           if(firstStrandFlag == 1) {
+               firstStrandFlag = 0;
+               token = strtok(NULL, " ");
+           } else {
+               strcpy(strandPointer->outputStrand[1+strandPointer->outputStrandCount+j],token);
+               j++;
+               token = strtok(NULL, " ");
+           }
+       }
+        firstStrandFlag = 1;
         i++;
     }
-        
+   strandPointer->outputStrandCount = strandPointer->outputStrandCount + j + 1;
 }
