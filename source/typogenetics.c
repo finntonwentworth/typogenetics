@@ -56,7 +56,7 @@ int main(int argC, char **argV) {
   struct decodedStrand userDecode;
 
   // parse user input for different config flags and initial input 
-  while((opt = getopt(argC, argV, "hs:r:S:")) != -1){
+  while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
       switch(opt){
           case 'h':
               printf("* PARAMETERS LIST                                                                      \n");
@@ -117,7 +117,7 @@ int main(int argC, char **argV) {
       return -2; 
   }
   //Check that the user's strand is valid/ 'well formed'
-  if(valid_strand(userStrand.mainStrand, userStrand.mainSize)!=1){
+  if(valid_strand(userStrand.mainStrand, userStrand.mainSize)!=1) {
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
         return -2;
   }
@@ -125,9 +125,9 @@ int main(int argC, char **argV) {
   printf(" User Options Selected: \n");
   if(firstSelectFlag == 1){
       printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
-  }else if(randSelectFlag == 1){
+  }else if(randSelectFlag == 1) {
       printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
-  }else{
+  } else {
       printf(" \tNone.\n");
   }
   printf("\n");
@@ -147,7 +147,7 @@ int main(int argC, char **argV) {
   //print the instructions in plain text
   printf(" \tTotal Strand Instructions are:\n");
   while(i <= 3*userStrand.mainSize){
-    if(i == 0){
+    if(i == 0) {
         printf("\t\t\t%c%c%c ",userDecode.instructionText[i],userDecode.instructionText[i+1],userDecode.instructionText[i+2]);
     } else {
         printf("%c%c%c ",userDecode.instructionText[i],userDecode.instructionText[i+1],userDecode.instructionText[i+2]);
@@ -175,17 +175,17 @@ int main(int argC, char **argV) {
   int maxEnzymeCount = userDecode.enzymeCount;
 
   //if all elements of foldingPattern are '-' then exit  
-  while(i < userDecode.enzymeCount){
+  while(i < userDecode.enzymeCount) {
     //if an element is not '-' then break out of this loop 
       if(userDecode.foldingPattern[i] != '-'){
           break; 
       }
       i++;
-      if(i == userDecode.enzymeCount-1 && i != 1){
+  }
+      if(i == userDecode.enzymeCount){
           printf("Strand consists only of A. Enzyme has no behavior. Ending.\n");
           return -1;
       }
-  }
 
   //reset i for later use
   i = 0; 
@@ -215,14 +215,14 @@ int main(int argC, char **argV) {
           indentFlag = 0; 
           break;
        //else if instruction is pun, just print spaces and increment past   
-       }else if(userDecode.instruction[instructionNumberIndex] == 0){
+       } else if(userDecode.instruction[instructionNumberIndex] == 0) {
           printf("   ");
           instructionNumberIndex++; 
           instructionIndex = instructionIndex+3; 
           break;
         }
        //if loop flag is set print tabs before first instruction
-       if(indentFlag == 1){
+       if(indentFlag == 1) {
           printf("\t\t\t%c%c%c ",userDecode.instructionText[instructionIndex],userDecode.instructionText[instructionIndex+1],userDecode.instructionText[instructionIndex+2]);
           indentFlag = 0; 
         } else {
@@ -236,14 +236,14 @@ int main(int argC, char **argV) {
 
     // print the folding pattern 
     printf(" \tFolding Pattern is: \n");
-    while(foldingIndex < userDecode.foldingPatternSize ){
-        if(userDecode.foldingPattern[foldingIndex] == '-' && indentFlag == 1){
+    while(foldingIndex < userDecode.foldingPatternSize ) {
+        if(userDecode.foldingPattern[foldingIndex] == '-' && indentFlag == 1) {
             //print space rather than  '-' for aesthetics
             printf("\t\t\t ");
             foldingIndex++; 
             indentFlag = 0; 
             break;
-        } else if(userDecode.foldingPattern[foldingIndex] == '-'){
+        } else if(userDecode.foldingPattern[foldingIndex] == '-') {
             //print space rather than  '-' for aesthetics
             printf(" ");
             foldingIndex++; 
@@ -272,51 +272,53 @@ int main(int argC, char **argV) {
     //print the calcuated starting base to bind to 
     printf(" Starting base to bind to is: '%c'\n",startingBase);
     //if calculate_starting_base returned '-', then inform the user
-    if(startingBase == '-'){
+    if(startingBase == '-') {
         printf("Single AA Amino Acid detected. No binding chosen\n"); 
+        instructionExecutionIndex++;  
     }
     
     int *matchingElements = matching_starting_base_elements(userStrand.mainStrand, userStrand.mainSize, startingBase);
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
-    }else {
+
+    } else {
 
         printf(" Matching elements are:\n"); 
         //print the 0th element 
         //add one to index from 1 instead of 0
         printf(" \t\t\tBase %d\n",*matchingElements+1); 
         //print the rest of the matching elements
-        while(matchingElements[i] != -1){
+        while(matchingElements[i] != -1) {
             //add one to index from 1 instead of 0
             printf(" \t\t\tBase %d\n",matchingElements[i]+1);
             i++;
         }
         // if there is more than one option of bases and the first select flag is not enabled:
-        if(i != 1 && firstSelectFlag !=1){
+        if(i != 1 && firstSelectFlag !=1) {
           //if random select was enabled
-            if(randSelectFlag == 1){
+            if(randSelectFlag == 1) {
                //randomly select an option 
                printf("Randomly selecting an available base\n"); 
                userStrand.currentBoundPosition = matchingElements[(rand() % i)]+1; 
-            }else{
+            } else {
                 // prompt the user to select one
                 printf("Please enter a base number to begin acting on: \n \r"); 
                 scanf("%d", &userStrand.currentBoundPosition);
                 //check that the entered value matches one of the elements of matchingElements
                 //and correct for index starting at 0 instead of 1
-                while(userStrand.mainStrand[(userStrand.currentBoundPosition-1)] != startingBase){
+                while(userStrand.mainStrand[(userStrand.currentBoundPosition-1)] != startingBase) {
                     printf("Sorry, enter a valid base number! \n");
                     scanf("%d", &userStrand.currentBoundPosition);
                 }
             }
-        } else{
+        } else {
           //if first select was enabled
             if(firstSelectFlag == 1){
                 printf("Selecting the first matching element\n"); 
             }
-            // automatically select the only/first choice
-            userStrand.currentBoundPosition = matchingElements[0]+1;
+         // automatically select the only/first choice 
+            userStrand.currentBoundPosition = matchingElements[0]+1; 
         }
 
     
@@ -333,12 +335,13 @@ int main(int argC, char **argV) {
         printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
         //Begin acting on strand with instructions: 
-        while(instructionExecutionIndex < userDecode.foldingPatternSize) {
+        while(instructionExecutionIndex <= userDecode.foldingPatternSize) {
           //if the instruction is pun, don't print anything more for this enzyme, just break
           if(userDecode.instruction[instructionExecutionIndex] == 0) {
               instructionExecutionIndex++;  
               break;
           }
+
           //determine what instruction to execute
           call_instruction(userDecode.instruction[instructionExecutionIndex], strandPointer); 
           printf(" Executing: %c%c%c\n", userDecode.instructionText[3*instructionExecutionIndex],userDecode.instructionText[3*instructionExecutionIndex+1], userDecode.instructionText[3*instructionExecutionIndex+2]); 
@@ -351,14 +354,14 @@ int main(int argC, char **argV) {
           //print a line underneath array with ^ pointing at the bound base 
           arrowMarker = current_enzyme_position(strandPointer, 1);
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
-          //check if the enzyme has moved off of the strand or into a gap
+          //check if the enzyme has moved off of the strand or into a gap, accounting for indexing from 1 for currentBoundPosition
           if(userStrand.boundStrandFlag == 0) {
-              if(userStrand.mainStrand[userStrand.currentBoundPosition] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize) {
+              if(userStrand.mainStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize) {
                   printf("Enzyme has moved off of strand. Exiting.\n");
                   break;
               }
           } else {
-              if(userStrand.complementaryStrand[userStrand.currentBoundPosition] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize) {
+              if(userStrand.complementaryStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize) {
                   printf("Enzyme has moved off of strand. Exiting.\n");
                   break;
               }
