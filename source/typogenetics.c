@@ -51,11 +51,6 @@ int main(int argC, char **argV) {
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
                               .boundStrandFlag = 0,
-                                 /*
-                              .boundStrandFlag = 1,
-                              .complementaryStrand = "AGGTG",
-                              .complementarySize = 5
-                                  */
                               };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
