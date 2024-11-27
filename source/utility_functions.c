@@ -429,13 +429,27 @@ void strand_splitter(struct strand *strandPointer) {
                firstStrandFlag = 0;
                token = strtok(NULL, " ");
            } else {
+           
                strcpy(strandPointer->outputStrand[1+strandPointer->outputStrandCount+j],token);
                j++;
                token = strtok(NULL, " ");
-           }
+          }
        }
         firstStrandFlag = 1;
         i++;
     }
+
+   //now that I've cleared out the spaced strands, remove any spaces from the first and second strand
+   token = strtok(strandPointer->outputStrand[1], " "); 
+   if(token != NULL){
+       strcpy(strandPointer->outputStrand[1],token);
+   }
+
+   token = strtok(strandPointer->outputStrand[2], " "); 
+   if(token != NULL){
+       strcpy(strandPointer->outputStrand[2],token);
+   }
+   
+   //add the number of strands we added to the ouput count
    strandPointer->outputStrandCount = strandPointer->outputStrandCount + j + 1;
 }

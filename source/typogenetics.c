@@ -50,10 +50,6 @@ int main(int argC, char **argV) {
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
-
-                              .complementaryStrand = "AGTTC GGT",
-                              .complementarySize = 8,
-
                               .boundStrandFlag = 0
                               };
   // struct stores decoded information about the strand
@@ -329,7 +325,7 @@ int main(int argC, char **argV) {
         printf("\n \r"); 
         //the complementary will be blank for the first printing
         printf(" \t\t\t\t\t");        
-        print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
+        print_complementary_strand(userStrand.complementarySize, userStrand.complementaryStrand); 
         printf("\n");
         printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
         //print a line underneath array with ^ pointing at the starting base 
@@ -347,7 +343,7 @@ int main(int argC, char **argV) {
           call_instruction(userDecode.instruction[instructionExecutionIndex], strandPointer); 
           printf(" Executing: %c%c%c\n", userDecode.instructionText[3*instructionExecutionIndex],userDecode.instructionText[3*instructionExecutionIndex+1], userDecode.instructionText[3*instructionExecutionIndex+2]); 
           printf(" \t\t\t\t\t");
-          print_complementary_strand(userStrand.mainSize, userStrand.complementaryStrand); 
+          print_complementary_strand(userStrand.complementarySize, userStrand.complementaryStrand); 
           printf("\n");
           printf(" \t\t\t\t\t%s\n",userStrand.mainStrand);        
           //print a line underneath array with ^ pointing at the bound base 
@@ -355,7 +351,9 @@ int main(int argC, char **argV) {
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
 
           instructionExecutionIndex++;  
+
       }
+        printf("Enzyme %d complete\n", (maxEnzymeCount - (userDecode.enzymeCount-1)));
   }
 
 
@@ -367,7 +365,6 @@ int main(int argC, char **argV) {
    printf("All enzymes executed.\n");
    printf("Initial Strand:\n");
    printf(" \t%s\n",userStrand.outputStrand[0]); 
-   printf("TEST PRINT: Complementary Strand: %s\n",userStrand.complementaryStrand);
    printf("Final Strand(s):\n");
 
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
@@ -378,19 +375,21 @@ int main(int argC, char **argV) {
       userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
       j++;  
    }
-   printf("TEST PRINT: complementaryStrand size: %d\n",userStrand.complementarySize);
-   printf("TEST PRINT: output 2 Strand reversed: %s\n",userStrand.outputStrand[2]);
+   
+
    //cut any gaps in the strands into their own separate outputs 
-   printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
    strand_splitter(strandPointer);
-   printf("TEST PRINT: output strand count %d\n",userStrand.outputStrandCount);
+
    //print the output strands 
-   printf(" \t%s\n",userStrand.outputStrand[1]); 
-   printf(" \t%s\n",userStrand.outputStrand[2]); 
+   printf("Main Strand: \n");
+   printf("1. \t%s\n",userStrand.outputStrand[1]); 
+   printf("Complementary Strand: \n");
+   printf("2. \t%s\n",userStrand.outputStrand[2]); 
+   printf("Generated Strands: \n");
    for(int i = 3; i <= userStrand.outputStrandCount; i++){
        // if the first element is not A,G,T, or C, then it's an empty strand
        if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf("  \t%s\n",userStrand.outputStrand[i]);
+           printf("%d.  \t%s\n",i,userStrand.outputStrand[i]);
       } else {
            //so don't print
      }
