@@ -74,6 +74,21 @@ void del_acid(struct strand *strandPointer) {
 }
 /* ------ FUNCTION ------*/ 
 /*
+ * Performs swi amino acid functionality 
+ * switches from main strand to complementary, or vice versa  
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void swi_acid(struct strand *strandPointer) {
+    strandPointer->boundStrandFlag = !strandPointer->boundStrandFlag;
+}
+
+/* ------ FUNCTION ------*/ 
+/*
  * Function serves to call any of the "15" enzyme functions provided an instruction number 
  * Calls function 
  *
@@ -92,6 +107,7 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             del_acid(userStrandPointer);
             break;
         case 3:
+            swi_acid(userStrandPointer);
             break;
         case 4:
             break;
