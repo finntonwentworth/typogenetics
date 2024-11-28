@@ -2,6 +2,107 @@
 
 /* ------ FUNCTION ------*/ 
 /*
+ * Performs general action of moving the enzymes position, and copy mode functionailty
+ * 
+ * Sub instruction called as a part of move commands, like mvr/mvl or searches. Also handles copy functionality
+ * 
+ *   boundStrand |  moveDirection | increment or decrement
+ *   ----------------------------------------------------
+ *    0 (main)   |   0 (right)    |         +
+ *    0 (main)   |   1 (left)     |         -
+ *    1 (comp)   |   0 (right)    |         -
+ *    1 (comp)   |   1 (left)     |         +
+ *
+ * Accepts:  
+ * current enzyme position,
+ * currently bound strand flag 
+ * Returns: 
+ * int of newly bound position 
+ * 
+*/
+
+
+void  move_subInstruction(struct strand *strandPointer, int moveDirection) {
+
+    switch (strandPointer->boundStrandFlag) {
+        case 0:
+        switch (moveDirection) {
+            case 0:
+                strandPointer->currentBoundPosition += 1; 
+                break;
+            case 1:
+                strandPointer->currentBoundPosition -= 1; 
+                break; 
+        }
+        break;
+        case 1:
+        switch (moveDirection) {
+            case 0:
+                strandPointer->currentBoundPosition -= 1; 
+                break;
+            case 1:
+                strandPointer->currentBoundPosition += 1; 
+                break;
+        }
+        break;
+    }
+    switch (strandPointer->copyModeFlag) {
+        case 1:
+            switch (strandPointer->boundStrandFlag) {
+                case 0:
+                    switch (strandPointer->mainStrand[strandPointer->currentBoundPosition]) {
+                        case 'A':
+                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'T';
+                            break;
+                        case 'T':
+                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'A';
+                            break;
+                        case 'G':
+                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'C';
+                            break;
+                        case 'C':
+                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'G';
+                            break;
+                    }
+                    break;
+                case 1:
+                    switch (strandPointer->complementaryStrand[strandPointer->currentBoundPosition]) {
+                        case 'A':
+                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'T';
+                            break;
+                        case 'T':
+                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'A';
+                            break;
+                        case 'G':
+                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'C';
+                            break;
+                        case 'C':
+                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'G';
+                            break;
+                    }
+                    break;
+
+        default:
+            break;
+            }
+    }
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * performs copy mode function to be called when a base needs to be copied  
+ *
+ * Accepts:  
+ * strand struct pointer
+ * Returns: 
+ * nothing 
+ * 
+*/
+void copy_base_subInstruction(struct strand *strandPointer) {
+
+}
+
+/* ------ FUNCTION ------*/ 
+/*
  * Performs cut amino acid functionality 
  * Cuts the strand to the right of the current acting position
  * 
@@ -70,7 +171,7 @@ void del_acid(struct strand *strandPointer) {
      strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = ' ';
   }
   //move one base to the right
-  strandPointer->currentBoundPosition++;
+  move_subInstruction(strandPointer, 0); 
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -84,6 +185,7 @@ void del_acid(struct strand *strandPointer) {
  * 
 */
 void swi_acid(struct strand *strandPointer) {
+    //Invert the bound strand flag. This will bind the enzyme to the opposite to the opposite strand
     strandPointer->boundStrandFlag = !strandPointer->boundStrandFlag;
 }
 
@@ -100,13 +202,7 @@ void swi_acid(struct strand *strandPointer) {
  * 
 */
 void mvr_acid(struct strand *strandPointer) {
-    //if strand is bound to main, increment by 1 (move right)
-    if(strandPointer->boundStrandFlag == 0) {
-        strandPointer->currentBoundPosition += 1; 
-    //else decrement by 1 (move left)
-    } else {
-        strandPointer->currentBoundPosition -= 1; 
-    }
+    move_subInstruction(strandPointer, 0); 
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -121,13 +217,37 @@ void mvr_acid(struct strand *strandPointer) {
  * 
 */
 void mvl_acid(struct strand *strandPointer) {
-    //if strand is bound to main, decrement by 1 (move left)
-    if(strandPointer->boundStrandFlag == 0) {
-        strandPointer->currentBoundPosition -= 1; 
-    //else increment by 1 (move right)
-    } else {
-        strandPointer->currentBoundPosition += 1; 
-    }
+    move_subInstruction(strandPointer, 1); 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs cop amino acid functionality 
+ * Strand turns on copy mode- sets a flag in the struct
+ * other functions handle inserting complementary bases
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void cop_acid(struct strand *strandPointer) {
+    strandPointer->copyModeFlag = 1;
+    copy_base_subInstruction(strandPointer); 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs cop amino acid functionality 
+ * Strand turns off copy mode- sets a flag in the struct
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void off_acid(struct strand *strandPointer) {
+    strandPointer->copyModeFlag = 0;
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -158,8 +278,10 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             mvl_acid(userStrandPointer);
             break;
         case 6:
+            cop_acid(userStrandPointer);
             break;
         case 7:
+            off_acid(userStrandPointer);
             break;
         case 8:
             break;

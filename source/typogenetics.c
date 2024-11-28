@@ -35,22 +35,22 @@ int main(int argC, char **argV) {
 
   //set locale for unicode printing
   setlocale(LC_ALL, "");
-
+  //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
-  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   char *userInput;   
-
-
+  //index for managing loops 
+  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
   int foldingIndex = 0;               //keep track of where I am in the folding pattern array
   int indentFlag = 1;                 //flag to indent first character printed  
-                                      //
+                                      
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
   struct strand userStrand = {.outputStrandCount = 2,
                               .boundStrandFlag = 0,
+                              .copyModeFlag = 0
                               };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
