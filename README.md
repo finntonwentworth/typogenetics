@@ -56,9 +56,9 @@ This table shows their mapping. The left side is the first base, the top is the 
 | [pun](#pun)  | Punctuates strands, allowing them to encode for multiple enzymes | DONE! |
 | [cut](#cut)  | Cut Strand(s) | DONE! |
 | [del](#del)  | Delete a base from strand | DONE! |
-| [swi](#swi)  | Switch enzyme to other strand | |
-| [mvr](#mvr)  | Move one unit to the right | |
-| [mvl](#mvl)  | Move one unit to the left | |
+| [swi](#swi)  | Switch enzyme to other strand | DONE! |
+| [mvr](#mvr)  | Move one unit to the right | DONE! |
+| [mvl](#mvl)  | Move one unit to the left | DONE! |
 | [cop](#cop)  | Turn on copy mode | |
 | [off](#off)  | Turn off copy mode | |
 | [ina](#ina)  | Insert A to the right of this unit | |

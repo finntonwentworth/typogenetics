@@ -356,12 +356,12 @@ int main(int argC, char **argV) {
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
           //check if the enzyme has moved off of the strand or into a gap, accounting for indexing from 1 for currentBoundPosition
           if(userStrand.boundStrandFlag == 0) {
-              if(userStrand.mainStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize) {
+              if(userStrand.mainStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize || userStrand.currentBoundPosition <= 0) {
                   printf("Enzyme has moved off of strand. Exiting.\n");
                   break;
               }
           } else {
-              if(userStrand.complementaryStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize) {
+              if(userStrand.complementaryStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize || userStrand.currentBoundPosition <= 0) {
                   printf("Enzyme has moved off of strand. Exiting.\n");
                   break;
               }
