@@ -89,6 +89,48 @@ void swi_acid(struct strand *strandPointer) {
 
 /* ------ FUNCTION ------*/ 
 /*
+ * Performs mvr amino acid functionality 
+ * moves the enzyme one unit to the right on mainStrand 
+ * and one unit left on complementary strand
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void mvr_acid(struct strand *strandPointer) {
+    //if strand is bound to main, increment by 1 (move right)
+    if(strandPointer->boundStrandFlag == 0) {
+        strandPointer->currentBoundPosition += 1; 
+    //else decrement by 1 (move left)
+    } else {
+        strandPointer->currentBoundPosition -= 1; 
+    }
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs mvl amino acid functionality 
+ * moves the enzyme one unit to the left 
+ * and one unit right on complementary strand
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void mvl_acid(struct strand *strandPointer) {
+    //if strand is bound to main, decrement by 1 (move left)
+    if(strandPointer->boundStrandFlag == 0) {
+        strandPointer->currentBoundPosition -= 1; 
+    //else increment by 1 (move right)
+    } else {
+        strandPointer->currentBoundPosition += 1; 
+    }
+}
+/* ------ FUNCTION ------*/ 
+/*
  * Function serves to call any of the "15" enzyme functions provided an instruction number 
  * Calls function 
  *
@@ -110,8 +152,10 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             swi_acid(userStrandPointer);
             break;
         case 4:
+            mvr_acid(userStrandPointer);
             break;
         case 5:
+            mvl_acid(userStrandPointer);
             break;
         case 6:
             break;
