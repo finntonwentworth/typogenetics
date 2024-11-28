@@ -2,6 +2,52 @@
 
 /* ------ FUNCTION ------*/ 
 /*
+ * performs copy mode function to be called when a base needs to be copied  
+ *
+ * Accepts:  
+ * strand struct pointer
+ * Returns: 
+ * nothing 
+ *
+ * NEEDS TO ADJUST SIZE OF COMPLEMENTARY STRAND
+ * 
+*/
+void copy_base_subInstruction(struct strand *strandPointer) {
+    if(strandPointer->boundStrandFlag == 0) {
+        switch(strandPointer->mainStrand[strandPointer->currentBoundPosition-1]) {
+            case 'A':
+                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'T';
+                break;
+            case 'T':
+                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'A';
+                break;
+            case 'G':
+                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'C';
+                break;
+            case 'C':
+                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'G';
+                break;
+        }
+    } else {
+        switch (strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1]) {
+            case 'A':
+                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'T';
+                break;
+            case 'T':
+                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'A';
+                break;
+            case 'G':
+                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'C';
+                break;
+            case 'C':
+                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'G';
+                break;
+        }
+    }
+}
+
+/* ------ FUNCTION ------*/ 
+/*
  * Performs general action of moving the enzymes position, and copy mode functionailty
  * 
  * Sub instruction called as a part of move commands, like mvr/mvl or searches. Also handles copy functionality
@@ -26,80 +72,35 @@ void  move_subInstruction(struct strand *strandPointer, int moveDirection) {
 
     switch (strandPointer->boundStrandFlag) {
         case 0:
-        switch (moveDirection) {
-            case 0:
-                strandPointer->currentBoundPosition += 1; 
-                break;
-            case 1:
-                strandPointer->currentBoundPosition -= 1; 
-                break; 
-        }
-        break;
-        case 1:
-        switch (moveDirection) {
-            case 0:
-                strandPointer->currentBoundPosition -= 1; 
-                break;
-            case 1:
-                strandPointer->currentBoundPosition += 1; 
-                break;
-        }
-        break;
-    }
-    switch (strandPointer->copyModeFlag) {
-        case 1:
-            switch (strandPointer->boundStrandFlag) {
+            switch (moveDirection) {
                 case 0:
-                    switch (strandPointer->mainStrand[strandPointer->currentBoundPosition]) {
-                        case 'A':
-                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'T';
-                            break;
-                        case 'T':
-                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'A';
-                            break;
-                        case 'G':
-                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'C';
-                            break;
-                        case 'C':
-                            strandPointer->complementaryStrand[strandPointer->currentBoundPosition] = 'G';
-                            break;
-                    }
+                    strandPointer->currentBoundPosition += 1; 
                     break;
                 case 1:
-                    switch (strandPointer->complementaryStrand[strandPointer->currentBoundPosition]) {
-                        case 'A':
-                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'T';
-                            break;
-                        case 'T':
-                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'A';
-                            break;
-                        case 'G':
-                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'C';
-                            break;
-                        case 'C':
-                            strandPointer->mainStrand[strandPointer->currentBoundPosition] = 'G';
-                            break;
-                    }
+                    strandPointer->currentBoundPosition -= 1; 
+                    break; 
+            }
+            break;
+        case 1:
+            switch (moveDirection) {
+                case 0:
+                    strandPointer->currentBoundPosition -= 1; 
                     break;
+                case 1:
+                    strandPointer->currentBoundPosition += 1; 
+                    break;
+            }
+            break;
+    }
 
+    switch (strandPointer->copyModeFlag) {
+        case 1:
+            copy_base_subInstruction(strandPointer);
+            break;
         default:
             break;
             }
     }
-}
-/* ------ FUNCTION ------*/ 
-/*
- * performs copy mode function to be called when a base needs to be copied  
- *
- * Accepts:  
- * strand struct pointer
- * Returns: 
- * nothing 
- * 
-*/
-void copy_base_subInstruction(struct strand *strandPointer) {
-
-}
 
 /* ------ FUNCTION ------*/ 
 /*
@@ -232,7 +233,9 @@ void mvl_acid(struct strand *strandPointer) {
  * 
 */
 void cop_acid(struct strand *strandPointer) {
+    printf("TEST PRINT: CopyModeFlag = %d\n",strandPointer->copyModeFlag);
     strandPointer->copyModeFlag = 1;
+    printf("TEST PRINT: CopyModeFlag = %d\n",strandPointer->copyModeFlag);
     copy_base_subInstruction(strandPointer); 
 }
 /* ------ FUNCTION ------*/ 

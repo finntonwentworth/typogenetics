@@ -31,6 +31,8 @@ void rpy_acid(void);
 void rpu_acid(void);
 void lpu_acid(void);
 void lpy_acid(void);
+
 void call_instructions(int, struct strand*); 
 void move_subInstruction(struct strand*, int);
+void copy_base_subInstruction(struct strand*); 
 

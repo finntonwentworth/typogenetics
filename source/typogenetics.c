@@ -281,9 +281,7 @@ int main(int argC, char **argV) {
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
-
     } else {
-
         printf(" Matching elements are:\n"); 
         //print the 0th element 
         //add one to index from 1 instead of 0
