@@ -9,7 +9,6 @@
  * Returns: 
  * nothing 
  *
- * NEEDS TO ADJUST SIZE OF COMPLEMENTARY STRAND
  * 
 */
 void copy_base_subInstruction(struct strand *strandPointer) {
@@ -28,6 +27,12 @@ void copy_base_subInstruction(struct strand *strandPointer) {
                 strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'G';
                 break;
         }
+        //if the current bound position is greater than the size of the strand being copied to, 
+        //set the size to be the current bound position
+        //size does not care about spaces, just the furthest element slot occupied.
+        if(strandPointer->currentBoundPosition > strandPointer->complementarySize) { 
+            strandPointer->complementarySize = strandPointer->currentBoundPosition; 
+        }
     } else {
         switch (strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1]) {
             case 'A':
@@ -42,6 +47,13 @@ void copy_base_subInstruction(struct strand *strandPointer) {
             case 'C':
                 strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'G';
                 break;
+        }
+
+        //if the current bound position is greater than the size of the strand being copied to, 
+        //set the size to be the current bound position
+        //size does not care about spaces, just the furthest element slot occupied.
+        if(strandPointer->currentBoundPosition > strandPointer->mainSize) { 
+            strandPointer->mainSize = strandPointer->currentBoundPosition; 
         }
     }
 }
@@ -233,9 +245,7 @@ void mvl_acid(struct strand *strandPointer) {
  * 
 */
 void cop_acid(struct strand *strandPointer) {
-    printf("TEST PRINT: CopyModeFlag = %d\n",strandPointer->copyModeFlag);
     strandPointer->copyModeFlag = 1;
-    printf("TEST PRINT: CopyModeFlag = %d\n",strandPointer->copyModeFlag);
     copy_base_subInstruction(strandPointer); 
 }
 /* ------ FUNCTION ------*/ 
