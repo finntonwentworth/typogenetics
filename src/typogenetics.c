@@ -35,23 +35,26 @@ int main(int argC, char **argV) {
 
   //set locale for unicode printing
   setlocale(LC_ALL, "");
-
+  //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
-  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   char *userInput;   
-
-
+  //index for managing loops 
+  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
   int foldingIndex = 0;               //keep track of where I am in the folding pattern array
   int indentFlag = 1;                 //flag to indent first character printed  
-                                      //
+                                      
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   //Each strand will have 2 outputs at least - main and complement
   //we start bound to the main strand, and the complement is generated potentially through instructions
-  struct strand userStrand = {.outputStrandCount = 2,
-                              .boundStrandFlag = 0,
-                              };
+  struct strand userStrand = {
+                               .mainStrand = { ' ' }, 
+                               .complementaryStrand = { ' ' },
+                               .outputStrandCount = 2,
+                               .boundStrandFlag = 0,
+                               .copyModeFlag = 0,
+                             };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
 
@@ -281,9 +284,7 @@ int main(int argC, char **argV) {
     //if the first element is the 'null' character, then there are no matching elements
     if(*matchingElements == -1) {
         printf("There are no matching elements to bind to. Ending enzyme\n");
-
     } else {
-
         printf(" Matching elements are:\n"); 
         //print the 0th element 
         //add one to index from 1 instead of 0
@@ -355,17 +356,11 @@ int main(int argC, char **argV) {
           arrowMarker = current_enzyme_position(strandPointer, 1);
           printf(" \t\t\t\t\t%s\n",arrowMarker); 
           //check if the enzyme has moved off of the strand or into a gap, accounting for indexing from 1 for currentBoundPosition
-          if(userStrand.boundStrandFlag == 0) {
-              if(userStrand.mainStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.mainSize || userStrand.currentBoundPosition <= 0) {
-                  printf("Enzyme has moved off of strand. Exiting.\n");
-                  break;
-              }
-          } else {
-              if(userStrand.complementaryStrand[userStrand.currentBoundPosition-1] == ' ' || userStrand.currentBoundPosition > userStrand.complementarySize || userStrand.currentBoundPosition <= 0) {
-                  printf("Enzyme has moved off of strand. Exiting.\n");
-                  break;
-              }
-          }
+          if(check_falling_off(strandPointer) == 1) {
+              printf("Enzyme has moved off of strand. Exiting.\n");
+              break;
+
+          } 
                   
           instructionExecutionIndex++;  
       }
@@ -387,10 +382,11 @@ int main(int argC, char **argV) {
    
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
-   for(int i = userStrand.complementarySize; i >= 0; i--) {
+   for(int i = userStrand.complementarySize-1; i >= 0; i--) {
       userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
       j++;  
    }
+
    
 
    //cut any gaps in the strands into their own separate outputs 
@@ -408,7 +404,7 @@ int main(int argC, char **argV) {
            printf(" %d.  \t%s\n",i,userStrand.outputStrand[i]);
       } else {
            //so don't print
-     }
+      }
    }
    printf("Exiting Typogenetics\n");
    return 0; 

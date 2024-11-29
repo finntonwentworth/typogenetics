@@ -469,3 +469,42 @@ void strand_splitter(struct strand *strandPointer) {
    //add the number of strands we added to the ouput count
    strandPointer->outputStrandCount = strandPointer->outputStrandCount + j + 1;
 }
+
+/* ------ FUNCTION ------*/ 
+/*
+ * Function checks if the enzyme is still bound to an element of a strand
+ *
+ * Accepts:  
+ * strandPointer struct pointer
+ * Returns: 
+ * 1 if the strand is no longer bound 
+ * 0 if it is  
+ * 
+*/
+
+int check_falling_off(struct strand *strandPointer) {
+
+    switch (strandPointer->boundStrandFlag) {
+        case 0:
+            if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] !='A' && strandPointer->mainStrand[strandPointer->currentBoundPosition-1] != 'G' && strandPointer->mainStrand[strandPointer->currentBoundPosition-1] != 'T' && strandPointer->mainStrand[strandPointer->currentBoundPosition-1] != 'C') {
+                return 1; 
+            } else {
+                return 0; 
+            }
+            break;
+        case 1:
+            if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] !='A' && strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] != 'G' && strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] != 'T' && strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] != 'C') {
+                return 1; 
+            } else {
+                return 0; 
+            }
+            break;
+        default:
+            break;
+    }
+
+    //ERROR - if no conditions match
+    fprintf(stderr,"function 'check_falling_off' returned ERROR\n");
+    return -5; 
+}
+

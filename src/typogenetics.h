@@ -3,7 +3,7 @@
 #include "amino_acids.c"
 
 
-/*--- Enzyme Function ---*/
+/*--- Utility Functions ---*/
 int relevant_elements(char[]);
 int valid_strand(char[], int); 
 struct decodedStrand get_instructions_and_folding(char[], int);
@@ -11,6 +11,7 @@ char calculate_starting_base(char[], int, int);
 int *matching_starting_base_elements(char[],int,char); 
 char *current_enzyme_position(struct strand*,int);
 void strand_splitter(struct strand*);
+int  check_falling_off(struct strand*); 
 
 /*--- Rand Strand ---*/
 char *rand_strand(int);
@@ -21,8 +22,8 @@ void del_acid(struct strand*);
 void swi_acid(struct strand*); 
 void mvr_acid(struct strand*);
 void mvl_acid(struct strand*);
-void cop_acid(void);
-void off_acid(void);
+void cop_acid(struct strand*);
+void off_acid(struct strand*);
 void ina_acid(void);
 void inc_acid(void);
 void ing_acid(void);
@@ -31,5 +32,8 @@ void rpy_acid(void);
 void rpu_acid(void);
 void lpu_acid(void);
 void lpy_acid(void);
+
 void call_instructions(int, struct strand*); 
+void move_subInstruction(struct strand*, int);
+void copy_base_subInstruction(struct strand*); 
 

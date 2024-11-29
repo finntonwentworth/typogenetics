@@ -59,8 +59,8 @@ This table shows their mapping. The left side is the first base, the top is the 
 | [swi](#swi)  | Switch enzyme to other strand | DONE! |
 | [mvr](#mvr)  | Move one unit to the right | DONE! |
 | [mvl](#mvl)  | Move one unit to the left | DONE! |
-| [cop](#cop)  | Turn on copy mode | |
-| [off](#off)  | Turn off copy mode | |
+| [cop](#cop)  | Turn on copy mode | DONE! |
+| [off](#off)  | Turn off copy mode | DONE! |
 | [ina](#ina)  | Insert A to the right of this unit | |
 | [inc](#inc)  | Insert C to the right of this unit | |
 | [ing](#ing)  | Insert G to the right of this unit | |

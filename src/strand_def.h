@@ -29,6 +29,7 @@ struct strand {
   char mainStrand[MAX_STRAND_SIZE]; 
   char complementaryStrand[MAX_STRAND_SIZE];
   int  boundStrandFlag; //0 = mainStrand ; 1 = complementaryStrand
+  int  copyModeFlag; 
   int  mainSize; 
   int  complementarySize;
   int  currentBoundPosition; 
