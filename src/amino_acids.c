@@ -1,118 +1,5 @@
 #include "strand_def.h"
-
-/* ------ FUNCTION ------*/ 
-/*
- * performs copy mode function to be called when a base needs to be copied  
- *
- * Accepts:  
- * strand struct pointer
- * Returns: 
- * nothing 
- *
- * 
-*/
-void copy_base_subInstruction(struct strand *strandPointer) {
-    if(strandPointer->boundStrandFlag == 0) {
-        switch(strandPointer->mainStrand[strandPointer->currentBoundPosition-1]) {
-            case 'A':
-                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'T';
-                break;
-            case 'T':
-                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'A';
-                break;
-            case 'G':
-                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'C';
-                break;
-            case 'C':
-                strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] = 'G';
-                break;
-        }
-        //if the current bound position is greater than the size of the strand being copied to, 
-        //set the size to be the current bound position
-        //size does not care about spaces, just the furthest element slot occupied.
-        if(strandPointer->currentBoundPosition > strandPointer->complementarySize) { 
-            strandPointer->complementarySize = strandPointer->currentBoundPosition; 
-        }
-    } else {
-        switch (strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1]) {
-            case 'A':
-                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'T';
-                break;
-            case 'T':
-                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'A';
-                break;
-            case 'G':
-                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'C';
-                break;
-            case 'C':
-                strandPointer->mainStrand[strandPointer->currentBoundPosition-1] = 'G';
-                break;
-        }
-
-        //if the current bound position is greater than the size of the strand being copied to, 
-        //set the size to be the current bound position
-        //size does not care about spaces, just the furthest element slot occupied.
-        if(strandPointer->currentBoundPosition > strandPointer->mainSize) { 
-            strandPointer->mainSize = strandPointer->currentBoundPosition; 
-        }
-    }
-}
-
-/* ------ FUNCTION ------*/ 
-/*
- * Performs general action of moving the enzymes position, and copy mode functionailty
- * 
- * Sub instruction called as a part of move commands, like mvr/mvl or searches. Also handles copy functionality
- * 
- *   boundStrand |  moveDirection | increment or decrement
- *   ----------------------------------------------------
- *    0 (main)   |   0 (right)    |         +
- *    0 (main)   |   1 (left)     |         -
- *    1 (comp)   |   0 (right)    |         -
- *    1 (comp)   |   1 (left)     |         +
- *
- * Accepts:  
- * current enzyme position,
- * currently bound strand flag 
- * Returns: 
- * int of newly bound position 
- * 
-*/
-
-
-void  move_subInstruction(struct strand *strandPointer, int moveDirection) {
-
-    switch (strandPointer->boundStrandFlag) {
-        case 0:
-            switch (moveDirection) {
-                case 0:
-                    strandPointer->currentBoundPosition += 1; 
-                    break;
-                case 1:
-                    strandPointer->currentBoundPosition -= 1; 
-                    break; 
-            }
-            break;
-        case 1:
-            switch (moveDirection) {
-                case 0:
-                    strandPointer->currentBoundPosition -= 1; 
-                    break;
-                case 1:
-                    strandPointer->currentBoundPosition += 1; 
-                    break;
-            }
-            break;
-    }
-
-    switch (strandPointer->copyModeFlag) {
-        case 1:
-            copy_base_subInstruction(strandPointer);
-            break;
-        default:
-            break;
-            }
-    }
+#include "sub_instructions.c"
 
 /* ------ FUNCTION ------*/ 
 /*
@@ -246,11 +133,11 @@ void mvl_acid(struct strand *strandPointer) {
 */
 void cop_acid(struct strand *strandPointer) {
     strandPointer->copyModeFlag = 1;
-    copy_base_subInstruction(strandPointer); 
+    copy_base_subInstruction(strandPointer,strandPointer->currentBoundPosition-1); 
 }
 /* ------ FUNCTION ------*/ 
 /*
- * Performs cop amino acid functionality 
+ * Performs off amino acid functionality 
  * Strand turns off copy mode- sets a flag in the struct
  *
  * Accepts:  
@@ -261,6 +148,62 @@ void cop_acid(struct strand *strandPointer) {
 */
 void off_acid(struct strand *strandPointer) {
     strandPointer->copyModeFlag = 0;
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs ina amino acid functionality 
+ * inserts A to the right of the bound unit
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void ina_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'A'); 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs inc amino acid functionality 
+ * inserts C to the right of the bound unit
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void inc_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'C'); 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs ing amino acid functionality 
+ * inserts G to the right of the bound unit
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void ing_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'G'); 
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs int amino acid functionality 
+ * inserts T to the right of the bound unit
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void int_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'T'); 
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -297,12 +240,16 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             off_acid(userStrandPointer);
             break;
         case 8:
+            ina_acid(userStrandPointer);
             break;
         case 9:
+            inc_acid(userStrandPointer);
             break;
         case 10:
+            ing_acid(userStrandPointer);
             break;
         case 11:
+            int_acid(userStrandPointer);
             break;
         case 12:
             break;

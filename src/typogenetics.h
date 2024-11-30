@@ -24,16 +24,18 @@ void mvr_acid(struct strand*);
 void mvl_acid(struct strand*);
 void cop_acid(struct strand*);
 void off_acid(struct strand*);
-void ina_acid(void);
-void inc_acid(void);
-void ing_acid(void);
-void int_acid(void);
+void ina_acid(struct strand*);
+void inc_acid(struct strand*);
+void ing_acid(struct strand*);
+void int_acid(struct strand*);
 void rpy_acid(void);
 void rpu_acid(void);
 void lpu_acid(void);
 void lpy_acid(void);
-
 void call_instructions(int, struct strand*); 
+
+/*--- Sub Instructions ---*/
 void move_subInstruction(struct strand*, int);
-void copy_base_subInstruction(struct strand*); 
+void copy_base_subInstruction(struct strand*, int); 
+void insert_base_subInstruction(struct strand*, char); 
 
