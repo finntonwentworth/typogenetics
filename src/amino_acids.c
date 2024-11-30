@@ -175,6 +175,7 @@ void ina_acid(struct strand* strandPointer) {
  * 
 */
 void inc_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'C'); 
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -188,6 +189,7 @@ void inc_acid(struct strand* strandPointer) {
  * 
 */
 void ing_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'G'); 
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -201,6 +203,7 @@ void ing_acid(struct strand* strandPointer) {
  * 
 */
 void int_acid(struct strand* strandPointer) {
+    insert_base_subInstruction(strandPointer, 'T'); 
 }
 /* ------ FUNCTION ------*/ 
 /*

@@ -148,10 +148,6 @@ void insert_base_subInstruction(struct strand *strandPointer, char base) {
        strandPointer->complementarySize += 1; 
    //if on the complementary strand 
    } else {
-       // THIS SHIT DONT WORK SO GOOD 
-       //
-       //
-       //
        for(int i = strandPointer->complementarySize; i >= strandPointer->currentBoundPosition; i--) {
            //shift everything up one 
            strandPointer->complementaryStrand[i] = strandPointer->complementaryStrand[i-1];
@@ -160,17 +156,17 @@ void insert_base_subInstruction(struct strand *strandPointer, char base) {
        strandPointer->complementarySize +=1;
        strandPointer->currentBoundPosition +=1;
        //now insert 
-       for(int i = strandPointer->mainSize; i >= strandPointer->currentBoundPosition; i--) {
+       for(int i = strandPointer->mainSize-1; i >= strandPointer->currentBoundPosition-2; i--) {
            //move each element one space up
            strandPointer->mainStrand[i+1] = strandPointer->mainStrand[i];
        }
-/*
+
        if(strandPointer->copyModeFlag == 1) {
-           copy_base_subInstruction(strandPointer, strandPointer->currentBoundPosition-3); 
+           copy_base_subInstruction(strandPointer, strandPointer->currentBoundPosition-2); 
        } else {
-*/
+
            strandPointer->mainStrand[strandPointer->currentBoundPosition-2] = ' '; 
-//       }
+       }
        strandPointer->mainSize += 1; 
    }
 
