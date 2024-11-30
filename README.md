@@ -65,10 +65,10 @@ This table shows their mapping. The left side is the first base, the top is the 
 | [inc](#inc)  | Insert C to the right of this unit | DONE! |
 | [ing](#ing)  | Insert G to the right of this unit | DONE! |
 | [int](#int)  | Insert T to the right of this unit | DONE! |
-| [rpy](#rpy)  | Search of the nearest pyrimidine to the right | |
-| [rpu](#rpu)  | Search for the nearest purine to the right | |
-| [lpy](#lpy)  | Search for the nearest pyrimidine to the left | |
-| [lpu](#lpu)  | Search for the nearest purine to the left   | |
+| [rpy](#rpy)  | Search of the nearest pyrimidine to the right | DONE! |
+| [rpu](#rpu)  | Search for the nearest purine to the right | DONE! |
+| [lpy](#lpy)  | Search for the nearest pyrimidine to the left | DONE! |
+| [lpu](#lpu)  | Search for the nearest purine to the left   | DONE! |
 
 #### pun
 

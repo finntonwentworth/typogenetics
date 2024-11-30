@@ -404,7 +404,7 @@ int main(int argC, char **argV) {
            printf(" %d.  \t%s\n",i,userStrand.outputStrand[i]);
       } else {
            //so don't print
-      }
+    }
    }
    printf("Exiting Typogenetics\n");
    return 0; 

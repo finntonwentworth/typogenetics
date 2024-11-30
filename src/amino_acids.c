@@ -1,6 +1,9 @@
 #include "strand_def.h"
 #include "sub_instructions.c"
 
+//test
+#include <stdio.h>
+
 /* ------ FUNCTION ------*/ 
 /*
  * Performs cut amino acid functionality 
@@ -17,6 +20,7 @@
 */
 void cut_acid(struct strand *strandPointer)
 {
+
     int j = 0;
     //increase output count by 1, for mainStrand 
     strandPointer->outputStrandCount +=1; 
@@ -31,7 +35,7 @@ void cut_acid(struct strand *strandPointer)
     // do this again but for the complementary strand
     strandPointer->outputStrandCount +=1; 
     j = 0; 
-    for(int i = strandPointer->complementarySize; i >= strandPointer->currentBoundPosition; i--){
+    for(int i = strandPointer->complementarySize-1; i >= strandPointer->currentBoundPosition; i--){
        strandPointer->outputStrand[strandPointer->outputStrandCount][j] = strandPointer->complementaryStrand[i];
        strandPointer->complementaryStrand[i] = ' '; 
        j++;  
@@ -205,15 +209,147 @@ void ing_acid(struct strand* strandPointer) {
 void int_acid(struct strand* strandPointer) {
     insert_base_subInstruction(strandPointer, 'T'); 
 }
+
 /* ------ FUNCTION ------*/ 
 /*
- * Function serves to call any of the "15" enzyme functions provided an instruction number 
- * Calls function 
+ * Performs rpy amino acid functionality 
+ * binds to the next right pyrimidine (C or T) 
  *
  * Accepts:  
- * int instruction number, strand struct pointer
+ * struct pointer of type strand 
  * Returns: 
- * nothing
+ * nothing 
+ * 
+*/
+void rpy_acid(struct strand *strandPointer) {
+    if(strandPointer->boundStrandFlag == 0) {
+        for(int i = strandPointer->currentBoundPosition; i <= strandPointer->mainSize; i++){
+            move_subInstruction(strandPointer, 0);
+            if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'C' || strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'T') {
+                break;
+            } else if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    } else {
+        for(int i = strandPointer->currentBoundPosition; i >= -1; i--){
+            move_subInstruction(strandPointer, 1);
+            if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'C' || strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'T') {
+                break;
+            } else if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    }
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs rpu amino acid functionality 
+ * binds to the next right purine (A or G) 
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void rpu_acid(struct strand *strandPointer) {
+    if(strandPointer->boundStrandFlag == 0) {
+        for(int i = strandPointer->currentBoundPosition; i <= strandPointer->mainSize; i++){
+            move_subInstruction(strandPointer, 0);
+            if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'A' || strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'G') {
+                break;
+            } else if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    } else {
+        for(int i = strandPointer->currentBoundPosition; i >= -1; i--){
+            move_subInstruction(strandPointer, 1);
+            if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'A' || strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'G') {
+                break;
+            } else if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    }
+    
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs lpy amino acid functionality 
+ * binds to the next left pyrimidine (C or T) 
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void lpy_acid(struct strand *strandPointer) {
+    if(strandPointer->boundStrandFlag == 0) {
+        for(int i = strandPointer->currentBoundPosition; i >= -1; i--){
+            move_subInstruction(strandPointer, 1);
+            if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'C' || strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'T') {
+                break;
+            } else if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    } else {
+        for(int i = strandPointer->currentBoundPosition; i <= strandPointer->mainSize; i++){
+            move_subInstruction(strandPointer, 0);
+            if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'C' || strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'T') {
+                break;
+            } else if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    }
+}
+/* ------ FUNCTION ------*/ 
+/*
+ * Performs lpu amino acid functionality 
+ * binds to the next right pyrimidine (A or G) 
+ *
+ * Accepts:  
+ * struct pointer of type strand 
+ * Returns: 
+ * nothing 
+ * 
+*/
+void lpu_acid(struct strand *strandPointer) {
+    if(strandPointer->boundStrandFlag == 0) {
+        for(int i = strandPointer->currentBoundPosition; i >= -1; i--){
+            move_subInstruction(strandPointer, 1);
+            if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'A' || strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == 'G') {
+                break;
+            } else if(strandPointer->mainStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    } else {
+        for(int i = strandPointer->currentBoundPosition; i <= strandPointer->mainSize; i++){
+            move_subInstruction(strandPointer, 0);
+            if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'A' || strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == 'G') {
+                break;
+            } else if(strandPointer->complementaryStrand[strandPointer->currentBoundPosition-1] == ' ') {
+                break;
+            }
+        }
+    }
+    
+}
+
+/* ------ FUNCTION ------*/ 
+/*
+ * calls instructions based on the generated instruction array
+ *
+ *
+ * Accepts:  
+ * int instruction number, struct pointer of type strand 
+ * Returns: 
+ * nothing 
  * 
 */
 void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
@@ -252,12 +388,16 @@ void call_instruction(int instructionnumber, struct strand *userStrandPointer) {
             int_acid(userStrandPointer);
             break;
         case 12:
+            rpy_acid(userStrandPointer);
             break;
         case 13:
+            rpu_acid(userStrandPointer);
             break;
         case 14:
+            lpy_acid(userStrandPointer);
             break;
         case 15:
+            lpu_acid(userStrandPointer);
             break;
         default:
             break;

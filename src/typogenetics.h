@@ -28,10 +28,10 @@ void ina_acid(struct strand*);
 void inc_acid(struct strand*);
 void ing_acid(struct strand*);
 void int_acid(struct strand*);
-void rpy_acid(void);
-void rpu_acid(void);
-void lpu_acid(void);
-void lpy_acid(void);
+void rpy_acid(struct strand*);
+void rpu_acid(struct strand*);
+void lpy_acid(struct strand*);
+void lpu_acid(struct strand*);
 void call_instructions(int, struct strand*); 
 
 /*--- Sub Instructions ---*/
