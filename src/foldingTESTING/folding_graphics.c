@@ -58,9 +58,7 @@ int main() {
     // allows me to populate cells plus an offset
     char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
 
-    populate_cell(theGrid,2,2);
-    populate_cell(theGrid,1,2);
-    populate_cell(theGrid,3,0);
+    populate_cell(theGrid,2,2, copUP);
 
     print_grid(theGrid);
     return 0; 
