@@ -1,6 +1,7 @@
 #include "rand_strand_function.c"
 #include "utility_functions.c"
 #include "amino_acids.c"
+#include "folding_graphics.c"
 
 
 /*--- Utility Functions ---*/
@@ -16,6 +17,8 @@ int  check_falling_off(struct strand*);
 /*--- Rand Strand ---*/
 char *rand_strand(int);
 
+/*--- Folding Graphics ---*/
+void folding_graphics(char[]);
 /*--- Amino Acids---*/
 void cut_acid(struct strand*); 
 void del_acid(struct strand*); 
