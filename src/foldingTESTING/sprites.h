@@ -3,6 +3,12 @@
 //size of 2D arrays that make up cells 
 #define CELL_HEIGHT  5
 #define CELL_WIDTH   11
+
+struct sprite {
+    int elementRow; 
+    int elementColumn; 
+    char element[CELL_HEIGHT][CELL_WIDTH]; 
+};
 /*                      ^
  *                    <cop> 
  *                      V
@@ -28,14 +34,14 @@ char  copDOWN[CELL_HEIGHT][CELL_WIDTH] = {
                                                         {"         "},
                                                         {"         "},
                                                         {"   cop   "},
-                                                        {"    V    "},
+                                                        {"    v    "},
                                                         {"         "}
                                                        };
 //extern const char  copLEFT[CELL_HEIGHT][CELL_WIDTH] = {
 char  copLEFT[CELL_HEIGHT][CELL_WIDTH] = {
                                                         {"         "},
                                                         {"         "},
-                                                        {"  <cop   "},
+                                                        {" < cop   "},
                                                         {"         "},
                                                         {"         "}
                                                       };

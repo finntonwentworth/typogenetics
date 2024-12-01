@@ -58,7 +58,13 @@ int main() {
     // allows me to populate cells plus an offset
     char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
 
-    populate_cell(theGrid,2,2, copUP);
+    for(int i = 0; i <= decodedPointer->foldingPatternSize; i++) {
+       populate_cell(theGrid,  determine_next_folding_sprite()
+    }
+    populate_cell(theGrid,0,0, copRIGHT);
+    populate_cell(theGrid,0,1, copDOWN);
+    populate_cell(theGrid,1,1, copLEFT);
+    populate_cell(theGrid,1,0, copUP);
 
     print_grid(theGrid);
     return 0; 
