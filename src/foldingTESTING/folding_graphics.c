@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "../strand_def.h"
 #include "folding_graphics.h"
 
@@ -50,21 +51,19 @@
 
 int main() {
     struct decodedStrand userDecode = {
-                                        .foldingPattern = "rr",
+                                        .foldingPattern = "rl",
                                         .instruction = {6,6}
                                       };
+    struct sprite cell;
     struct decodedStrand *decodedPointer = &userDecode; 
+    struct sprite *spritePointer = &cell;  
     //the 2D array of cells
     // allows me to populate cells plus an offset
     char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
 
     for(int i = 0; i <= decodedPointer->foldingPatternSize; i++) {
-       populate_cell(theGrid,  determine_next_folding_sprite()
+       populate_cell(theGrid,  determine_next_folding_sprite(&decodedPointer->instruction[i],&decodedPointer->foldingPattern[i],spritePointer));
     }
-    populate_cell(theGrid,0,0, copRIGHT);
-    populate_cell(theGrid,0,1, copDOWN);
-    populate_cell(theGrid,1,1, copLEFT);
-    populate_cell(theGrid,1,0, copUP);
 
     print_grid(theGrid);
     return 0; 
