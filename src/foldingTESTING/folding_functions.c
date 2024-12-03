@@ -1,12 +1,19 @@
 #include <stdio.h>
 #include "sprites.h"
 
+/* ------ FUNCTION ------*/ 
+/*
+ * Prints the total grid
+ *
+ * Accepts: 2D array 'Grid'
+ * Returns: 
+ * nothing
+*/
 
-// prints all chars in the grid
 void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
     //print down each row
     for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
-        printf("\t");
+        printf("\t\t\t");
         //print across for each row 
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
             printf("%c",grid[i][j]);
@@ -16,10 +23,17 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
     }
 }
 
-// determines the next needed sprite to be populated in the grid 
-// needs to know the previous grid element? and then give the position of the next one 
-struct sprite *determine_next_folding_sprite(int instruction[], char foldingPattern[], struct sprite *spritePointer) {
-
+/* ------ FUNCTION ------*/ 
+/*
+ * With an instruction, folding direction, and position, determines and writes the 
+ * next sprite to sprite.element
+ *
+ * Accepts: instruction #, folding pattern direction, struct sprite 
+ * Returns:  
+ * pointer to sprite 
+*/
+struct sprite *determine_next_folding_sprite(int instruction, char foldingPattern, struct sprite *spritePointer) {
+    int directionIndex;
     //instruction gives row 
     //folding letter and position determine column 
     // (ROW NUMBER)
@@ -45,19 +59,79 @@ struct sprite *determine_next_folding_sprite(int instruction[], char foldingPatt
     //-  1 = right
     //-  2 = down
     //-  3 = left
+   // if this is the first element being populated, 
+   // then the first direction is facing right. So we'll need instructionRIGHT
+   switch(foldingPattern) {
+       case 's':
+           if(spritePointer->lastFacingDirection == 'U') {
+               directionIndex = 0;
+               spritePointer->elementRow +=1;
+           } else if(spritePointer->lastFacingDirection == 'R') {
+               directionIndex = 1;
+               spritePointer->elementColumn +=1;
+           } else if(spritePointer->lastFacingDirection == 'D') {
+               directionIndex = 2; 
+               spritePointer->elementRow -=1;
+           } else if(spritePointer->lastFacingDirection == 'L') {
+               directionIndex = 3;
+               spritePointer->elementColumn -=1;
+           }
+           break;
+       case 'r':
+           if(spritePointer->lastFacingDirection == 'U') {
+               spritePointer->lastFacingDirection = 'R';
+               directionIndex = 1;
+               spritePointer->elementRow +=1;
+           } else if(spritePointer->lastFacingDirection == 'R') {
+               spritePointer->lastFacingDirection = 'D';
+               directionIndex = 2;
+               spritePointer->elementColumn +=1;
+           } else if(spritePointer->lastFacingDirection == 'D') {
+               spritePointer->lastFacingDirection = 'L';
+               directionIndex = 3; 
+               spritePointer->elementRow -=1;
+           } else if(spritePointer->lastFacingDirection == 'L') {
+               spritePointer->lastFacingDirection = 'U';
+               directionIndex = 0;
+               spritePointer->elementColumn -=1;
+           }
+           break;
+       case 'l':
+           if(spritePointer->lastFacingDirection == 'U') {
+               spritePointer->lastFacingDirection = 'L';
+               directionIndex = 3;
+               spritePointer->elementRow +=1;
+           } else if(spritePointer->lastFacingDirection == 'R') {
+               spritePointer->lastFacingDirection = 'U';
+               directionIndex = 0;
+               spritePointer->elementColumn +=1;
+           } else if(spritePointer->lastFacingDirection == 'D') {
+               spritePointer->lastFacingDirection = 'R';
+               directionIndex = 1; 
+               spritePointer->elementRow -=1;
+           } else if(spritePointer->lastFacingDirection == 'L') {
+               spritePointer->lastFacingDirection = 'D';
+               directionIndex = 2;
+               spritePointer->elementColumn -=1;
+           }
+           break;
+       default:
+           spritePointer->lastFacingDirection = 'R';
+           directionIndex = 1;
+           spritePointer->elementRow = 3;
+           spritePointer->elementColumn = 3;
+           break;
+   }
 
 
-    // this copies the sprite into the structure. 
-    // Now i need a way to dynamically change what variable it calls 
-    for(int i = 0; i < CELL_HEIGHT; i++) {
-        for(int j = 0; j < CELL_WIDTH; j++) {
-            spritePointer->element[i][j] = copRIGHT[i][j];
-        }
-    }
-    spritePointer->elementRow = 3;
-    spritePointer->elementColumn = 3;
 
-    return spritePointer; 
+   for(int i = 0; i < CELL_HEIGHT; i++) {
+       for(int j = 0; j < CELL_WIDTH; j++) {
+           spritePointer->element[i][j] = spriteTable[directionIndex][instruction][i][j];
+       }
+   }
+
+   return spritePointer; 
 }
 
 // this function will take in the folding direction and instruction number to 

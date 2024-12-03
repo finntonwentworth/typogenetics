@@ -7,6 +7,7 @@
 struct sprite {
     int elementRow; 
     int elementColumn; 
+    char lastFacingDirection;
     char element[CELL_HEIGHT][CELL_WIDTH]; 
 };
 
