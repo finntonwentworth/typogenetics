@@ -1,15 +1,31 @@
 # Bit Representation
 
-## Bases
+## Goals
 
-| Base | Bits |
-| --- | --- |
-|**A**|	00 |
-|**T**|	11 |
-|**C**|	01 |
-|**G**|	10 |
+Find ways to represent bases, amino acids, strands, and their characteristics to simplify syntax and computation.
 
-## Amino Acids
+1. Allow bitwise determination of an **instruction/amino acid**
+2. Allow bitwise determination of a **complement**
+3. Allow bitwise determination of **direction**
+
+## Solution
+
+Each base is assigned a 2 bit representation. (Note: Little Endian) By bit shifting the second base left 2 and then ORing them together we get a number from 0 to 15 (8 bits). We can use that as an offset into a 16 element array (potentially a function pointer array?) to get what instruction should be completed. This solves goal 1.
+
+To solve goal 2, the inverse of each 2 bit base will be the bit representation of its complement.
+
+## Tables
+
+### Bases
+
+| Base  | Bits |
+| ---   | ---  |
+| **A** | 00   |
+| **T** | 11   |
+| **C** | 01   |
+| **G** | 10   |
+
+### Amino Acids
 
 | First Base | Second Base | First Base Bits | Second Base Bits | Combined | Amino Acid | Direction |
 | ---------- | ----------- | --------------- | ---------------- | -------- | ---------- | --------- |
