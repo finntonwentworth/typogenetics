@@ -16,7 +16,8 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
         printf("\t\t\t");
         //print across for each row 
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
-            printf("%c",grid[i][j]);
+            //printf("%c",grid[i][j]);
+            printf("%d",grid[i][j]);
 
         }
         printf("\n"); 
@@ -61,11 +62,12 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
     //-  3 = left
    // if this is the first element being populated, 
    // then the first direction is facing right. So we'll need instructionRIGHT
+   printf("folding pattern is : %c\n", foldingPattern);
    switch(foldingPattern) {
        case 's':
            if(spritePointer->lastFacingDirection == 'U') {
                directionIndex = 0;
-               spritePointer->elementRow +=1;
+               spritePointer->elementRow -=1;
            } else if(spritePointer->lastFacingDirection == 'R') {
                directionIndex = 1;
                spritePointer->elementColumn +=1;
@@ -78,7 +80,15 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            }
            break;
        case 'r':
-           if(spritePointer->lastFacingDirection == 'U') {
+           //if the sprite has no last facing direction, then it's the first element
+           //i  dont think this will work with pun, unless I set the last facing direction to '-' on 
+           //function entry
+           if(spritePointer->lastFacingDirection == '-') {
+               spritePointer->lastFacingDirection = 'R';
+               directionIndex = 1;
+               spritePointer->elementRow = 3;
+               spritePointer->elementColumn = 3;
+           } else if(spritePointer->lastFacingDirection == 'U') {
                spritePointer->lastFacingDirection = 'R';
                directionIndex = 1;
                spritePointer->elementRow +=1;
@@ -116,10 +126,6 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            }
            break;
        default:
-           spritePointer->lastFacingDirection = 'R';
-           directionIndex = 1;
-           spritePointer->elementRow = 3;
-           spritePointer->elementColumn = 3;
            break;
    }
 
@@ -139,7 +145,8 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
 void populate_cell(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
     for(int i = 0; i < CELL_HEIGHT; i++) {
         for(int j = 0; j < CELL_WIDTH; j++) {
-            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = spritePointer->element[i][j];
+            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = spritePointer->testElement;
+//            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = 
         }
     }
 }

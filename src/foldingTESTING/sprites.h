@@ -9,6 +9,7 @@ struct sprite {
     int elementColumn; 
     char lastFacingDirection;
     char element[CELL_HEIGHT][CELL_WIDTH]; 
+    int  testElement;
 };
 
 // ok this is 4 blocks of 16 sections of 5 sub sections of 11 elements
