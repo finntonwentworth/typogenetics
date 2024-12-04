@@ -9,7 +9,6 @@
  * Returns: 
  * nothing
 */
-
 void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
     //print down each row
     for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
@@ -17,13 +16,27 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
         //print across for each row 
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
             printf("%c",grid[i][j]);
-//            printf("%d",grid[i][j]);
 
         }
         printf("\n"); 
     }
 }
-
+/* ------ FUNCTION ------*/ 
+/*
+ * Fills grid elements with spaces
+ *
+ * Accepts: 2D array 'Grid'
+ *          spritePointer
+ * Returns: 
+ * nothing
+*/
+void fill_with_spaces(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
+    for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
+        for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
+            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = ' ';
+        }
+    }
+}
 /* ------ FUNCTION ------*/ 
 /*
  * With an instruction, folding direction, and position, determines and writes the 
@@ -73,7 +86,7 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
                spritePointer->elementColumn +=1;
            } else if(spritePointer->lastFacingDirection == 'D') {
                directionIndex = 2; 
-               spritePointer->elementRow -=1;
+               spritePointer->elementRow +=1;
            } else if(spritePointer->lastFacingDirection == 'L') {
                directionIndex = 3;
                spritePointer->elementColumn -=1;
@@ -86,8 +99,10 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            if(spritePointer->lastFacingDirection == '-') {
                spritePointer->lastFacingDirection = 'R';
                directionIndex = 1;
-               spritePointer->elementRow = 3;
-               spritePointer->elementColumn = 3;
+               // set the starting position to the middle of the grid - assuming odd numbered grid 
+               spritePointer->elementRow = (GRID_DIMENSION/2);
+               spritePointer->elementColumn = (GRID_DIMENSION/2);
+
            } else if(spritePointer->lastFacingDirection == 'U') {
                spritePointer->lastFacingDirection = 'R';
                directionIndex = 1;
@@ -110,7 +125,7 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            if(spritePointer->lastFacingDirection == 'U') {
                spritePointer->lastFacingDirection = 'L';
                directionIndex = 3;
-               spritePointer->elementRow +=1;
+               spritePointer->elementRow -=1;
            } else if(spritePointer->lastFacingDirection == 'R') {
                spritePointer->lastFacingDirection = 'U';
                directionIndex = 0;
@@ -128,9 +143,6 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
        default:
            break;
    }
-
-
-
    for(int i = 0; i < CELL_HEIGHT; i++) {
        for(int j = 0; j < CELL_WIDTH; j++) {
            spritePointer->element[i][j] = spriteTable[directionIndex][instruction][i][j];
@@ -139,32 +151,33 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
 
    return spritePointer; 
 }
+int check_screen_refresh(struct sprite *spritePointer) {
+   int screenRefreshFlag = 0;
+   //overflow control - if we try to write to a space off the grid, shift to a new blank grid 
+   if(spritePointer->elementRow > GRID_DIMENSION-1) {
+       spritePointer->elementRow = 0;
+       screenRefreshFlag = 1;
+   } else if(spritePointer->elementRow < 0) {
+       spritePointer->elementRow = GRID_DIMENSION-1; 
+       screenRefreshFlag = 1;
+   }
+   if(spritePointer->elementColumn > GRID_DIMENSION-1) {
+       spritePointer->elementColumn = 0;
+       screenRefreshFlag = 1;
+   } else if(spritePointer->elementColumn < 0) {
+       spritePointer->elementColumn = GRID_DIMENSION-1; 
+       screenRefreshFlag = 1;
+   }
+
+   return screenRefreshFlag;
+}
 
 // this function will take in the folding direction and instruction number to 
 // print the correct instruction and folding arrow
 void populate_cell(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
     for(int i = 0; i < CELL_HEIGHT; i++) {
-        for(int j = 0; j < CELL_WIDTH; j++) {
+        for(int j = 0; j < CELL_WIDTH-1; j++) {
             grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn * CELL_WIDTH)] = spritePointer->element[i][j];
         }
-    }
-}
-void poopulate_cell(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer, char cellNumber) {
-    for(int i = 0; i < CELL_HEIGHT; i++) {
-        for(int j = 0; j < CELL_WIDTH; j++) {
-            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = cellNumber;
-        }
-    }
-}
-void pwint_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
-    //print down each row
-    for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
-        printf("\t\t\t");
-        //print across for each row 
-        for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
-            printf("%c",grid[i][j]);
-
-        }
-        printf("\n"); 
     }
 }

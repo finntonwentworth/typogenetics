@@ -1,15 +1,24 @@
 //macro cells in printing grid 
-#define GRID_DIMENSION   7
+#define GRID_DIMENSION   9
 //size of 2D arrays that make up cells 
 #define CELL_HEIGHT  5
 #define CELL_WIDTH   10
-
+/* --- SPRITE --- */
+/*
+ * Sprite holds the next enzyme element to be drawn in the folding animation, along with 
+ * the position data
+ *
+ * int elementRow: Row # of sprite in the grid 
+ * int elementColumn: Column # of sprite in the grid 
+ * char lastFacingDirection: char representing the orientation of the next move 
+ * char element[][]: 2D array holding sprite element 
+ *
+ */
 struct sprite {
     int elementRow; 
     int elementColumn; 
     char lastFacingDirection;
     char element[CELL_HEIGHT][CELL_WIDTH]; 
-    int  testElement;
 };
 
 // ok this is 4 blocks of 16 sections of 5 sub sections of 11 elements

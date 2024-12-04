@@ -5,14 +5,13 @@
 
 int main() {
     struct decodedStrand userDecode = {
-                                        .foldingPattern = "rlll",
-                                        .foldingPatternSize = 4,
-                                        .instruction = {2,3,4,5}
+                                        .foldingPattern = "rrsssssrsrss",
+                                        .foldingPatternSize = 12,
+                                        .instruction = {2,3,4,5,6,7,8,9,10,11,12,13,14}
                                       };
-    //start at position 3,3
+    //start at middle of grid by initializing '-' as last direction
     struct sprite cell = {
                           .lastFacingDirection = '-',
-                          .testElement = 0
                          };
 
     struct decodedStrand *decodedPointer = &userDecode; 
@@ -21,28 +20,16 @@ int main() {
     // allows me to populate cells plus an offset
     char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
 
-    spritePointer->elementRow = 0;
-    spritePointer->elementColumn = 0;
-    for(int i = 0; i <=49; i++) {
-        poopulate_cell(theGrid,spritePointer,'c'); 
-        spritePointer->elementColumn += 1;
-        if(spritePointer->elementColumn == 7) {
-            spritePointer->elementColumn = 0;
-            spritePointer->elementRow += 1;
-        }
-    }
-/*
-    spritePointer->elementColumn = 4;
-    spritePointer->elementRow = 2;
-
-    populate_cell(theGrid, determine_next_folding_sprite(decodedPointer->instruction[1],decodedPointer->foldingPattern[1],spritePointer));
-    pwint_grid(theGrid);
-*/
     //start after the first element since we print that one facing right at 3,3
+    fill_with_spaces(theGrid,spritePointer); 
     for(int i = 0; i < decodedPointer->foldingPatternSize; i++) {
-       populate_cell(theGrid, determine_next_folding_sprite(decodedPointer->instruction[i],decodedPointer->foldingPattern[i],spritePointer));
-       printf("lastFacingDirection is %c\n",spritePointer->lastFacingDirection);
-       printf("cell populating at %d, %d\n", spritePointer->elementColumn,spritePointer->elementRow); 
+       spritePointer = determine_next_folding_sprite(decodedPointer->instruction[i],decodedPointer->foldingPattern[i],spritePointer);
+       if(check_screen_refresh(spritePointer) == 1) {
+           fill_with_spaces(theGrid,spritePointer);
+           print_grid(theGrid);
+       }
+       populate_cell(theGrid,spritePointer); 
+       printf("placing element at : %d,%d\n", spritePointer->elementColumn, spritePointer->elementRow);
        print_grid(theGrid);
        sleep(1);
     }
