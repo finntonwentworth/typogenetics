@@ -7,7 +7,7 @@ int main() {
     struct decodedStrand userDecode = {
                                         .foldingPattern = "rrsssssrsrss",
                                         .foldingPatternSize = 12,
-                                        .instruction = {2,3,4,5,6,7,8,9,10,11,12,13,14}
+                                        .instruction = {2,3,4,5,6,7,8,9,10,11,12,13}
                                       };
     //start at middle of grid by initializing '-' as last direction
     struct sprite cell = {

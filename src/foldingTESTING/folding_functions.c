@@ -158,14 +158,14 @@ int check_screen_refresh(struct sprite *spritePointer) {
        spritePointer->elementRow = 0;
        screenRefreshFlag = 1;
    } else if(spritePointer->elementRow < 0) {
-       spritePointer->elementRow = GRID_DIMENSION-2; 
+       spritePointer->elementRow = GRID_DIMENSION-1; 
        screenRefreshFlag = 1;
    }
    if(spritePointer->elementColumn > GRID_DIMENSION-1) {
        spritePointer->elementColumn = 0;
        screenRefreshFlag = 1;
    } else if(spritePointer->elementColumn < 0) {
-       spritePointer->elementColumn = GRID_DIMENSION-2; 
+       spritePointer->elementColumn = GRID_DIMENSION-1; 
        screenRefreshFlag = 1;
    }
 
