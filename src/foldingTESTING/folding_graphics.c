@@ -4,17 +4,17 @@
 #include "folding_graphics.h"
 
 int main() {
-    struct decodedStrand userDecode = {
+    const struct decodedStrand userDecode = {
                                         .foldingPattern = "rrsssssrsrss",
                                         .foldingPatternSize = 12,
-                                        .instruction = {2,3,4,5,6,7,8,9,10,11,12,13}
+                                        .instruction = {2,3,4,5,6,7,8,4,10,11,12,13}
                                       };
     //start at middle of grid by initializing '-' as last direction
     struct sprite cell = {
                           .lastFacingDirection = '-',
                          };
 
-    struct decodedStrand *decodedPointer = &userDecode; 
+    const struct decodedStrand *decodedPointer = &userDecode; 
     struct sprite *spritePointer = &cell;  
     //the 2D array of cells
     // allows me to populate cells plus an offset
@@ -22,8 +22,9 @@ int main() {
 
     //start after the first element since we print that one facing right at 3,3
     fill_with_spaces(theGrid,spritePointer); 
-    for(int i = 0; i < decodedPointer->foldingPatternSize; i++) {
-       spritePointer = determine_next_folding_sprite(decodedPointer->instruction[i],decodedPointer->foldingPattern[i],spritePointer);
+    for(int i = 0; i < decodedPointer->foldingPatternSize-1; i++) {
+//       spritePointer = determine_next_folding_sprite(decodedPointer->instruction[i],decodedPointer->foldingPattern[i],spritePointer);
+       spritePointer = determine_next_folding_sprite(userDecode.instruction[i],userDecode.foldingPattern[i],spritePointer);
        if(check_screen_refresh(spritePointer) == 1) {
            fill_with_spaces(theGrid,spritePointer);
            print_grid(theGrid);
