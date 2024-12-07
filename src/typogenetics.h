@@ -1,7 +1,7 @@
 #include "rand_strand_function.c"
 #include "utility_functions.c"
 #include "amino_acids.c"
-#include "folding_graphics.c"
+#include "foldingTESTING/enzyme_folding.c"
 
 
 /*--- Utility Functions ---*/

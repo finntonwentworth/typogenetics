@@ -262,6 +262,9 @@ int main(int argC, char **argV) {
     }
 
     printf("\n \r");
+    
+    //TEST FUNCTION HOLY CRAP
+    enzyme_folding(userDecode);
 
     //reset i for later use
     i = 1;
