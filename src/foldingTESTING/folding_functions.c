@@ -115,7 +115,7 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            } else if(spritePointer->lastFacingDirection == 'D') {
                spritePointer->lastFacingDirection = 'L';
                directionIndex = 3; 
-               spritePointer->elementRow -=1;
+               spritePointer->elementRow +=1;
            } else if(spritePointer->lastFacingDirection == 'L') {
                spritePointer->lastFacingDirection = 'U';
                directionIndex = 0;
