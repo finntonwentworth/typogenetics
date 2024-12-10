@@ -17,15 +17,15 @@ void enzyme_folding(struct decodedStrand userDecode) {
   char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
   fill_with_spaces(theGrid,spritePointer); 
   for(int i = 0; i < decodedPointer->foldingPatternSize; i++) {
-//       spritePointer = determine_next_folding_sprite(decodedPointer->instruction[i],decodedPointer->foldingPattern[i],spritePointer);
        spritePointer = determine_next_folding_sprite(userDecode.instruction[i],userDecode.foldingPattern[i],spritePointer);
        if(check_screen_refresh(spritePointer) == 1) {
            fill_with_spaces(theGrid,spritePointer);
        }
        populate_cell(theGrid,spritePointer); 
        printf("placing element at : %d,%d\n", spritePointer->elementColumn, spritePointer->elementRow);
-       //print_grid(theGrid);
+       print_grid(theGrid);
+       sleep(1);
     }
   //just print at end for the test
-    print_grid(theGrid);
+  //  print_grid(theGrid);
 }

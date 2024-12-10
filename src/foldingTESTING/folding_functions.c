@@ -33,7 +33,8 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
 void fill_with_spaces(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
     for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
-            grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = ' ';
+            //grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = ' ';
+            grid[i][j] = ' ';
         }
     }
 }
@@ -106,7 +107,7 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            } else if(spritePointer->lastFacingDirection == 'U') {
                spritePointer->lastFacingDirection = 'R';
                directionIndex = 1;
-               spritePointer->elementRow +=1;
+               spritePointer->elementRow -=1;
            } else if(spritePointer->lastFacingDirection == 'R') {
                spritePointer->lastFacingDirection = 'D';
                directionIndex = 2;
