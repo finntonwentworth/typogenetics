@@ -1,11 +1,9 @@
-
-#include <stdio.h>
 #include <unistd.h>
 #include "../strand_def.h"
 #include "folding_graphics.h"
 
 
-void enzyme_folding(struct decodedStrand userDecode) {
+int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
   struct sprite cell = {
                         .lastFacingDirection = '-',
                        };
@@ -16,16 +14,20 @@ void enzyme_folding(struct decodedStrand userDecode) {
   // allows me to populate cells plus an offset
   char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
   fill_with_spaces(theGrid,spritePointer); 
-  for(int i = 0; i < decodedPointer->foldingPatternSize; i++) {
-       spritePointer = determine_next_folding_sprite(userDecode.instruction[i],userDecode.foldingPattern[i],spritePointer);
+//  for(int i = 0; i < foldingIndex; i++) {
+    while(patternIndex < userDecode.foldingPatternSize) {
+       if(userDecode.instruction[patternIndex] == 0) {
+         patternIndex++;
+         break;
+       }
+       spritePointer = determine_next_folding_sprite(userDecode.instruction[patternIndex],userDecode.foldingPattern[patternIndex],spritePointer); 
        if(check_screen_refresh(spritePointer) == 1) {
            fill_with_spaces(theGrid,spritePointer);
        }
        populate_cell(theGrid,spritePointer); 
-       printf("placing element at : %d,%d\n", spritePointer->elementColumn, spritePointer->elementRow);
        print_grid(theGrid);
+       patternIndex++;
        sleep(1);
     }
-  //just print at end for the test
-  //  print_grid(theGrid);
+  return patternIndex;
 }

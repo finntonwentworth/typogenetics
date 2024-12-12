@@ -33,7 +33,6 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
 void fill_with_spaces(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
     for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
-            //grid[i+(spritePointer->elementRow * CELL_HEIGHT)][j+(spritePointer->elementColumn *CELL_WIDTH)] = ' ';
             grid[i][j] = ' ';
         }
     }
@@ -76,7 +75,6 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
     //-  3 = left
    // if this is the first element being populated, 
    // then the first direction is facing right. So we'll need instructionRIGHT
-   printf("folding pattern is : %c\n", foldingPattern);
    switch(foldingPattern) {
        case 's':
            if(spritePointer->lastFacingDirection == 'U') {

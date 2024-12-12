@@ -42,7 +42,7 @@ int main(int argC, char **argV) {
   int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
-  int foldingIndex = 0;               //keep track of where I am in the folding pattern array
+  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
   int indentFlag = 1;                 //flag to indent first character printed  
                                       
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
@@ -263,8 +263,9 @@ int main(int argC, char **argV) {
 
     printf("\n \r");
     
-    //TEST FUNCTION HOLY CRAP
-    enzyme_folding(userDecode);
+    // print the enzyme folding grid 
+    // if user mode is on 
+    patternIndex = enzyme_folding(userDecode, patternIndex);
 
     //reset i for later use
     i = 1;

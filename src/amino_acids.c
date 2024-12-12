@@ -1,8 +1,6 @@
 #include "strand_def.h"
 #include "sub_instructions.c"
 
-//test
-#include <stdio.h>
 
 /* ------ FUNCTION ------*/ 
 /*

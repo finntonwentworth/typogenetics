@@ -42,3 +42,5 @@ void move_subInstruction(struct strand*, int);
 void copy_base_subInstruction(struct strand*, int); 
 void insert_base_subInstruction(struct strand*, char); 
 
+/*--- Sub Instructions ---*/
+int enzyme_folding(struct decodedStrand, int);
