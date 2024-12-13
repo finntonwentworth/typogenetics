@@ -36,7 +36,7 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
  * Returns: 
  * nothing
 */
-void fill_with_spaces(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
+void fill_with_spaces(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
     for(int i = 0; i <(CELL_HEIGHT * GRID_DIMENSION); i++) {
         for(int j = 0; j <(CELL_WIDTH * GRID_DIMENSION); j++) {
             grid[i][j] = ' ';

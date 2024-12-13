@@ -13,7 +13,7 @@ int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
   //the 2D array of cells
   // allows me to populate cells plus an offset
   char theGrid[GRID_DIMENSION*CELL_HEIGHT][GRID_DIMENSION*CELL_WIDTH];
-  fill_with_spaces(theGrid,spritePointer); 
+  fill_with_spaces(theGrid); 
   while(patternIndex < userDecode.foldingPatternSize) {
       if(userDecode.instruction[patternIndex] == 0) {
          patternIndex++;
@@ -21,7 +21,7 @@ int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
        }
        spritePointer = determine_next_folding_sprite(userDecode.instruction[patternIndex],userDecode.foldingPattern[patternIndex],spritePointer); 
        if(check_screen_refresh(spritePointer) == 1) {
-           fill_with_spaces(theGrid,spritePointer);
+           fill_with_spaces(theGrid);
        }
        populate_cell(theGrid,spritePointer); 
     
@@ -35,7 +35,7 @@ int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
     // return to save point
        printf("\x1B[u");
        patternIndex++;
-       sleep(1);
+       usleep(500000);
     }
   //jump down one grid 
   printf("\x1B[99B");
