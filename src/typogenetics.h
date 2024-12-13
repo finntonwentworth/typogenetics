@@ -14,11 +14,15 @@ char *current_enzyme_position(struct strand*,int);
 void strand_splitter(struct strand*);
 int  check_falling_off(struct strand*); 
 
+
 /*--- Rand Strand ---*/
 char *rand_strand(int);
 
+
 /*--- Folding Graphics ---*/
-void folding_graphics(char[]);
+int enzyme_folding(struct decodedStrand, int);
+
+
 /*--- Amino Acids---*/
 void cut_acid(struct strand*); 
 void del_acid(struct strand*); 
@@ -41,6 +45,3 @@ void call_instructions(int, struct strand*);
 void move_subInstruction(struct strand*, int);
 void copy_base_subInstruction(struct strand*, int); 
 void insert_base_subInstruction(struct strand*, char); 
-
-/*--- Sub Instructions ---*/
-int enzyme_folding(struct decodedStrand, int);
