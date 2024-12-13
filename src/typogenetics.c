@@ -57,6 +57,9 @@ int main(int argC, char **argV) {
                              };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
+  //erase entire screen and move to home position
+  printf("\x1B[2J");
+  printf("\x1B[H");
 
   // parse user input for different config flags and initial input 
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {

@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <unistd.h>
 #include "sprites.h"
 
 /* ------ FUNCTION ------*/ 
@@ -18,8 +19,13 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
             printf("%c",grid[i][j]);
 
         }
-        printf("\n"); 
+        if(i == (CELL_HEIGHT * GRID_DIMENSION)) {
+            break;
+        } else {
+            printf("\n"); 
+        }
     }
+    printf("\x1B[4A");
 }
 /* ------ FUNCTION ------*/ 
 /*
