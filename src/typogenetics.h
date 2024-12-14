@@ -13,7 +13,7 @@ int *matching_starting_base_elements(char[],int,char);
 char *current_enzyme_position(struct strand*,int);
 void strand_splitter(struct strand*);
 int  check_falling_off(struct strand*); 
-
+void wait_for_user(void);
 
 /*--- Rand Strand ---*/
 char *rand_strand(int);

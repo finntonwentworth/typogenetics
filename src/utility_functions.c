@@ -508,3 +508,8 @@ int check_falling_off(struct strand *strandPointer) {
     return -5; 
 }
 
+void wait_for_user(void) {
+  char enter;
+  printf("Press Enter to continue: \n");
+  scanf("%c", &enter);
+}
