@@ -25,7 +25,7 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
             printf("\n"); 
         }
     }
-    printf("\x1B[4A");
+//    printf("\x1B[4A");
 }
 /* ------ FUNCTION ------*/ 
 /*
@@ -138,7 +138,7 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
            } else if(spritePointer->lastFacingDirection == 'D') {
                spritePointer->lastFacingDirection = 'R';
                directionIndex = 1; 
-               spritePointer->elementRow -=1;
+               spritePointer->elementRow +=1;
            } else if(spritePointer->lastFacingDirection == 'L') {
                spritePointer->lastFacingDirection = 'D';
                directionIndex = 2;

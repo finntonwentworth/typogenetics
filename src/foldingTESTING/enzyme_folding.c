@@ -2,6 +2,12 @@
 #include "../strand_def.h"
 #include "folding_graphics.h"
 
+#define JUMPHOME      "\x1B[H"
+#define JUMPUP9       "\x1B[9A"
+#define MOVEUPROW     "\x1B M"
+#define MOVEUPONEROW  "\x1B[1A"
+#define CLEARSCRN     "\x1B[2J"
+#define CLEARTOEND    "\x1B[0J"
 
 int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
   struct sprite cell = {
@@ -27,17 +33,17 @@ int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
     
     // TESTING 
     // trying to eliminate screen scroll when printing pattern
-    //move up one row 
-       printf("\x1B[1A");
-    // set save point
-       printf("\x1B[s");
+//       printf(CLEARSCRN);
+//       printf(JUMPHOME);
+    for(int i = 0; i < GRID_DIMENSION*CELL_HEIGHT; i++) {
+      printf(MOVEUPONEROW);
+    }
+
+//       printf(CLEARTOEND);
        print_grid(theGrid);
-    // return to save point
-       printf("\x1B[u");
        patternIndex++;
        usleep(500000);
     }
   //jump down one grid 
-  printf("\x1B[99B");
   return patternIndex;
 }

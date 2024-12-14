@@ -57,9 +57,6 @@ int main(int argC, char **argV) {
                              };
   // struct stores decoded information about the strand
   struct decodedStrand userDecode;
-  //erase entire screen and move to home position
-  printf("\x1B[2J");
-  printf("\x1B[H");
 
   // parse user input for different config flags and initial input 
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
@@ -265,7 +262,15 @@ int main(int argC, char **argV) {
     }
 
     printf("\n \r");
+
+    //test 
+    char enter;
+    printf("Press Enter to continue:\n");
+    scanf("%c", &enter);
     
+    for(int i = 0; i < GRID_DIMENSION*CELL_HEIGHT; i++) {
+      printf("\n \r");
+    }
     // print the enzyme folding grid 
     // if user mode is on 
     patternIndex = enzyme_folding(userDecode, patternIndex);
