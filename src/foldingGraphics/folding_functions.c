@@ -25,14 +25,12 @@ void print_grid(char grid[][CELL_WIDTH*GRID_DIMENSION]) {
             printf("\n"); 
         }
     }
-//    printf("\x1B[4A");
 }
 /* ------ FUNCTION ------*/ 
 /*
  * Fills grid elements with spaces
  *
  * Accepts: 2D array 'Grid'
- *          spritePointer
  * Returns: 
  * nothing
 */
@@ -79,8 +77,6 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
     //-  1 = right
     //-  2 = down
     //-  3 = left
-   // if this is the first element being populated, 
-   // then the first direction is facing right. So we'll need instructionRIGHT
    switch(foldingPattern) {
        case 's':
            if(spritePointer->lastFacingDirection == 'U') {
@@ -156,6 +152,17 @@ struct sprite *determine_next_folding_sprite(int instruction, char foldingPatter
 
    return spritePointer; 
 }
+
+/* ------ FUNCTION ------*/ 
+/*
+ * Checks if the folding pattern has exceed the screen bounds and start drawing on a 
+ * blank screen
+ *
+ * Accepts: spritePointer
+ * Returns:  
+ * 1 if the screen needs to  be refreshed
+ * 0 if not
+*/
 int check_screen_refresh(struct sprite *spritePointer) {
    int screenRefreshFlag = 0;
    //overflow control - if we try to write to a space off the grid, shift to a new blank grid 
@@ -177,8 +184,14 @@ int check_screen_refresh(struct sprite *spritePointer) {
    return screenRefreshFlag;
 }
 
-// this function will take in the folding direction and instruction number to 
-// print the correct instruction and folding arrow
+/* ------ FUNCTION ------*/ 
+/*
+ * Populate a grid elemetn with the sprite determined from determine_next_folding_sprite();
+ *
+ * Accepts: Grid, spritePointer
+ * Returns:  
+ * nothing
+*/
 void populate_cell(char grid[][CELL_WIDTH*GRID_DIMENSION], struct sprite *spritePointer) {
     for(int i = 0; i < CELL_HEIGHT; i++) {
         for(int j = 0; j < CELL_WIDTH-1; j++) {
