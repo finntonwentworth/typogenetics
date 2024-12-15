@@ -1,6 +1,7 @@
 #include "rand_strand_function.c"
 #include "utility_functions.c"
 #include "amino_acids.c"
+#include "foldingGraphics/enzyme_folding.c"
 
 
 /*--- Utility Functions ---*/
@@ -12,9 +13,15 @@ int *matching_starting_base_elements(char[],int,char);
 char *current_enzyme_position(struct strand*,int);
 void strand_splitter(struct strand*);
 int  check_falling_off(struct strand*); 
+void wait_for_user(void);
 
 /*--- Rand Strand ---*/
 char *rand_strand(int);
+
+
+/*--- Folding Graphics ---*/
+int enzyme_folding(struct decodedStrand, int);
+
 
 /*--- Amino Acids---*/
 void cut_acid(struct strand*); 
@@ -38,4 +45,3 @@ void call_instructions(int, struct strand*);
 void move_subInstruction(struct strand*, int);
 void copy_base_subInstruction(struct strand*, int); 
 void insert_base_subInstruction(struct strand*, char); 
-

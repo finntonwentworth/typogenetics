@@ -37,12 +37,14 @@ int main(int argC, char **argV) {
   setlocale(LC_ALL, "");
   //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
+  // usermode controls autostops and printing graphics 
+  int userModeFlag = 1;
   char *userInput;   
   //index for managing loops 
   int i, startingBaseIndex,instructionExecutionIndex  = 0; 
   int instructionIndex = 0;           //keep track of where I am in the instruction array 
   int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
-  int foldingIndex = 0;               //keep track of where I am in the folding pattern array
+  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
   int indentFlag = 1;                 //flag to indent first character printed  
                                       
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
@@ -94,8 +96,12 @@ int main(int argC, char **argV) {
             userInput = optarg;
             if(strcmp(userInput, "f") == 0){
                 firstSelectFlag = 1; 
+          // disable usermode
+                userModeFlag = 0; 
             }else if(strcmp(userInput, "r") == 0){
                 randSelectFlag = 1;
+          // disable usermode
+                userModeFlag = 0; 
                 srand(time(0));
             }else{
                 fprintf(stderr, "Invalid argument passed to -S\n");
@@ -263,6 +269,21 @@ int main(int argC, char **argV) {
 
     printf("\n \r");
 
+    if(userModeFlag == 1) {
+      wait_for_user();
+    }
+    
+    for(int i = 0; i < GRID_DIMENSION*CELL_HEIGHT; i++) {
+      printf("\n \r");
+    }
+    // print the enzyme folding grid 
+    // if user mode is on 
+    patternIndex = enzyme_folding(userDecode, patternIndex);
+
+    if(userModeFlag == 1) {
+      wait_for_user();
+    }
+
     //reset i for later use
     i = 1;
 
@@ -371,6 +392,10 @@ int main(int argC, char **argV) {
     //reset the indent flag 
     indentFlag = 1;
     userDecode.enzymeCount--;
+
+    if(userModeFlag == 1) {
+      wait_for_user();
+    }
     
   }//END OF WHILE
    printf("All enzymes executed.\n");
