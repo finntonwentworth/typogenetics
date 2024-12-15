@@ -275,12 +275,15 @@ int main(int argC, char **argV) {
       wait_for_user();
     }
     
+    //print new lines for formatting
     for(int i = 0; i < GRID_DIMENSION*CELL_HEIGHT; i++) {
       printf("\n \r");
     }
     // print the enzyme folding grid 
     // if user mode is on 
-    patternIndex = enzyme_folding(userDecode, patternIndex);
+    if(userModeFlag == 1) {
+      patternIndex = enzyme_folding(userDecode, patternIndex);
+    }
 
     if(userModeFlag == 1) {
       wait_for_user();
@@ -381,6 +384,11 @@ int main(int argC, char **argV) {
           //check if the enzyme has moved off of the strand or into a gap, accounting for indexing from 1 for currentBoundPosition
           if(check_falling_off(strandPointer) == 1) {
               printf("Enzyme has moved off of strand. Exiting.\n");
+
+          //TEST
+          for (int i = 0; i <userStrand.complementarySize; i++){
+              printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
+          }
               //increment until we reach the first instruction in the next enzyme
               while(userDecode.instruction[instructionExecutionIndex] != 0) {
                   instructionExecutionIndex++;
@@ -411,6 +419,11 @@ int main(int argC, char **argV) {
 
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
    
+  //TEST
+  for (int i = 0; i <userStrand.complementarySize; i++){
+      printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
+  }
+
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
    for(int i = userStrand.complementarySize-1; i >= 0; i--) {
@@ -418,10 +431,14 @@ int main(int argC, char **argV) {
       j++;  
    }
 
-   
+  //TEST
+  for (int i = 0; i <userStrand.complementarySize; i++){
+      printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
+  }
 
    //cut any gaps in the strands into their own separate outputs 
    strand_splitter(strandPointer);
+
 
    //print the output strands 
    printf("Main Strand: \n");

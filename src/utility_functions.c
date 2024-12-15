@@ -421,7 +421,8 @@ void print_complementary_strand(int length, char complementaryStrand[]) {
 /* ------ FUNCTION ------*/ 
 /*
  * Function splits strands with spaces into multiple outputs 
- *
+ * this has got to go through each output array looking for spaces in strands
+ * if it finds one, it writes the rest of the strand to another output strand
  * overwrites output strand value in struct 
  * Accepts:  
  * strandPointer struct pointer
@@ -429,9 +430,6 @@ void print_complementary_strand(int length, char complementaryStrand[]) {
  * nothing 
  * 
 */
-
-//this has got to go through each output array looking for spaces in strands
-//if it finds one, it writes the rest of the strand to another output strand
 void strand_splitter(struct strand *strandPointer) {
     //search for space delimiter in the main strand
    int i = 1;
