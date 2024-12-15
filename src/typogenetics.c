@@ -432,7 +432,7 @@ int main(int argC, char **argV) {
    printf("Main Strand: \n");
    printf(" 1. \t%s\n",userStrand.outputStrand[1]); 
    printf("Complementary Strand: \n");
-   printf("2. \t");
+   printf(" 2. \t");
    for (int i = 0; i <userStrand.complementarySize; i++){
        printf("%c",userStrand.outputStrand[2][i]);
    }
