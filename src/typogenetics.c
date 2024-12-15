@@ -208,6 +208,8 @@ int main(int argC, char **argV) {
   // while there are still enzymes left to execute
   while(userDecode.enzymeCount > 0) {
     printf("\n \r");
+    // set copy mode flag off at the start of all enzyme activity
+    userStrand.copyModeFlag = 0; 
     //print from 1 to max instead of decrementing from max to 1  
     printf("Generating Enzyme %d folds and executing enzyme instructions:\n",(maxEnzymeCount - (userDecode.enzymeCount-1)));
 
@@ -379,8 +381,12 @@ int main(int argC, char **argV) {
           //check if the enzyme has moved off of the strand or into a gap, accounting for indexing from 1 for currentBoundPosition
           if(check_falling_off(strandPointer) == 1) {
               printf("Enzyme has moved off of strand. Exiting.\n");
+              //increment until we reach the first instruction in the next enzyme
+              while(userDecode.instruction[instructionExecutionIndex] != 0) {
+                  instructionExecutionIndex++;
+              }
+              instructionExecutionIndex++;
               break;
-
           } 
                   
           instructionExecutionIndex++;  
@@ -424,13 +430,13 @@ int main(int argC, char **argV) {
    printf(" 2. \t%s\n",userStrand.outputStrand[2]); 
    printf("Generated Strands: \n");
    for(int i = 3; i <= userStrand.outputStrandCount; i++){
-       // if the first element is not A,G,T, or C, then it's an empty strand
-       if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
-           printf(" %d.  \t%s\n",i,userStrand.outputStrand[i]);
+      // if the first element is not A,G,T, or C, then it's an empty strand
+      if(userStrand.outputStrand[i][0] == 'A' || userStrand.outputStrand[i][0] == 'C' || userStrand.outputStrand[i][0] == 'G' || userStrand.outputStrand[i][0] == 'T') {
+          printf(" %d.  \t%s\n",i,userStrand.outputStrand[i]);
       } else {
-           //so don't print
-    }
+          //so don't print
    }
-   printf("Exiting Typogenetics\n");
-   return 0; 
+  }
+  printf("Exiting Typogenetics\n");
+  return 0; 
 }
