@@ -37,6 +37,8 @@ int main(int argC, char **argV) {
   setlocale(LC_ALL, "");
   //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
+
+  char enter = '1';
   // usermode controls autostops and printing graphics 
   int userModeFlag = 1;
   char *userInput;   
@@ -144,6 +146,7 @@ int main(int argC, char **argV) {
   }
   printf("\n");
 
+  do {
   // Copy the initial strand into the 0th element of the output strand 2-D array
   strcpy(userStrand.outputStrand[0], userStrand.mainStrand); 
 
@@ -449,6 +452,22 @@ int main(int argC, char **argV) {
           //so don't print
    }
   }
+    printf("Select an output strand to begin acting on, or enter 'q' to quit \n");
+    scanf("%d", &enter);
+    if(enter == 'q') {
+    } else {
+      strcpy(userStrand.mainStrand, userStrand.outputStrand[(int)enter]);
+      for (int i = 0; i <userStrand.complementarySize; i++){
+        userStrand.outputStrand[2][i] = ' ';
+      }
+     for(int i = 3; i <= userStrand.outputStrandCount; i++){
+        //YOU ARE HERE
+        for(int j = 0; j <=userStrand.)
+        userStrand.outputStrand[i][j] = ' ';
+     }
+
+    }
+}while(enter != 'q');
   printf("Exiting Typogenetics\n");
   return 0; 
 }
