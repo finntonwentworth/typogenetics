@@ -64,7 +64,6 @@ int main(int argC, char **argV) {
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
       switch(opt){
           case 'h':
-              print_splash();
               printf("*                                                                                      \n");
               printf("* PARAMETERS LIST                                                                      \n");
               printf("*                                                                                      \n");
@@ -118,6 +117,7 @@ int main(int argC, char **argV) {
               break;
         }
   }
+  print_splash();
 
   struct strand *strandPointer = &userStrand;
 
