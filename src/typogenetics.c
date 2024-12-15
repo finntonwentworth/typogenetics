@@ -64,6 +64,8 @@ int main(int argC, char **argV) {
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
       switch(opt){
           case 'h':
+              print_splash();
+              printf("*                                                                                      \n");
               printf("* PARAMETERS LIST                                                                      \n");
               printf("*                                                                                      \n");
               printf("* MANDATORY:                                                                           \n"); 
@@ -128,6 +130,7 @@ int main(int argC, char **argV) {
   //Check that the user's strand is valid/ 'well formed'
   if(valid_strand(userStrand.mainStrand, userStrand.mainSize)!=1) {
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
+        fprintf(stderr," Try '-h' for more information\n \r");
         return -2;
   }
   printf("\n");
@@ -434,7 +437,7 @@ int main(int argC, char **argV) {
    printf("Complementary Strand: \n");
    printf(" 2. \t");
    for (int i = 0; i <userStrand.complementarySize; i++){
-       printf("%c",userStrand.outputStrand[2][i]);
+      printf("%c",userStrand.outputStrand[2][i]);
    }
    printf("\n");
    printf("Generated Strands: \n");

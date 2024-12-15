@@ -17,6 +17,31 @@ No true goal or end condition exists for the development of strands. Experiment 
 One goal set out by Hofstadter in the spirit of GEB is to create a self replicating strand, that is to say,  one that reproduces itself after any number of cycles through the encoding and execution process,
 alongside any other output strands. 
 
+## Instructions
+
+Instructions for running Typogenetics:
+From a terminal (bash, cmd, Powershell etc):
+
+1. Clone the Repository
+
+> git clone https://github.com/finntonwentworth/typogenetics.git
+
+2. Change directory into typogenetics/src 
+
+> cd ./typogenetics/src
+
+3. Compile the source with gcc (or clangd -untested): 
+
+> gcc typogenetics.c -o typogenetics
+
+4. Run typogenetics (sample input parameters):
+
+> ./typogenetics -r 10
+
+This will execute typogenetics with a randomly generated string of length 10. Use '-h' to see other input paramters. For example, to pass a specific strand to the program, and select the first matching base:
+
+> ./typogenetics -s ATGTGGC -Sf
+
 ## Definitions
 
 - **Base:** One of the letters A, C, G, and T

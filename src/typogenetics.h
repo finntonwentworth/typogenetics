@@ -1,9 +1,11 @@
 #include "rand_strand_function.c"
 #include "utility_functions.c"
 #include "amino_acids.c"
+#include "print_splash.c"
 #include "foldingGraphics/enzyme_folding.c"
 
-
+/*--- Utility Functions ---*/
+void print_splash(void);
 /*--- Utility Functions ---*/
 int relevant_elements(char[]);
 int valid_strand(char[], int); 
