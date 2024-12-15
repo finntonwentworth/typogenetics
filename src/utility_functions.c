@@ -443,7 +443,6 @@ void strand_splitter(struct strand *strandPointer) {
                firstStrandFlag = 0;
                token = strtok(NULL, " ");
            } else {
-           
                strcpy(strandPointer->outputStrand[1+strandPointer->outputStrandCount+j],token);
                j++;
                token = strtok(NULL, " ");

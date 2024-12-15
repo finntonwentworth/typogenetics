@@ -385,10 +385,6 @@ int main(int argC, char **argV) {
           if(check_falling_off(strandPointer) == 1) {
               printf("Enzyme has moved off of strand. Exiting.\n");
 
-          //TEST
-          for (int i = 0; i <userStrand.complementarySize; i++){
-              printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
-          }
               //increment until we reach the first instruction in the next enzyme
               while(userDecode.instruction[instructionExecutionIndex] != 0) {
                   instructionExecutionIndex++;
@@ -418,11 +414,6 @@ int main(int argC, char **argV) {
    printf("Final Strand(s):\n");
 
    strcpy(userStrand.outputStrand[1], userStrand.mainStrand);
-   
-  //TEST
-  for (int i = 0; i <userStrand.complementarySize; i++){
-      printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
-  }
 
    int j = 0;
    //reverse the order of the remaining complementary strand and place it into the output
@@ -430,11 +421,8 @@ int main(int argC, char **argV) {
       userStrand.outputStrand[2][j] = userStrand.complementaryStrand[i];
       j++;  
    }
+   userStrand.outputStrand[2][j] = '\0';
 
-  //TEST
-  for (int i = 0; i <userStrand.complementarySize; i++){
-      printf("TEST PRINT: %c\n",userStrand.complementaryStrand[i]);
-  }
 
    //cut any gaps in the strands into their own separate outputs 
    strand_splitter(strandPointer);
@@ -444,7 +432,11 @@ int main(int argC, char **argV) {
    printf("Main Strand: \n");
    printf(" 1. \t%s\n",userStrand.outputStrand[1]); 
    printf("Complementary Strand: \n");
-   printf(" 2. \t%s\n",userStrand.outputStrand[2]); 
+   printf("2. \t");
+   for (int i = 0; i <userStrand.complementarySize; i++){
+       printf("%c",userStrand.outputStrand[2][i]);
+   }
+   printf("\n");
    printf("Generated Strands: \n");
    for(int i = 3; i <= userStrand.outputStrandCount; i++){
       // if the first element is not A,G,T, or C, then it's an empty strand
