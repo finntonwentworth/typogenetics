@@ -34,7 +34,7 @@ struct strand {
   int  complementarySize;
   int  currentBoundPosition; 
   int  outputStrandCount;
-  char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE/2]; 
+  char outputStrand[MAX_STRAND_SIZE/2][MAX_STRAND_SIZE]; 
 };
 
 /* -----DECODED STRAND ----- */

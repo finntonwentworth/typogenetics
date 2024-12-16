@@ -38,20 +38,13 @@ int main(int argC, char **argV) {
   //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
 
-  int totalOutputStrands = 2;
-  int iterationCount = 1;
-  //char enter = '1';
-  // variable for tracking user input
-  int enter = -1;
   // usermode controls autostops and printing graphics 
   int userModeFlag = 1;
   char *userInput;   
-  //index for managing loops 
-  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
-  int instructionIndex = 0;           //keep track of where I am in the instruction array 
-  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
-  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
-  int indentFlag = 1;                 //flag to indent first character printed  
+
+  // Stat trackers
+  int totalOutputStrands = 2;
+  int iterationCount = 1;
                                       
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   //Each strand will have 2 outputs at least - main and complement
@@ -64,7 +57,14 @@ int main(int argC, char **argV) {
                                .copyModeFlag = 0,
                              };
   // struct stores decoded information about the strand
-  struct decodedStrand userDecode;
+  struct decodedStrand userDecode = {
+                                      .instruction = {0},
+                                      .instructionText = {' '},
+                                      .instructionTextSize = 0,
+                                      .foldingPattern = {' '},
+                                      .foldingPatternSize = 0, 
+                                      .enzymeCount = 0, 
+                                    };
 
   // parse user input for different config flags and initial input 
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
@@ -123,16 +123,26 @@ int main(int argC, char **argV) {
               break;
         }
   }
+
   print_splash();
 
   struct strand *strandPointer = &userStrand;
 
+  // variable for tracking user input
+  int enter = -1;
+
   /* ----------- BEGINNGING OF MAIN LOOP ----------*/
 
   do {
+  //index for managing loops 
+  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
+  int instructionIndex = 0;           //keep track of where I am in the instruction array 
+  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
+  int indentFlag = 1;                 //flag to indent first character printed  
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
-  if(userStrand.mainSize == 0){
+  if(userStrand.mainSize == 0) {
       fprintf(stderr, "Entered Empty Strand. Exiting\n"); 
       return -2; 
   }
@@ -144,7 +154,7 @@ int main(int argC, char **argV) {
   }
   printf("\n");
   printf(" User Options Selected: \n");
-  if(firstSelectFlag == 1){
+  if(firstSelectFlag == 1) {
       printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
   }else if(randSelectFlag == 1) {
       printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
@@ -472,7 +482,6 @@ int main(int argC, char **argV) {
           if(enter > userStrand.outputStrandCount || enter < 0) {
             printf("Please enter a number corresponding to an output strand: \n");
           } else {
-            printf("TP 1\n");
             // copy the selected option into the mainStrand, choosing the proper output strand index
             strcpy(userStrand.mainStrand, userStrand.outputStrand[enter]);
             for (int i = 0; i <userStrand.complementarySize; i++){
@@ -481,10 +490,15 @@ int main(int argC, char **argV) {
             }
             iterationCount++;
             totalOutputStrands += userStrand.outputStrandCount;
-            //reset the output strand count for the restart 
-            userStrand.outputStrandCount = 2; 
-            userStrand.boundStrandFlag = 0,
-            userStrand.copyModeFlag = 0,
+            //reset strands values for the new iterations
+            //except for the main strand 
+            printf("TEST: main = %s\n",userStrand.mainStrand);
+            printf("TEST: Complementary = %s\n",userStrand.complementaryStrand);
+            userStrand = init_user_strand(userStrand.mainStrand, userStrand.outputStrandCount);
+            userDecode = init_decoded_strand();
+            printf("TEST: int text after copy = %s\n",userDecode.instructionText);
+            printf("TEST: main after copy = %s\n",userStrand.mainStrand);
+            printf("TEST: Complementary after copy = %s\n",userStrand.complementaryStrand);
             validInput = 1;
           }
           break;

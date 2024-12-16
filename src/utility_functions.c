@@ -510,3 +510,65 @@ void wait_for_user(void) {
   printf("Press Enter to continue: \n");
   scanf("%c", &enter);
 }
+
+/* ------ FUNCTION ------*/ 
+/*
+ *
+ *
+ * Accepts:  
+ * 
+ * Returns: 
+ * 
+ *
+ * 
+*/
+//struct strand init_user_strand(struct strand userStrand) {
+struct strand init_user_strand(char userMainStrand[], int outputStrandCount) {
+  struct strand newBlankStrand = {
+                               .complementaryStrand = { ' ' },
+                               .outputStrandCount = 2,
+                               .boundStrandFlag = 0,
+                               .copyModeFlag = 0,
+                                 };
+  strcpy(newBlankStrand.mainStrand, userMainStrand);
+  for(int i = 0; i < MAX_STRAND_SIZE; i++){
+    newBlankStrand.complementaryStrand[i] = ' ';
+    for(int j = 0; j < outputStrandCount; j ++) {
+      newBlankStrand.outputStrand[j][i] = ' ';
+    }
+  }
+  
+  return newBlankStrand;
+}
+
+/* ------ FUNCTION ------*/ 
+/*
+ *
+ *
+ * Accepts:  
+ * 
+ * Returns: 
+ * 
+ *
+ * 
+*/
+struct decodedStrand init_decoded_strand(void) {
+
+  struct decodedStrand newDecodedStrand = {
+                                            .instruction = {0},
+                                            .instructionText = {' '},
+                                            .instructionTextSize = 0,
+                                            .foldingPattern = {' '},
+                                            .foldingPatternSize = 0, 
+                                            .enzymeCount = 0, 
+                                          };
+
+  for(int i = 0; i < 3*MAX_STRAND_SIZE; i++){
+    newDecodedStrand.instructionText[i] = '=';
+  }
+  for(int i = 0; i < MAX_STRAND_SIZE; i++){
+    newDecodedStrand.instruction[i] = -1; 
+    newDecodedStrand.foldingPattern[i] = ' ';
+  }
+  return newDecodedStrand;
+}
