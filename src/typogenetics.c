@@ -453,11 +453,13 @@ int main(int argC, char **argV) {
    }
   }
     printf("Select an output strand to begin acting on, or enter 'q' to quit \n");
-    scanf("%d", &enter);
+    scanf("%c", &enter);
     if(enter == 'q') {
+
     } else {
       strcpy(userStrand.mainStrand, userStrand.outputStrand[(int)enter]);
       for (int i = 0; i <userStrand.complementarySize; i++){
+        //set complement to spaces
         userStrand.outputStrand[2][i] = ' ';
       }
      for(int i = 3; i <= userStrand.outputStrandCount; i++){
