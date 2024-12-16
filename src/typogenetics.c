@@ -38,7 +38,11 @@ int main(int argC, char **argV) {
   //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
 
-  char enter = '1';
+  int totalOutputStrands = 2;
+  int iterationCount = 1;
+  //char enter = '1';
+  // variable for tracking user input
+  int enter = -1;
   // usermode controls autostops and printing graphics 
   int userModeFlag = 1;
   char *userInput;   
@@ -123,6 +127,9 @@ int main(int argC, char **argV) {
 
   struct strand *strandPointer = &userStrand;
 
+  /* ----------- BEGINNGING OF MAIN LOOP ----------*/
+
+  do {
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
   if(userStrand.mainSize == 0){
@@ -146,7 +153,6 @@ int main(int argC, char **argV) {
   }
   printf("\n");
 
-  do {
   // Copy the initial strand into the 0th element of the output strand 2-D array
   strcpy(userStrand.outputStrand[0], userStrand.mainStrand); 
 
@@ -452,24 +458,41 @@ int main(int argC, char **argV) {
           //so don't print
    }
   }
-    printf("Select an output strand to begin acting on, or enter 'q' to quit \n");
-    scanf("%c", &enter);
-    if(enter == 'q') {
+  int validInput = 0;
 
-    } else {
-      strcpy(userStrand.mainStrand, userStrand.outputStrand[(int)enter]);
-      for (int i = 0; i <userStrand.complementarySize; i++){
-        //set complement to spaces
-        userStrand.outputStrand[2][i] = ' ';
+  while(validInput == 0) {
+    printf("Select an output strand number to begin acting on, or enter '0' to quit \n");
+    scanf("%d", &enter);
+
+    switch (enter) {
+        case 0:
+          validInput = 1;
+          break;
+        default:
+          if(enter > userStrand.outputStrandCount || enter < 0) {
+            printf("Please enter a number corresponding to an output strand: \n");
+          } else {
+            printf("TP 1\n");
+            // copy the selected option into the mainStrand, choosing the proper output strand index
+            strcpy(userStrand.mainStrand, userStrand.outputStrand[enter]);
+            for (int i = 0; i <userStrand.complementarySize; i++){
+            //set complement to spaces
+              userStrand.outputStrand[2][i] = ' ';
+            }
+            iterationCount++;
+            totalOutputStrands += userStrand.outputStrandCount;
+            //reset the output strand count for the restart 
+            userStrand.outputStrandCount = 2; 
+            userStrand.boundStrandFlag = 0,
+            userStrand.copyModeFlag = 0,
+            validInput = 1;
+          }
+          break;
       }
-     for(int i = 3; i <= userStrand.outputStrandCount; i++){
-        //YOU ARE HERE
-        for(int j = 0; j <=userStrand.)
-        userStrand.outputStrand[i][j] = ' ';
-     }
-
     }
-}while(enter != 'q');
+} while(enter != 0); // END OF do while
+
+  printf("Total number of iterations: %d\n",iterationCount);
   printf("Exiting Typogenetics\n");
   return 0; 
 }
