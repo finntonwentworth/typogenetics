@@ -17,6 +17,31 @@ No true goal or end condition exists for the development of strands. Experiment 
 One goal set out by Hofstadter in the spirit of GEB is to create a self replicating strand, that is to say,  one that reproduces itself after any number of cycles through the encoding and execution process,
 alongside any other output strands. 
 
+## Instructions
+
+Instructions for running Typogenetics:
+From a terminal (bash, cmd, Powershell etc):
+
+1. Clone the Repository
+
+> git clone https://github.com/finntonwentworth/typogenetics.git
+
+2. Change directory into typogenetics/src 
+
+> cd ./typogenetics/src
+
+3. Compile the source with gcc (or clangd -untested): 
+
+> gcc typogenetics.c -o typogenetics
+
+4. Run typogenetics (sample input parameters):
+
+> ./typogenetics -r 10
+
+This will execute typogenetics with a randomly generated string of length 10. Use '-h' to see other input paramters. For example, to pass a specific strand to the program, and select the first matching base:
+
+> ./typogenetics -s ATGTGGC -Sf
+
 ## Definitions
 
 - **Base:** One of the letters A, C, G, and T
@@ -41,8 +66,6 @@ Amino acids are derived from duplets in a sequence. Single bases do not encode f
 
 This table shows their mapping. The left side is the first base, the top is the second base. The table also says if the amino acid causes the enzyme's tertiary structure to "fold", denotes by the subscript l, r, or s.
 
-[Note from jacob. In regards to the l, r, s. The table has some symmetry. Maybe theres some sort of clever math thing we can do to figure out which direction it should go.]
-
 |     |  A              |  C              |  G              |  T              |
 |---  | ---             | ---             | ---             | ---             |
 |**A**| pun             | cut<sub>s</sub> | del<sub>s</sub> | swi<sub>r</sub> |
@@ -51,24 +74,36 @@ This table shows their mapping. The left side is the first base, the top is the 
 |**T**| rpy<sub>r</sub> | rpu<sub>l</sub> | lpy<sub>l</sub> | lpu<sub>l</sub> | 
 
 
-| Abbreviation | Description | Implementation State |
-| ---          | ---         | ---                  |
-| [pun](#pun)  | Punctuates strands, allowing them to encode for multiple enzymes | DONE! |
-| [cut](#cut)  | Cut Strand(s) | DONE! |
-| [del](#del)  | Delete a base from strand | DONE! |
-| [swi](#swi)  | Switch enzyme to other strand | DONE! |
-| [mvr](#mvr)  | Move one unit to the right | DONE! |
-| [mvl](#mvl)  | Move one unit to the left | DONE! |
-| [cop](#cop)  | Turn on copy mode | DONE! |
-| [off](#off)  | Turn off copy mode | DONE! |
-| [ina](#ina)  | Insert A to the right of this unit | DONE!  |
-| [inc](#inc)  | Insert C to the right of this unit | DONE! |
-| [ing](#ing)  | Insert G to the right of this unit | DONE! |
-| [int](#int)  | Insert T to the right of this unit | DONE! |
-| [rpy](#rpy)  | Search of the nearest pyrimidine to the right | DONE! |
-| [rpu](#rpu)  | Search for the nearest purine to the right | DONE! |
-| [lpy](#lpy)  | Search for the nearest pyrimidine to the left | DONE! |
-| [lpu](#lpu)  | Search for the nearest purine to the left   | DONE! |
+| Abbreviation | Description |
+| ---          | ---         |
+| [pun](#pun)  | Punctuates strands, allowing them to encode for multiple enzymes |
+| [cut](#cut)  | Cut Strand(s) |
+| [del](#del)  | Delete a base from strand |
+| [swi](#swi)  | Switch enzyme to other strand | 
+| [mvr](#mvr)  | Move one unit to the right | 
+| [mvl](#mvl)  | Move one unit to the left | 
+| [cop](#cop)  | Turn on copy mode | 
+| [off](#off)  | Turn off copy mode | 
+| [ina](#ina)  | Insert A to the right of this unit | 
+| [inc](#inc)  | Insert C to the right of this unit | 
+| [ing](#ing)  | Insert G to the right of this unit | 
+| [int](#int)  | Insert T to the right of this unit | 
+| [rpy](#rpy)  | Search of the nearest pyrimidine to the right | 
+| [rpu](#rpu)  | Search for the nearest purine to the right | 
+| [lpy](#lpy)  | Search for the nearest pyrimidine to the left | 
+| [lpu](#lpu)  | Search for the nearest purine to the left   | 
+
+## Binding Preference
+
+
+Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
+
+| First Segment | Last Segment | Binding-Letter/Base |
+| ---           | ---          | ---                 |
+| &rarr; | &rarr; | A |
+| &rarr; | &uarr; | C |
+| &rarr; | &darr; | G |
+| &rarr; | &larr; | T |
 
 #### pun
 
@@ -148,10 +183,10 @@ the complementary strand.
 
 #### rpy
 
-Moves to the nearest pyrine (See [Definitions](#Definitions)) to the right of the currently bound unit.
-If there are no pyrines to the right of the current base, it will attempt to find one but fall off the
+Moves to the nearest pyrimidine. See [Definitions](#Definitions)) to the right of the currently bound unit.
+If there are no pyrimidines to the right of the current base, it will attempt to find one but fall off the
 strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
-touched while sliding to the next pyrine will be copied into the complementary strand.
+touched while sliding to the next pyrimidine will be copied into the complementary strand.
 
 #### rpu
 
@@ -162,10 +197,10 @@ touched while sliding to the next purine will be copied into the complementary s
 
 #### lpy
 
-Moves to the nearest pyrine (See [Definitions](#Definitions)) to the left of the currently bound unit.
-If there are no pyrines to the left of the current base, it will attempt to find one but fall off the
+Moves to the nearest pyrimidine (See [Definitions](#Definitions)) to the left of the currently bound unit.
+If there are no pyrimidines to the left of the current base, it will attempt to find one but fall off the
 strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
-touched while sliding to the next pyrine will be copied into the complementary strand.
+touched while sliding to the next pyrimidine will be copied into the complementary strand.
 
 #### lpu
 
@@ -173,18 +208,6 @@ Moves to the nearest purine (See [Definitions](#Definitions)) to the left of of 
 If there are no purines to the left of the current base, it will attempt to find one but fall off the
 strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
 touched while sliding to the next purine will be copied into the complementary strand.
-
-## Binding Preference
-
-
-Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
-
-| First Segment | Last Segment | Binding-Letter/Base |
-| ---           | ---          | ---                 |
-| &rarr; | &rarr; | A |
-| &rarr; | &uarr; | C |
-| &rarr; | &darr; | G |
-| &rarr; | &larr; | T |
 
 
 ### Authors' Note: 
@@ -212,15 +235,7 @@ the original strand have acted, then the strand is outputted.
 
 **Behavior of lpy, lpu, rpy, and rpu**
 
+The search/look instructions act in a "dumb" manner in this version of Typogenetics. These 4 instructions will blindly attempt to find a purine/pyrimidine in their corresponding direction, stopping only when they 
+find a matching base or fall off the strand. This is in contrast to having the enzyme have "vision" down the rest of the strand, and decide only to move if there is a valid end to the move.
+
  
-<figure class="image">
-
-<div style="text-align: center">
-
-<img src="notes/TypoProgramFlow.drawio.png">
-
-</div>
-
-</figure>
-
-<p align="center">Preliminary Program Flowchart</p>

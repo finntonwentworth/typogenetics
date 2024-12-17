@@ -37,15 +37,14 @@ int main(int argC, char **argV) {
   setlocale(LC_ALL, "");
   //variables for input params 
   int opt,randSelectFlag,firstSelectFlag; 
+
   // usermode controls autostops and printing graphics 
   int userModeFlag = 1;
   char *userInput;   
-  //index for managing loops 
-  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
-  int instructionIndex = 0;           //keep track of where I am in the instruction array 
-  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
-  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
-  int indentFlag = 1;                 //flag to indent first character printed  
+
+  // Stat trackers
+  int totalOutputStrands = 2;
+  int iterationCount = 1;
                                       
   //struct stores user entered strand and it's size, along with other relevant information as it is processed
   //Each strand will have 2 outputs at least - main and complement
@@ -58,12 +57,20 @@ int main(int argC, char **argV) {
                                .copyModeFlag = 0,
                              };
   // struct stores decoded information about the strand
-  struct decodedStrand userDecode;
+  struct decodedStrand userDecode = {
+                                      .instruction = {0},
+                                      .instructionText = {' '},
+                                      .instructionTextSize = 0,
+                                      .foldingPattern = {' '},
+                                      .foldingPatternSize = 0, 
+                                      .enzymeCount = 0, 
+                                    };
 
   // parse user input for different config flags and initial input 
   while((opt = getopt(argC, argV, "hs:r:S:")) != -1) {
       switch(opt){
           case 'h':
+              printf("*                                                                                      \n");
               printf("* PARAMETERS LIST                                                                      \n");
               printf("*                                                                                      \n");
               printf("* MANDATORY:                                                                           \n"); 
@@ -117,22 +124,49 @@ int main(int argC, char **argV) {
         }
   }
 
+  print_splash();
+
   struct strand *strandPointer = &userStrand;
+  int i;
+  int startingBaseIndex;
+  int instructionExecutionIndex = 0; 
+  int instructionIndex = 0;           //keep track of where I am in the instruction array 
+  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
+  int indentFlag = 1;                 //flag to indent first character printed  
+
+  // variable for tracking user input
+  int enter = -1;
+
+  /* ----------- BEGINNGING OF MAIN LOOP ----------*/
+
+  do {
+  //index for managing loops 
+  i = 0;
+  startingBaseIndex = 0;
+  instructionExecutionIndex = 0; 
+  instructionIndex = 0;           //keep track of where I am in the instruction array 
+  instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  foldingIndex = 0; 
+  patternIndex = 0;               //keep track of where I am in the folding pattern array
+  indentFlag = 1;                 //flag to indent first character printed  
+  
 
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
-  if(userStrand.mainSize == 0){
+  if(userStrand.mainSize == 0) {
       fprintf(stderr, "Entered Empty Strand. Exiting\n"); 
       return -2; 
   }
   //Check that the user's strand is valid/ 'well formed'
   if(valid_strand(userStrand.mainStrand, userStrand.mainSize)!=1) {
         fprintf(stderr," Strands can only consist of A, G, T, or C.\n \r");
+        fprintf(stderr," Try '-h' for more information\n \r");
         return -2;
   }
   printf("\n");
   printf(" User Options Selected: \n");
-  if(firstSelectFlag == 1){
+  if(firstSelectFlag == 1) {
       printf(" \t-Sf: Enzymes will bind to their first available preferred starting base\n");
   }else if(randSelectFlag == 1) {
       printf(" \t-Sr: Enzymes will randomly bind to one of the available preferred starting base\n");
@@ -210,6 +244,7 @@ int main(int argC, char **argV) {
     printf("\n \r");
     // set copy mode flag off at the start of all enzyme activity
     userStrand.copyModeFlag = 0; 
+    userStrand.boundStrandFlag = 0;
     //print from 1 to max instead of decrementing from max to 1  
     printf("Generating Enzyme %d folds and executing enzyme instructions:\n",(maxEnzymeCount - (userDecode.enzymeCount-1)));
 
@@ -434,7 +469,7 @@ int main(int argC, char **argV) {
    printf("Complementary Strand: \n");
    printf(" 2. \t");
    for (int i = 0; i <userStrand.complementarySize; i++){
-       printf("%c",userStrand.outputStrand[2][i]);
+      printf("%c",userStrand.outputStrand[2][i]);
    }
    printf("\n");
    printf("Generated Strands: \n");
@@ -446,6 +481,40 @@ int main(int argC, char **argV) {
           //so don't print
    }
   }
+  int validInput = 0;
+
+  while(validInput == 0) {
+    printf("Select an output strand number to begin acting on, or enter '0' to quit \n");
+    scanf("%d", &enter);
+
+    switch (enter) {
+        case 0:
+          validInput = 1;
+          break;
+        default:
+          if(enter > userStrand.outputStrandCount || enter < 0) {
+            printf("Please enter a number corresponding to an output strand: \n");
+          } else {
+            // copy the selected option into the mainStrand, choosing the proper output strand index
+            strcpy(userStrand.mainStrand, userStrand.outputStrand[enter]);
+            for (int i = 0; i <userStrand.complementarySize; i++){
+            //set complement to spaces
+              userStrand.outputStrand[2][i] = ' ';
+            }
+            iterationCount++;
+            totalOutputStrands += userStrand.outputStrandCount;
+            //reset strands values for the new iterations
+            //except for the main strand 
+            userStrand = init_user_strand(userStrand.mainStrand, userStrand.outputStrandCount);
+            userDecode = init_decoded_strand();
+            validInput = 1;
+          }
+          break;
+      }
+    }
+} while(enter != 0); // END OF do while
+
+  printf("Total number of iterations: %d\n",iterationCount);
   printf("Exiting Typogenetics\n");
   return 0; 
 }
