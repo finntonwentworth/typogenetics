@@ -239,14 +239,3 @@ The search/look instructions act in a "dumb" manner in this version of Typogenet
 find a matching base or fall off the strand. This is in contrast to having the enzyme have "vision" down the rest of the strand, and decide only to move if there is a valid end to the move.
 
  
-<figure class="image">
-
-<div style="text-align: center">
-
-<img src="notes/TypoProgramFlow.drawio.png">
-
-</div>
-
-</figure>
-
-<p align="center">Preliminary Program Flowchart</p>
