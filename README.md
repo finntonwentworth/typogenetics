@@ -93,6 +93,18 @@ This table shows their mapping. The left side is the first base, the top is the 
 | [lpy](#lpy)  | Search for the nearest pyrimidine to the left | 
 | [lpu](#lpu)  | Search for the nearest purine to the left   | 
 
+## Binding Preference
+
+
+Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
+
+| First Segment | Last Segment | Binding-Letter/Base |
+| ---           | ---          | ---                 |
+| &rarr; | &rarr; | A |
+| &rarr; | &uarr; | C |
+| &rarr; | &darr; | G |
+| &rarr; | &larr; | T |
+
 #### pun
 
 Not an Amino acid/instruction, but deserves special clarification. 
@@ -197,18 +209,6 @@ If there are no purines to the left of the current base, it will attempt to find
 strand when it finds a blank unit, such as at the end of a strand. With copy mode enabled, each base
 touched while sliding to the next purine will be copied into the complementary strand.
 
-## Binding Preference
-
-
-Binding preference is determined by the relative orientation of the first and last segments of an enzymes's tertiary structure.
-
-| First Segment | Last Segment | Binding-Letter/Base |
-| ---           | ---          | ---                 |
-| &rarr; | &rarr; | A |
-| &rarr; | &uarr; | C |
-| &rarr; | &darr; | G |
-| &rarr; | &larr; | T |
-
 
 ### Authors' Note: 
 A number of ambiguities present in the original program are given defined behavior in this rendition of the system, listed below. 
@@ -234,6 +234,9 @@ enzymes would act on the strand following the modifications performed by the pre
 the original strand have acted, then the strand is outputted. 
 
 **Behavior of lpy, lpu, rpy, and rpu**
+
+The search/look instructions act in a "dumb" manner in this version of Typogenetics. These 4 instructions will blindly attempt to find a purine/pyrimidine in their corresponding direction, stopping only when they 
+find a matching base or fall off the strand. This is in contrast to having the enzyme have "vision" down the rest of the strand, and decide only to move if there is a valid end to the move.
 
  
 <figure class="image">

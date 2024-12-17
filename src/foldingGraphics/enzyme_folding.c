@@ -31,19 +31,13 @@ int enzyme_folding(struct decodedStrand userDecode, int patternIndex) {
        }
        populate_cell(theGrid,spritePointer); 
     
-    // TESTING 
-    // trying to eliminate screen scroll when printing pattern
-//       printf(CLEARSCRN);
-//       printf(JUMPHOME);
     for(int i = 0; i < GRID_DIMENSION*CELL_HEIGHT; i++) {
       printf(MOVEUPONEROW);
     }
 
-//       printf(CLEARTOEND);
        print_grid(theGrid);
        patternIndex++;
        usleep(500000);
     }
-  //jump down one grid 
   return patternIndex;
 }

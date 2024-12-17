@@ -505,6 +505,15 @@ int check_falling_off(struct strand *strandPointer) {
     return -5; 
 }
 
+/* ------ FUNCTION ------*/ 
+/*
+ *
+ * Just waits for user input
+ * Accepts:  
+ * nothing
+ * Returns: 
+ * nothing
+*/
 void wait_for_user(void) {
   char enter;
   printf("Press Enter to continue: \n");
@@ -514,15 +523,12 @@ void wait_for_user(void) {
 /* ------ FUNCTION ------*/ 
 /*
  *
- *
+ * Refreshes and creates a new strand struct for wiping old information
  * Accepts:  
- * 
+ * Main strand array, # of output strands 
  * Returns: 
- * 
- *
- * 
+ * blank strand struct
 */
-//struct strand init_user_strand(struct strand userStrand) {
 struct strand init_user_strand(char userMainStrand[], int outputStrandCount) {
   struct strand newBlankStrand = {
                                .complementaryStrand = { ' ' },
@@ -543,14 +549,12 @@ struct strand init_user_strand(char userMainStrand[], int outputStrandCount) {
 
 /* ------ FUNCTION ------*/ 
 /*
- *
- *
+ * Creates a new blank decoded strand struct for wiping old information
  * Accepts:  
- * 
+ * nothing
  * Returns: 
- * 
+ * "fresh" decoded strand struct
  *
- * 
 */
 struct decodedStrand init_decoded_strand(void) {
 

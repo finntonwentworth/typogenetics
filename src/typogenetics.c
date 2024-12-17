@@ -127,6 +127,13 @@ int main(int argC, char **argV) {
   print_splash();
 
   struct strand *strandPointer = &userStrand;
+  int i;
+  int startingBaseIndex;
+  int instructionExecutionIndex = 0; 
+  int instructionIndex = 0;           //keep track of where I am in the instruction array 
+  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
+  int indentFlag = 1;                 //flag to indent first character printed  
 
   // variable for tracking user input
   int enter = -1;
@@ -135,11 +142,16 @@ int main(int argC, char **argV) {
 
   do {
   //index for managing loops 
-  int i, startingBaseIndex,instructionExecutionIndex  = 0; 
-  int instructionIndex = 0;           //keep track of where I am in the instruction array 
-  int instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
-  int foldingIndex, patternIndex = 0;               //keep track of where I am in the folding pattern array
-  int indentFlag = 1;                 //flag to indent first character printed  
+  i = 0;
+  startingBaseIndex = 0;
+  instructionExecutionIndex = 0; 
+  instructionIndex = 0;           //keep track of where I am in the instruction array 
+  instructionNumberIndex = 0;     //keep track of where I am in the instruction text array
+  foldingIndex = 0; 
+  patternIndex = 0;               //keep track of where I am in the folding pattern array
+  indentFlag = 1;                 //flag to indent first character printed  
+  
+
   // Calculate the number of user inputed bases
   userStrand.mainSize = relevant_elements(userStrand.mainStrand); 
   if(userStrand.mainSize == 0) {
@@ -492,13 +504,8 @@ int main(int argC, char **argV) {
             totalOutputStrands += userStrand.outputStrandCount;
             //reset strands values for the new iterations
             //except for the main strand 
-            printf("TEST: main = %s\n",userStrand.mainStrand);
-            printf("TEST: Complementary = %s\n",userStrand.complementaryStrand);
             userStrand = init_user_strand(userStrand.mainStrand, userStrand.outputStrandCount);
             userDecode = init_decoded_strand();
-            printf("TEST: int text after copy = %s\n",userDecode.instructionText);
-            printf("TEST: main after copy = %s\n",userStrand.mainStrand);
-            printf("TEST: Complementary after copy = %s\n",userStrand.complementaryStrand);
             validInput = 1;
           }
           break;

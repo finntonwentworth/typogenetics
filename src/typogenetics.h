@@ -4,8 +4,9 @@
 #include "print_splash.c"
 #include "foldingGraphics/enzyme_folding.c"
 
-/*--- Utility Functions ---*/
+/*--- Print Splash Art ---*/
 void print_splash(void);
+
 /*--- Utility Functions ---*/
 int relevant_elements(char[]);
 int valid_strand(char[], int); 
@@ -16,6 +17,8 @@ char *current_enzyme_position(struct strand*,int);
 void strand_splitter(struct strand*);
 int  check_falling_off(struct strand*); 
 void wait_for_user(void);
+struct strand init_user_strand(char[], int); 
+struct decodedStrand init_decoded_strand(void);
 
 /*--- Rand Strand ---*/
 char *rand_strand(int);
