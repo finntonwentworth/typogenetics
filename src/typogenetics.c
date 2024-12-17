@@ -244,6 +244,7 @@ int main(int argC, char **argV) {
     printf("\n \r");
     // set copy mode flag off at the start of all enzyme activity
     userStrand.copyModeFlag = 0; 
+    userStrand.boundStrandFlag = 0;
     //print from 1 to max instead of decrementing from max to 1  
     printf("Generating Enzyme %d folds and executing enzyme instructions:\n",(maxEnzymeCount - (userDecode.enzymeCount-1)));
 
