@@ -1,8 +1,16 @@
+module Main where 
+
+--import OptParse
+import System.Environment (getArgs)
+
+
+
+
 main :: IO () 
 main = do
-  strand <- getUserInputStrand
-  putStrLn $ "Your strand is: " ++ strand
-
+  args <- getArgs 
+--  processArguments args  
+  putStrLn "This is just a test message" 
 
 
 -- FUNCTION 
