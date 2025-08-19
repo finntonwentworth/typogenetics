@@ -1,6 +1,8 @@
 module Strands 
   (
-   getUserInputStrand 
+    getUserInputStrand 
+   ,generateFoldingList
+   ,generateInstructionList
   )
   where 
 
@@ -148,19 +150,19 @@ callAminoAcid instruction =
   case instruction of 
     Just Pun -> Nothing 
     Just Cut ->  
-    Just Del -> Just 
-    Just Swi -> Just  
-    Just Mvr -> Just 
-    Just Mvl -> Just
-    Just Cop -> Just 
-    Just Off -> Just 
-    Just Ina -> Just
-    Just Inc -> Just 
-    Just Ing -> Just 
-    Just Int -> Just 
-    Just Rpy -> Just 
-    Just Rpu -> Just 
-    Just Lpy -> Just 
-    Just Lpu -> Just 
+    Just Del ->  
+    Just Swi ->   
+    Just Mvr ->  
+    Just Mvl -> 
+    Just Cop ->  
+    Just Off ->  
+    Just Ina -> 
+    Just Inc ->  
+    Just Ing ->  
+    Just Int ->  
+    Just Rpy ->  
+    Just Rpu ->  
+    Just Lpy ->  
+    Just Lpu ->  
     _    -> Nothing
 -}
