@@ -1,13 +1,10 @@
 module Main where 
 
 -- import OptParse
-import Strands
 import Data.Maybe (isJust,fromJust)
 import Control.Monad (when)
 
-printMaybeList :: Show a => Maybe a -> IO ()
-printMaybeList = liftA2 
-  when isJust $ print . fromJust
+import Decoding
 
 main :: IO () 
 main = do
@@ -19,3 +16,7 @@ main = do
   putStrLn "Your folding pattern is: "
   mapM_ printMaybeList foldingPattern
 
+
+printMaybeList :: Show a => Maybe a -> IO ()
+printMaybeList = liftA2 
+  when isJust $ print . fromJust

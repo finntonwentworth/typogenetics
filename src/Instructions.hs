@@ -1,6 +1,8 @@
 module Instructions 
   (
-    pun
+     Instruction (..)
+    ,FoldingDirection (..)
+    ,pun
     ,cut
     ,del
     ,swi
@@ -16,7 +18,37 @@ module Instructions
     ,rpu
     ,lpy
     ,lpu
-  ) where
+  ) 
+  where
+
+import Strands
+
+-- Data type for constructing a list of instructions 
+data Instruction 
+ = Pun
+ | Cut
+ | Del
+ | Swi
+ | Mvr
+ | Mvl
+ | Cop
+ | Off
+ | Ina
+ | Inc
+ | Ing
+ | Int
+ | Rpy
+ | Rpu
+ | Lpy
+ | Lpu
+ deriving(Show)
+
+-- Data type for creating the folding pattern list 
+data FoldingDirection
+  = Straight 
+  | Right 
+  | Left 
+ deriving(Show)
 
 pun :: a
 pun = undefined 
@@ -42,8 +74,11 @@ cop = undefined
 off :: a
 off = undefined
 
-ina :: a
-ina = undefined
+-- FUNCTION 
+-- Take a strand, insert a character and return a strand
+ina :: Base -> Int -> String -> String
+ina base index strand = undefined 
+
 
 inc :: a
 inc = undefined
