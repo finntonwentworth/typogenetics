@@ -64,6 +64,8 @@ executable TypoGenetics
 
     -- Modules included in this executable, other than Main.
     other-modules:    OptParse
+                    , Strands
+                    , Instructions
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:
@@ -74,6 +76,7 @@ executable TypoGenetics
 
     -- Directories containing source files.
     hs-source-dirs:   app
+                    , src
 
     -- Base language which the package is written in.
     default-language: Haskell2010
