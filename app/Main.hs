@@ -15,6 +15,9 @@ main = do
   let foldingPattern = generateFoldingList instructionList
   putStrLn "Your folding pattern is: "
   mapM_ printMaybeList foldingPattern
+  putStrLn "Starting on Base: "
+  putStrLn "{TEST}: BASE 0"
+
 
 
 printMaybeList :: Show a => Maybe a -> IO ()

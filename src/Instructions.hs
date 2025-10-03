@@ -56,8 +56,8 @@ pun = undefined
 cut :: a
 cut = undefined
 
-del :: a
-del = undefined
+del :: Int -> Strand -> Strand 
+del index strand = take index strand ++ [' '] ++ drop index strand
 
 swi :: a
 swi = undefined
@@ -75,19 +75,19 @@ off :: a
 off = undefined
 
 -- FUNCTION 
--- Take a strand, insert a character and return a strand
-ina :: Base -> Int -> String -> String
-ina base index strand = undefined 
+-- Take a strand, insert a base and return new, modified strand
+-- interestingly does not error if index > length of strand 
+ina :: Int -> String -> String
+ina index strand = take index strand ++ ['A'] ++ drop index strand
 
+inc :: Int -> String -> String
+inc index strand = take index strand ++ ['C'] ++ drop index strand
 
-inc :: a
-inc = undefined
+ing :: Int -> String -> String
+ing index strand = take index strand ++ ['G'] ++ drop index strand
 
-ing :: a
-ing = undefined
-
-int :: a
-int = undefined
+int :: Int -> String -> String
+int index strand = take index strand ++ ['T'] ++ drop index strand
 
 rpy :: a
 rpy = undefined

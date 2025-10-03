@@ -168,25 +168,24 @@ availableStartingBaseList = undefined
 
 -- FUNCTION 
 -- Takes Amino acid from instruction list and call calls the correct function
-{-
-callAminoAcid :: Maybe Instruction -> (Strand -> Strand)  
-callAminoAcid instruction = 
+
+callAminoAcid :: Maybe Instruction -> Strand -> Strand  
+callAminoAcid instruction strand = 
   case instruction of 
-    Just Pun -> Nothing 
-    Just Cut ->  
-    Just Del ->  
-    Just Swi ->   
-    Just Mvr ->  
-    Just Mvl -> 
-    Just Cop ->  
-    Just Off ->  
-    Just Ina -> 
-    Just Inc ->  
-    Just Ing ->  
-    Just Int ->  
-    Just Rpy ->  
-    Just Rpu ->  
-    Just Lpy ->  
-    Just Lpu ->  
-    _    -> Nothing
--}
+    Just Pun -> undefined 
+    Just Cut -> undefined
+    Just Del -> undefined
+    Just Swi ->  undefined 
+    Just Mvr ->  undefined
+    Just Mvl -> undefined
+    Just Cop ->  undefined
+    Just Off ->  undefined
+    Just Ina -> ina 0 strand 
+    Just Inc ->  undefined
+    Just Ing ->  undefined
+    Just Int ->  undefined
+    Just Rpy ->  undefined
+    Just Rpu ->  undefined
+    Just Lpy ->  undefined
+    Just Lpu ->  undefined
+    _    -> undefined 
