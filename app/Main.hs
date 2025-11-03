@@ -7,19 +7,4 @@ import Control.Monad (when)
 import Decoding
 
 main :: IO () 
-main = do
-  userStrand <- getUserInputStrand
-  let instructionList = generateInstructionList userStrand
-  putStrLn "Your list of Instructions is: "
-  mapM_ printMaybeList instructionList
-  let foldingPattern = generateFoldingList instructionList
-  putStrLn "Your folding pattern is: "
-  mapM_ printMaybeList foldingPattern
-  putStrLn "Starting on Base: "
-  putStrLn "{TEST}: BASE 0"
-
-
-
-printMaybeList :: Show a => Maybe a -> IO ()
-printMaybeList = liftA2 
-  when isJust $ print . fromJust
+main = undefined

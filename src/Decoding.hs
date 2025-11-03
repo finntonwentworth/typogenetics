@@ -3,6 +3,7 @@ module Decoding
     getUserInputStrand 
    ,generateFoldingList
    ,generateInstructionList
+   ,startingBase
   )
   where
 
@@ -105,60 +106,33 @@ decodeFoldingDirection instruction =
     Just Lpu -> Just Left 
     _    -> Nothing
 
-startingBase :: [Maybe FoldingDirection] -> Maybe Base
-startingBase fp =
-   case angle fp 0  of 
-    0      -> Just 'A'   
-    90     -> Just 'C'
-    180    -> Just 'T'
-    270    -> Just 'G'
-    (-90)  -> Just 'G'
-    (-180) -> Just 'T'
-    (-270) -> Just 'C'
-    _     -> Nothing 
+-- Convert list of Folding directions to starting base
+startingBase :: [Maybe FoldingDirection] -> Base
+startingBase fds =
+   case angle fds of 
+    0      -> 'A'   
+    90     -> 'C'
+    180    -> 'T'
+    270    -> 'G'
+    (-90)  -> 'G'
+    (-180) -> 'T'
+    (-270) -> 'C'
+  where 
+    angle fds = foldl (+) 0 (map rotation fds)  
 
+-- translates Direction into degrees
+rotation :: Maybe FoldingDirection -> Integer
+rotation fd = 
+  case fd of 
+    Just Straight -> 
+      0
+    Just Right    ->
+      (-90)
+    Just Left     ->
+      90
+    -- this is an issue, what do I do with a Nothing
+    _        -> undefined
 
-angle :: [Maybe FoldingDirection] -> Integer -> Integer 
-angle [] acc = 0 
-angle (fp:fps) acc = 
-  case fp of 
-    _ -> undefined 
-{-
--- FUNCTION 
--- Take a folding list and return the "starting angle"
-startingBase :: [Maybe FoldingDirection] -> Maybe Base
-startingBase  [Nothing] = Nothing
-startingBase  (i:is) = 
-  case i of 
-    Just Straight -> undefined 
-    Just Right    -> undefined 
-    Just Left     -> undefined 
--- case we have processed all elements
-startingBase [] acc = 
-  case acc of
-    0      -> Just 'A'   
-    90     -> Just 'C'
-    180    -> Just 'T'
-    270    -> Just 'G'
-    (-90)  -> Just 'G'
-    (-180) -> Just 'T'
-    (-270) -> Just 'C'
-    _     -> Nothing 
-
--- FUNCTION 
--- Take an angle and pattern match to the appropriate base 
-angle :: Maybe Integer -> Maybe Base 
-angle = 
-  case angle of 
-    Just 0      -> Just 'A'
-    Just 90     -> Just 'C'
-    Just 180    -> Just 'T'
-    Just 270    -> Just 'G'
-    Just (-90)  -> Just 'G'
-    Just (-180) -> Just 'T'
-    Just (-270) -> Just 'C'
-    _           -> Nothing 
--}
 
 
 -- FUNCTION 
