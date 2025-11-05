@@ -1,10 +1,13 @@
 module Main where 
 
--- import OptParse
-import Data.Maybe (isJust,fromJust)
-import Control.Monad (when)
-
-import Decoding
+import Instructions
+import Utils
 
 main :: IO () 
 main = undefined
+
+test = do 
+  strand <- randStrand 10 
+  putStrLn ("Strand: " ++ show strand) 
+  putStrLn ("Instructions: " ++ show (strandToInstructions strand)) 
+  putStrLn ("Starting Base: " ++ show (startingBase $ strandToInstructions strand)) 

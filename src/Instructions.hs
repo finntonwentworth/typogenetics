@@ -1,102 +1,82 @@
-module Instructions 
-  (
-     Instruction (..)
-    ,FoldingDirection (..)
-    ,pun
-    ,cut
-    ,del
-    ,swi
-    ,mvr
-    ,mvl
-    ,cop
-    ,off
-    ,ina
-    ,inc
-    ,ing
-    ,int
-    ,rpy
-    ,rpu
-    ,lpy
-    ,lpu
-  ) 
-  where
+module Instructions where 
 
-import Strands
+import Prelude hiding (Right, Left)
+import Types
 
--- Data type for constructing a list of instructions 
-data Instruction 
- = Pun
- | Cut
- | Del
- | Swi
- | Mvr
- | Mvl
- | Cop
- | Off
- | Ina
- | Inc
- | Ing
- | Int
- | Rpy
- | Rpu
- | Lpy
- | Lpu
- deriving(Show)
+strandToInstructions :: Strand -> [Maybe Instruction]
+strandToInstructions strand = map basePairToInstruction $ strandToBasePairs strand
 
--- Data type for creating the folding pattern list 
-data FoldingDirection
-  = Straight 
-  | Right 
-  | Left 
- deriving(Show)
 
-pun :: a
-pun = undefined 
+startingBase :: [Maybe Instruction] -> Base
+startingBase insts = 
+  let 
+    fds = map instructionToFoldingDirection insts 
+  in
+  case angle fds of 
+    0      -> A   
+    90     -> C
+    180    -> T
+    270    -> G
+    (-90)  -> G
+    (-180) -> T
+    (-270) -> C
+  where 
+    angle fds = sum (map rotation fds)  
+    rotation fd = 
+      case fd of
+        Just Straight -> 0
+        Just Right    -> (-90)
+        Just Left     -> 90
+          -- this is an issue, what do I do with a Nothing
+          -- leave undefined for now - implementation will change with splitting pun 
+        _             -> undefined
 
-cut :: a
-cut = undefined
 
-del :: Int -> Strand -> Strand 
-del index strand = take index strand ++ [' '] ++ drop index strand
 
-swi :: a
-swi = undefined
+strandToBasePairs :: Strand -> [[Base]]
+strandToBasePairs [] = []
+strandToBasePairs [a] = [[a]]
+strandToBasePairs (a:b:as) = [a,b] : strandToBasePairs as
 
-mvr :: a
-mvr = undefined
+basePairToInstruction :: [Base] -> Maybe Instruction
+basePairToInstruction bp =
+  case bp of 
+    [A,A] -> Just Pun 
+    [A,C] -> Just Cut
+    [A,G] -> Just Del
+    [A,T] -> Just Swi
+    [C,A] -> Just Mvr
+    [C,C] -> Just Mvl
+    [C,G] -> Just Cop
+    [C,T] -> Just Off 
+    [G,A] -> Just Ina 
+    [G,C] -> Just Inc
+    [G,G] -> Just Ing
+    [G,T] -> Just Int
+    [T,A] -> Just Rpy
+    [T,C] -> Just Rpu
+    [T,G] -> Just Lpy 
+    [T,T] -> Just Lpy
+    _    -> Nothing
 
-mvl :: a
-mvl = undefined
+instructionToFoldingDirection :: Maybe Instruction -> Maybe FoldingDirection
+instructionToFoldingDirection inst = 
+  case inst of 
+    Nothing  -> Nothing
+    Just Pun -> Nothing 
+    Just Cut -> Just Straight
+    Just Del -> Just Straight
+    Just Swi -> Just Right  
+    Just Mvr -> Just Straight
+    Just Mvl -> Just Straight
+    Just Cop -> Just Right
+    Just Off -> Just Left  
+    Just Ina -> Just Straight
+    Just Inc -> Just Right
+    Just Ing -> Just Right
+    Just Int -> Just Left 
+    Just Rpy -> Just Right
+    Just Rpu -> Just Left 
+    Just Lpy -> Just Left 
+    Just Lpu -> Just Left 
 
-cop :: a
-cop = undefined
-
-off :: a
-off = undefined
-
--- FUNCTION 
--- Take a strand, insert a base and return new, modified strand
--- interestingly does not error if index > length of strand 
-ina :: Int -> String -> String
-ina index strand = take index strand ++ ['A'] ++ drop index strand
-
-inc :: Int -> String -> String
-inc index strand = take index strand ++ ['C'] ++ drop index strand
-
-ing :: Int -> String -> String
-ing index strand = take index strand ++ ['G'] ++ drop index strand
-
-int :: Int -> String -> String
-int index strand = take index strand ++ ['T'] ++ drop index strand
-
-rpy :: a
-rpy = undefined
-
-rpu :: a
-rpu = undefined
-
-lpy :: a
-lpy = undefined
-
-lpu :: a
-lpu = undefined
