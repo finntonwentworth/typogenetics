@@ -15,3 +15,12 @@ instance Random Base where
   
 randStrand :: Int -> IO Strand
 randStrand len = replicateM len (randomIO :: IO Base)
+
+-- it's hard to chain this all together for printing
+showBaseAsComplement :: Base -> IO ()
+showBaseAsComplement  b = 
+  case b of 
+    A -> putStr "ꓯ"
+    G -> putStr "⅁"
+    T -> putStr "ꓕ"
+    C -> putStr "ꓛ"
