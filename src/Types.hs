@@ -12,6 +12,11 @@ data Base
 
 type Strand = [Base]
 
+data BoundStrand 
+  = Upper 
+  | Lower 
+  deriving(Show,Eq)
+
 -- a data type to represent the game state: 
 -- this feels universal investigate further
 data Game = Game { mainStrand :: Strand 
@@ -19,7 +24,7 @@ data Game = Game { mainStrand :: Strand
                  , instructions :: [Instruction]
                  , foldingPattern :: [FoldingDirection]
                  , boundPosition :: Integer 
-                 , currentlyBoundStrand :: Bool -- correct way to do this? True = mainStrand, False = complementary
+                 , currentlyBoundStrand :: BoundStrand
                  } deriving (Show) 
 
 data Output = Output { o_mainStrand :: Strand
