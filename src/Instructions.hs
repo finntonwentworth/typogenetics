@@ -1,7 +1,11 @@
 module Instructions where 
 
-import Prelude hiding (Right, Left)
+
 import Types
+
+import Prelude hiding (Right, Left)
+import Data.List  (findIndex)
+import Data.Maybe (fromJust)
 
 strandToInstructions :: Strand -> [Maybe Instruction]
 strandToInstructions strand = map basePairToInstruction $ strandToBasePairs strand
@@ -30,6 +34,9 @@ startingBase insts =
           -- this is an issue, what do I do with a Nothing
           -- leave undefined for now - implementation will change with splitting pun 
         _             -> undefined
+
+selectFirstMatching :: Base -> Strand -> Maybe BoundPosition
+selectFirstMatching base strand = findIndex (==base) strand 
 
 
 strandToBasePairs :: Strand -> [[Base]]

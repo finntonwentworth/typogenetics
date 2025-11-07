@@ -4,17 +4,10 @@ import Types
 import Instructions
 import Utils
 
-import Data.Maybe (fromJust)
+import Data.Maybe (fromJust, fromMaybe)
 
 main :: IO () 
 main = undefined
-
-test = do 
-  strand <- randStrand 10 
-  putStrLn ("Strand: " ++ show strand) 
-  putStrLn ("Instructions: " ++ show (strandToInstructions strand)) 
-  putStrLn ("Starting Base: " ++ show (startingBase $ strandToInstructions strand)) 
-
 
 -- Creates a test start game state so I can check printing
 createInitialGameState :: Int -> IO ()
@@ -28,8 +21,9 @@ createInitialGameState num = do
                , complementaryStrand = dummyComplement
                , instructions = map fromJust insts 
                , foldingPattern = map fromJust fds 
-               , boundPosition = 1
-               , currentlyBoundStrand = Lower 
+               -- Exception thrown with Pun - fromJust errors 
+               , boundPosition = fromJust $ selectFirstMatching (startingBase insts) initialStrand
+               , currentlyBoundStrand = Lower
                }
   displayGameStrands g
 

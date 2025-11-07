@@ -40,7 +40,6 @@ showStrandAsComplement (b:bs) =
       putStr "ꓛ"
       showStrandAsComplement bs
 
--- wait there's dead code here 
 showBoundPositionUpper :: Int -> BoundStrand -> IO ()  
 showBoundPositionUpper pos bound = 
   case bound of 
@@ -53,15 +52,16 @@ showBoundPositionLower pos bound =
     Lower  -> putStrLn (replicate pos ' ' ++ "↑")
     Upper -> putStrLn ""
 
-showBoundPosition :: BoundStrand -> Game -> IO ()
-showBoundPosition b g = 
-  if b == Upper
-    then showBoundPositionUpper (boundPosition g) (currentlyBoundStrand g) 
-    else showBoundPositionLower (boundPosition g) (currentlyBoundStrand g)
+
+showBoundPosition :: BoundStrand -> BoundPosition -> BoundStrand -> IO ()
+showBoundPosition print pos bound = 
+  if print == Upper
+    then showBoundPositionUpper pos bound 
+    else showBoundPositionLower pos bound 
 
 displayGameStrands :: Game -> IO ()
 displayGameStrands g = do 
-  showBoundPosition Upper g
+  showBoundPosition Upper (boundPosition g) (currentlyBoundStrand g)
   showStrandAsComplement $ complementaryStrand g
   showStrand $ mainStrand g
-  showBoundPosition Lower g
+  showBoundPosition Lower (boundPosition g) (currentlyBoundStrand g)
