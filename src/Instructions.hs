@@ -32,7 +32,6 @@ startingBase insts =
         _             -> undefined
 
 
-
 strandToBasePairs :: Strand -> [[Base]]
 strandToBasePairs [] = []
 strandToBasePairs [a] = [[a]]

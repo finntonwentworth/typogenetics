@@ -45,7 +45,7 @@ testGame =
        , complementaryStrand = s
        , instructions = map fromJust insts 
        , foldingPattern = map fromJust fds 
-       , boundPosition = 0
-       , currentlyBoundStrand = Upper 
+       , boundPosition = 2
+       , currentlyBoundStrand = Lower 
        }
   

@@ -23,7 +23,7 @@ data Game = Game { mainStrand :: Strand
                  , complementaryStrand :: Strand 
                  , instructions :: [Instruction]
                  , foldingPattern :: [FoldingDirection]
-                 , boundPosition :: Integer 
+                 , boundPosition :: Int
                  , currentlyBoundStrand :: BoundStrand
                  } deriving (Show) 
 
