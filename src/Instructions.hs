@@ -4,11 +4,13 @@ module Instructions where
 import Types
 
 import Prelude hiding (Right, Left)
-import Data.List  (findIndex)
-import Data.Maybe (fromJust)
+import Data.List        (findIndex)
+import Data.List.Split  (split, keepDelimsR, oneOf)
+import Data.Maybe       (fromJust)
 
-strandToInstructions :: Strand -> [Maybe Instruction]
-strandToInstructions strand = map basePairToInstruction $ strandToBasePairs strand
+strandToEnzymes :: Strand -> [[Maybe Instruction]]
+strandToEnzymes strand =
+  split (keepDelimsR $ oneOf [Just Pun]) $ map basePairToInstruction $ strandToBasePairs strand
 
 
 startingBase :: [Maybe Instruction] -> Base

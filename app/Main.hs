@@ -19,8 +19,9 @@ createInitialGameState num = do
   let fds = map instructionToFoldingDirection insts
   let g = Game { mainStrand = initialStrand
                , complementaryStrand = dummyComplement
-               , instructions = map fromJust insts 
-               , foldingPattern = map fromJust fds 
+               , instructions = map (map fromJust) insts 
+               , foldingPatterns = map (map fromJust) fds 
+               , numberOfEnzymes = length instructions
                -- Exception thrown with Pun - fromJust errors 
                , boundPosition = fromJust $ selectFirstMatching (startingBase insts) initialStrand
                , currentlyBoundStrand = Lower
@@ -37,8 +38,9 @@ testGame =
   in 
   Game { mainStrand = s
        , complementaryStrand = s
-       , instructions = map fromJust insts 
-       , foldingPattern = map fromJust fds 
+       , instructions = map (map fromJust) insts 
+       , foldingPatterns = map (map fromJust) fds 
+       , numberOfEnzymes = length instructions
        , boundPosition = 2
        , currentlyBoundStrand = Lower 
        }

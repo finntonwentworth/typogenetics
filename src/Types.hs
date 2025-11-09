@@ -23,11 +23,9 @@ data BoundStrand
 -- this feels universal investigate further
 data Game = Game { mainStrand :: Strand 
                  , complementaryStrand :: Strand 
-                 -- maybe this should be [[Instruction]]
-                 -- So when a Pun is there, it splits the instruction to the next list
-                 -- then a game could just execute all items in [[Instructions]]
-                 , instructions :: [Instruction] 
-                 , foldingPattern :: [FoldingDirection]
+                 , enzymes :: [[Instruction]] 
+                 , foldingPatterns :: [[FoldingDirection]]
+                 , numberOfEnzymes :: Int
                  , boundPosition :: BoundPosition
                  , currentlyBoundStrand :: BoundStrand
                  } deriving (Show) 
@@ -54,7 +52,7 @@ data Instruction
  | Rpu
  | Lpy
  | Lpu
- deriving(Show)
+ deriving(Show, Eq)
 
 data FoldingDirection 
   = Straight 
