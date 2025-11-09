@@ -62,7 +62,7 @@ basePairToInstruction bp =
     [T,A] -> Just Rpy
     [T,C] -> Just Rpu
     [T,G] -> Just Lpy 
-    [T,T] -> Just Lpy
+    [T,T] -> Just Lpu
     _    -> Nothing
 
 instructionToFoldingDirection :: Maybe Instruction -> Maybe FoldingDirection
