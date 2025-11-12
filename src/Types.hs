@@ -13,6 +13,7 @@ data Base
 
 type Strand = [Base]
 type BoundPosition = Int
+type Enzyme = [Instruction]
 
 data BoundStrand 
   = Upper 
@@ -23,7 +24,7 @@ data BoundStrand
 -- this feels universal investigate further
 data Game = Game { mainStrand :: Strand 
                  , complementaryStrand :: Strand 
-                 , enzymes :: [[Instruction]] 
+                 , enzymes :: [Enzyme] 
                  , foldingPatterns :: [[FoldingDirection]]
                  , numberOfEnzymes :: Int
                  , boundPosition :: BoundPosition
