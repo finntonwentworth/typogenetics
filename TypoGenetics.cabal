@@ -66,6 +66,7 @@ executable TypoGenetics
     other-modules:    Types
                     , Instructions
                     , Utils
+                    , GameState
 
     -- LANGUAGE extensions used by modules in this package.
     -- other-extensions:

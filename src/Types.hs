@@ -13,23 +13,13 @@ data Base
 
 type Strand = [Base]
 type BoundPosition = Int
-type Enzyme = [Instruction]
+--type Enzyme = [Instruction] 
 
 data BoundStrand 
   = Upper 
   | Lower 
   deriving(Show, Eq)
 
--- a data type to represent the game state: 
--- this feels universal investigate further
-data Game = Game { mainStrand :: Strand 
-                 , complementaryStrand :: Strand 
-                 , enzymes :: [Enzyme] 
-                 , foldingPatterns :: [[FoldingDirection]]
-                 , numberOfEnzymes :: Int
-                 , boundPosition :: BoundPosition
-                 , currentlyBoundStrand :: BoundStrand
-                 } deriving (Show) 
 
 data Output = Output { o_mainStrand :: Strand
                      , o_complementStrand :: Strand

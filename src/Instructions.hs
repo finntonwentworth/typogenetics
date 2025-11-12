@@ -9,8 +9,8 @@ import Data.List.Split  (split, keepDelimsR, oneOf)
 import Data.Maybe       (fromJust)
 
 strandToEnzymes :: Strand -> [[Maybe Instruction]]
-strandToEnzymes strand =
-  split (keepDelimsR $ oneOf [Just Pun]) $ map basePairToInstruction $ strandToBasePairs strand
+strandToEnzymes =
+  split (keepDelimsR $ oneOf [Just Pun]) . map basePairToInstruction . strandToBasePairs 
 
 
 startingBase :: [Maybe Instruction] -> Base

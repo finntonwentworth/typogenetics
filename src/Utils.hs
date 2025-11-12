@@ -5,6 +5,7 @@ import Control.Monad (replicateM)
 
 import Types 
 
+
 instance Random Base where 
   randomR (low, high) g = 
     let (i , g') = randomR (fromEnum low, fromEnum high) g
@@ -55,10 +56,3 @@ showBoundPosition print pos bound =
       case bound of 
         Lower  -> putStrLn (replicate pos ' ' ++ "↑")
         Upper -> putStrLn ""
-
-displayGameStrands :: Game -> IO ()
-displayGameStrands g = do 
-  showBoundPosition Upper (boundPosition g) (currentlyBoundStrand g)
-  showStrandAsComplement $ complementaryStrand g
-  showStrand $ mainStrand g
-  showBoundPosition Lower (boundPosition g) (currentlyBoundStrand g)
