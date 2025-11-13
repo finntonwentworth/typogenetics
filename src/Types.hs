@@ -1,14 +1,11 @@
 module Types where 
 
--- cannot define subtypes that classify A and G as purines (same for pyramidines)
--- Prefer simple runtime pattern matching as opposed to created sum type with additional boilerplate constructors 
-
--- this should probably include a blank as an element?
 data Base 
   = A
   | G
   | T 
   | C
+  | Blank
   deriving(Show, Enum, Bounded, Eq)
 
 type Strand = [Base]

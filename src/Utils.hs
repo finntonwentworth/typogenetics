@@ -11,14 +11,14 @@ instance Random Base where
     let (i , g') = randomR (fromEnum low, fromEnum high) g
     in (toEnum i, g')
   random g = 
-    let (i, g') = randomR (fromEnum (minBound :: Base), fromEnum (maxBound :: Base )) g
+    let (i, g') = randomR (fromEnum (minBound :: Base), fromEnum (maxBound :: Base ) - 1) g
     in (toEnum i, g')
   
 
 randStrand :: Int -> IO Strand
 randStrand len = replicateM len (randomIO :: IO Base)
 
--- Pretty printing for strand 
+-- Pretty printing for strand - does not account for blanks?
 showStrand :: Strand -> IO ()
 showStrand s = do 
   mapM_ putStr (map show s)
@@ -39,6 +39,9 @@ showStrandAsComplement (b:bs) =
       showStrandAsComplement bs
     C -> do
       putStr "ꓛ"
+      showStrandAsComplement bs
+    Blank -> do
+      putStr " "
       showStrandAsComplement bs
 
 
