@@ -1,5 +1,6 @@
 module Types where 
 
+
 data Base 
   = A
   | G

@@ -1,1 +1,5 @@
 :set -i./src
+
+:set -package random 
+:set -package split 
+:set -package mtl 

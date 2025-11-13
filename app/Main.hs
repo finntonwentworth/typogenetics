@@ -1,5 +1,10 @@
 module Main where 
 
+import GameState
+import Instructions 
+import Types 
+import Utils
+
 main :: IO () 
 main = undefined
 

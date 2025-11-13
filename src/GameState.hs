@@ -32,6 +32,16 @@ createInitialGameState num = do
                }
   displayGameStrands g
 
+testGame :: Game 
+testGame  = Game { strands = ([A,G,T,C], [Blank])
+                 , enzymes = [[Lpy, Lpu]]
+                 , foldingPatterns = [[Straight,Straight]]
+                 , numberOfEnzymes = length $ enzymes testGame
+                 -- Exception thrown with Pun - fromJust errors 
+                 , boundPosition = 0
+                 , currentlyBoundStrand = Lower
+                 }
+
 displayGameStrands :: Game -> IO ()
 displayGameStrands g = do 
   showBoundPosition Upper (boundPosition g) (currentlyBoundStrand g)

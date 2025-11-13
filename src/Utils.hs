@@ -1,10 +1,9 @@
 module Utils where 
 
-import System.Random 
 import Control.Monad (replicateM)
+import System.Random 
 
 import Types 
-
 
 instance Random Base where 
   randomR (low, high) g = 
@@ -13,16 +12,36 @@ instance Random Base where
   random g = 
     let (i, g') = randomR (fromEnum (minBound :: Base), fromEnum (maxBound :: Base ) - 1) g
     in (toEnum i, g')
-  
+
 
 randStrand :: Int -> IO Strand
 randStrand len = replicateM len (randomIO :: IO Base)
 
 -- Pretty printing for strand - does not account for blanks?
 showStrand :: Strand -> IO ()
+showStrand [] = putStrLn ""
+showStrand (b:bs) = 
+  case b of 
+    A -> do  
+      putStr "A"
+      showStrandAsComplement bs
+    G -> do 
+      putStr "G"
+      showStrandAsComplement bs
+    T -> do
+      putStr "T"
+      showStrandAsComplement bs
+    C -> do
+      putStr "C"
+      showStrandAsComplement bs
+    Blank -> do
+      putStr " "
+      showStrandAsComplement bs
+{-
 showStrand s = do 
   mapM_ putStr (map show s)
   putStrLn ""
+-}
 
 showStrandAsComplement :: Strand -> IO ()
 showStrandAsComplement  [] = putStrLn ""
